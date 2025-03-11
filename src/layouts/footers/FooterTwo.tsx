@@ -2,7 +2,6 @@
 import Image from "next/image"
 import Link from "next/link"
 import Social from "@/components/common/Social"
-import logo from "@/assets/img/logo/secondary_logo.svg"
 
 const FooterTwo = ({ style }: any) => {
    return (
