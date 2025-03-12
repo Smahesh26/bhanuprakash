@@ -29,7 +29,7 @@ const CourseDetailsArea = ({ single_course, user }: any) => {
     <section className="courses__details-area section-py-120">
       <div className="container">
         <div className="row">
-          <div className="col-xl-9 col-lg-8">
+          <div className="col-xl-12 col-lg-12">
             <div className="courses__details-thumb">
               <Image src={single_course?.thumb || "/default-course-image.jpg"} alt="Course Thumbnail" width={800} height={450} />
             </div>
