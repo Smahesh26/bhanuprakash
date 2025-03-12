@@ -4,7 +4,7 @@ import Overview from "../course-details/Overview";
 import Reviews from "../course-details/Reviews";
 import Instructors from "../course-details/Instructors";
 
-const tab_title: string[] = ["Overview", "Instructors", "reviews"];
+const tab_title: string[] = ["Overview", "Instructors", "reviews", "PDF Notes"];
 
 const LessonNavTav = () => {
 
@@ -33,6 +33,7 @@ const LessonNavTav = () => {
             <div className={`tab-pane fade ${activeTab === 2 ? 'show active' : ''}`} id="overview-tab-pane" role="tabpanel" aria-labelledby="overview-tab">
                <Reviews />
             </div>
+            
          </div>
       </div>
    )

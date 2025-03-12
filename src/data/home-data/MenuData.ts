@@ -51,11 +51,11 @@ const menu_data: MenuItem[] = [
         id: 2,
         title: "Courses",
         link: "#",
-        // sub_menus: [
-        //     { link: "/courses", title: "All Courses" },
-        //     { link: "/course-details", title: "Course Details" },
-        //     { link: "/lesson", title: "Course Lesson" },
-        // ],
+        sub_menus: [
+            { link: "/courses", title: "All Courses" },
+            // { link: "/course-details", title: "Course Details" },
+            { link: "/lesson", title: "Course Lesson" },
+        ],
     },
     {
         id: 3,
@@ -93,17 +93,17 @@ const menu_data: MenuItem[] = [
             //         { link: "/check-out", title: "Checkout" },
             //     ]
             // },
-            // {
-            //     link: "#",
-            //     title: "Blog",
-            //     dropdown: true,
-            //     mega_menus: [
-            //         { link: "/blog", title: "Blog Right Sidebar" },
-            //         { link: "/blog-2", title: "Blog Left Sidebar" },
-            //         { link: "/blog-3", title: "Blog Full Width" },
-            //         { link: "/blog-details", title: "Blog Details" },
-            //     ]
-            // },
+            {
+                link: "#",
+                title: "Blog",
+                dropdown: true,
+                mega_menus: [
+                    { link: "/blog", title: "Blog Details" },
+                    // { link: "/blog-2", title: "Blog Left Sidebar" },
+                    // { link: "/blog-3", title: "Blog Full Width" },
+                    // { link: "/blog-details", title: "Blog Details" },
+                ]
+            },
             { link: "/login", title: "Student Login" },
             { link: "/registration", title: "Student Registration" },
             // { link: "/not-found", title: "404 Page" },

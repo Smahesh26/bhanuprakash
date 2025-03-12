@@ -117,7 +117,7 @@ const CourseSidebar = ({ setCourses }: any) => {
                            </div>
                         </li>
                      ))}
-                  </ul>
+                  </ul>...
                   <div className="show-more">
                      <a className={`show-more-btn ${showMoreCategory ? 'active' : ''}`} style={{ cursor: "pointer" }} onClick={() => setShowMoreCategory(!showMoreCategory)}>
                         {showMoreCategory ? "Show Less -" : "Show More +"}
@@ -127,7 +127,7 @@ const CourseSidebar = ({ setCourses }: any) => {
             </div>
 
             {/* Language Filter */}
-            <div className="courses-widget">
+            {/* <div className="courses-widget">
                <h4 className="widget-title">Languages</h4>
                <div className="courses-cat-list">
                   <ul className="list-wrap">
@@ -146,7 +146,7 @@ const CourseSidebar = ({ setCourses }: any) => {
                      </a>
                   </div>
                </div>
-            </div>
+            </div> */}
 
             {/* Price Filter */}
             <div className="courses-widget">

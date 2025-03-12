@@ -27,46 +27,46 @@ const faq_data: DataType[] = [
          {
             class_name: "open-item",
             lock: false,
-            title: "Course Installation",
+            title: "Lecture 1",
             duration: "03:03"
          },
          {
             lock: true,
-            title: "Create a Simple React App",
+            title: "Lecture 2",
             duration: "07:48"
          },
          {
             lock: true,
-            title: "React for the Rest of us",
+            title: "Lecture 3",
             duration: "10:48"
          },
       ]
    },
    {
       id: 2,
-      title: "Capacitance and Inductance",
+      title: "Course and its details",
       collapsed: "collapsed",
       faq_details: [
          {
             lock: true,
-            title: "Course Installation",
+            title: "Lecture 1",
             duration: "03:03"
          },
          {
             lock: true,
-            title: "Create a Simple React App",
+            title: "Lecture 2",
             duration: "07:48"
          },
          {
             lock: true,
-            title: "React for the Rest of us",
+            title: "Lecture 3",
             duration: "10:48"
          },
       ]
    },
    {
       id: 3,
-      title: "Final Audit",
+      title: "Final Releases",
       collapsed: "collapsed",
       faq_details: [
          {

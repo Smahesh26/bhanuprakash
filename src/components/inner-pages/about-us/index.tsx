@@ -8,11 +8,12 @@ import Newsletter from "@/components/homes/home-two/Newsletter"
 import Features from "@/components/homes/home-one/Features"
 import Testimonial from "./Testimonial"
 import FooterTwo from "@/layouts/footers/FooterTwo"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 
 const AboutUs = () => {
    return (
       <>
-         <HeaderOne />
+         <HeaderSeven />
          <main className="main-area fix">
             <BreadcrumbOne title="Who We Are" sub_title="About Us" />
             <About />

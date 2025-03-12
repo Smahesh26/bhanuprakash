@@ -39,12 +39,12 @@ const Courses = () => {
                               {/* <li className="price">
                                  ${item.price}.00
                               </li> */}
-                              {/* <li className="courses__wishlist">
+                              <li className="courses__wishlist">
                                  <a onClick={() => handleAddToWishlist(item)}><InjectableSvg src="/assets/img/icons/heart02.svg" alt="" className="injectable" /></a>
-                              </li> */}
+                              </li>
                            </ul>
                            <h2 className="title"><Link href="/course-details">{item.title}</Link></h2>
-                           {/* <div className="courses__review">
+                           <div className="courses__review">
                               <div className="rating">
                                  <i className="fas fa-star"></i>
                                  <i className="fas fa-star"></i>
@@ -53,12 +53,12 @@ const Courses = () => {
                                  <i className="fas fa-star"></i>
                               </div>
                               <span>(4.8 Reviews)</span>
-                           </div> */}
+                           </div>
                         </div>
                         <div className="courses__item-bottom-three courses__item-bottom-five">
                            <ul className="list-wrap">
                               <li><i className="flaticon-book"></i>Lessons {item.lesson}</li>
-                              {/* <li><i className="skillgro-group"></i>Students {item.student}</li> */}
+                              <li><i className="skillgro-group"></i>Students {item.student}</li>
                            </ul>
                         </div>
                      </div>

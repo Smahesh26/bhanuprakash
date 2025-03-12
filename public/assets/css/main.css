@@ -52,7 +52,7 @@
   --tg-theme-primary: #FBB03B;
   --tg-theme-secondary: #FFC224;
   --tg-common-color-blue: #050071;
-  --tg-common-color-blue-2: #282568;
+  --tg-common-color-blue-2: #168e6a;
   --tg-common-color-indigo: #9B51E0;
   --tg-common-color-purple: #8121FB;
   --tg-common-color-pink: #FF429D;
@@ -11560,7 +11560,7 @@ textarea {
   }
 }
 .instructor__area-two {
-  background: var(--tg-common-color-blue-2);
+  background: #168e6a;
 }
 .instructor__area-four {
   background: var(--tg-common-color-gray);
@@ -13156,7 +13156,7 @@ textarea {
   }
 }
 .fact__inner-wrap {
-  background: var(--tg-common-color-blue-2);
+  background: #168e6a !important;
   padding: 94px 70px 64px;
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
@@ -13185,7 +13185,7 @@ textarea {
   display: none;
 }
 .fact__inner-wrap-two {
-  background: var(--tg-common-color-blue-2);
+  background: #168e6a;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   -o-border-radius: 20px;
@@ -17754,8 +17754,8 @@ blockquote > p {
 }
 .newsletter__form form input {
   width: 100%;
-  border: 1px solid #433EC2;
-  background: #4A44D1;
+  border: 1px solid #168e6a;
+  /* background: #4A44D1; */
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   -o-border-radius: 50px;
