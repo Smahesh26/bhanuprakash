@@ -100,7 +100,7 @@ const CourseDetailsArea = ({ single_course, user }: any) => {
               </div>
             </div>
           </div>
-          <Sidebar />
+          {/* <Sidebar /> */}
         </div>
       </div>
     </section>
