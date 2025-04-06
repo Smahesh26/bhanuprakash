@@ -1,34 +1,42 @@
-interface DataType {
-   id: number;
-   icon: string;
-   title: string;
-   tag: string;
-}[]
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeartPulse, faStethoscope, faFileMedical, faUserMd, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 
-const feature_data: DataType[] = [
+const feature_data = [
    {
       id: 1,
-      icon: "skillgro-profit",
-      title: "Learn skills with 120k+",
-      tag: "video courses.",
+      icon: faFileMedical, // FMGE icon
+      title: "FMGE",
+      tag: "Foreign Medical Graduate Exam.",
    },
    {
       id: 2,
-      icon: "skillgro-instructor",
-      title: "Choose courses",
-      tag: "real-world experts.",
+      icon: faUserMd, // NEETPG icon
+      title: "NEETPG",
+      tag: "National Eligibility Test for Post Graduation.",
    },
    {
       id: 3,
-      icon: "skillgro-tutorial",
-      title: "processional Tutors",
-      tag: "video courses.",
+      icon: faHeartPulse, // ECG icon
+      title: "ECG",
+      tag: "Electrocardiography courses.",
    },
    {
       id: 4,
-      icon: "skillgro-graduated",
-      title: "Online Degrees",
-      tag: "Study flexibly online",
+      icon: faStethoscope, // USMLE icon
+      title: "USMLE",
+      tag: "United States Medical Licensing Exam.",
+   },
+   {
+      id: 5,
+      icon: faGraduationCap, // Nursing icon
+      title: "Nursing",
+      tag: "Nursing certification and exams.",
+   },
+   {
+      id: 6,
+      icon: faStethoscope, // PLAB icon (same as USMLE for medical exam)
+      title: "PLAB",
+      tag: "Professional and Linguistic Assessments Board.",
    },
 ];
 
@@ -42,7 +50,8 @@ const Features = () => {
                      <div key={item.id} className="col-xl-3 col-lg-4 col-md-6">
                         <div className="features__item-six">
                            <div className="features__icon-six">
-                              <i className={item.icon}></i>
+                              {/* Rendering FontAwesome icons from feature data */}
+                              <FontAwesomeIcon icon={item.icon} size="3x" />
                            </div>
                            <div className="features__content-six">
                               <h4 className="title">{item.title}</h4>
@@ -55,7 +64,8 @@ const Features = () => {
             </div>
          </div>
       </section>
-   )
+   );
 }
 
-export default Features
+export default Features;
+

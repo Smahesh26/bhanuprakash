@@ -3,8 +3,8 @@ import InjectableSvg from "@/hooks/InjectableSvg"
 
 const Features = () => {
    return (
-      <section className="features__area-four section-pb-90">
-         <div className="container">
+      <section className="features__area-four section-pb-90 bg-white">
+         <div className="container" style={{backgroundColor:"#fff !important"}}>
             <div className="features__item-wrap-two">
                <div className="row justify-content-center">
                   {feature_data.filter((items) => items.page === "home_3").map((item) => (

@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ✅ Required by NextAuth.js for Google login
+model User {
+  id            String    @id @default(cuid())
+  name          String? // from Google profile
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  // 👇 your custom fields
+  fname      String?
+  lname      String?
+  phone      String?
+  country    String?
+  state      String?
+  city       String?
+  university String?
+  password   String?
+  createdAt  DateTime @default(now())
+
+  // NextAuth relations
+  accounts    Account[]
+  sessions    Session[]
+  resetTokens ResetToken[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+model LatestVideo {
+  id        String   @id @default(cuid())
+  title     String
+  tag       String?
+  review    String
+  price     Float
+  lesson    String
+  student   Int
+  thumb     String   // store image URL or relative path
+  page    String?   // Optional string field
+
+  createdAt DateTime @default(now())
+}

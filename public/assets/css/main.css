@@ -49,7 +49,7 @@
   --tg-heading-line-height: 1.3;
   --tg-body-color: #6D6C80;
   --tg-heading-color: #161439;
-  --tg-theme-primary: #FBB03B;
+  --tg-theme-primary: #f9a116;
   --tg-theme-secondary: #FFC224;
   --tg-common-color-blue: #050071;
   --tg-common-color-blue-2: #168e6a;
@@ -400,7 +400,7 @@ textarea {
 .btn {
   user-select: none;
   -moz-user-select: none;
-  background: var(--tg-theme-primary) none repeat scroll 0 0;
+  background: #f9a116 none repeat scroll 0 0;
   border: medium none;
   color: var(--tg-common-color-white);
   cursor: pointer;
@@ -7315,7 +7315,7 @@ textarea {
 }
 .courses__item-content-seven .title {
   margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   text-transform: capitalize;
 }
@@ -7325,6 +7325,8 @@ textarea {
   background-size: 0% 2px, 0 2px;
   background-position: 100% 100%, 0 100%;
   background-repeat: no-repeat;
+  font-size: 16px;
+
   transition: background-size 0.4s linear;
 }
 .courses__item-content-seven .title a:hover {
@@ -10072,7 +10074,7 @@ textarea {
     09. Categories
 ===============================*/
 .section-py-120 {
-  padding: 120px 0;
+  padding: 50px 0;
 }
 @media (max-width: 767.98px) {
   .section-py-120 {
@@ -13711,10 +13713,10 @@ textarea {
   box-shadow: 8px 8px 0px 0px #D9D5F1;
 }
 .features__item-wrap .row [class*=col-]:nth-child(2) .features__item-two .features__icon-two {
-  background: #FBB03B;
+  background: #f9a116;
 }
 .features__item-wrap .row [class*=col-]:nth-child(2) .features__item-two:hover .features__item-shape {
-  color: #FBB03B;
+  color: #f9a116;
 }
 .features__item-wrap .row [class*=col-]:nth-child(3) .features__item-two {
   border: 1px solid #EBE0C4;
@@ -19994,17 +19996,17 @@ blockquote > p {
     24. Footer
 ===============================*/
 .footer__area {
-  background: #168e6a;
+  background: #282568 !important;
 }
 .footer__area-two {
   margin-top: -160px;
-  background: #168e6a;
+  background: #282568;
 }
 .footer__area-two .footer__top {
   padding: 230px 0 60px;
 }
 .footer__area-three {
-  background: #168e6a ;
+  background: #282568 ;
 }
 .footer__area-five {
   padding-top: 100px;
@@ -20640,12 +20642,76 @@ blockquote > p {
 .swiper-pagination-bullet {
   width: 12px; /* Make dots bigger */
   height: 12px;
-  background-color: #fbb03b !important; /* Change color */
+  background-color: #f9a116 !important; /* Change color */
   opacity: 1; /* Ensure visibility */
 }
 
 /* Active dot styling */
 .swiper-pagination-bullet-active {
-  background-color: #fbb03b !important;
+  background-color: #f9a116 !important;
   transform: scale(1.3); /* Slightly enlarge the active dot */
+}
+/* Global CSS for slider */
+.slick-list, .slick-track, .slick-slide > div {
+  height: 100%;
+}
+
+.banner-slide {
+  height: 100%;
+}
+.video-container iframe {
+  pointer-events: none;
+}
+/* Prevent default slick-carousel padding */
+.slick-slide {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Maintain video aspect ratio on mobile */
+@media (max-width: 992px) {
+  .video-container iframe {
+    min-height: 400px !important;
+  }
+}
+.features__area-seven {
+  padding: 60px 0;
+}
+
+.features__item-six {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.features__item-six:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.features__icon-six {
+  margin-bottom: 20px;
+  color: #f39c12; /* Icon color */
+}
+
+.features__icon-six .fa {
+  font-size: 50px; /* Icon size */
+}
+
+.features__content-six {
+  padding-top: 15px;
+}
+
+.features__item-six .title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.features__item-six span {
+  font-size: 10px;
+  color: #7f8c8d; /* Grey color for the tag */
 }

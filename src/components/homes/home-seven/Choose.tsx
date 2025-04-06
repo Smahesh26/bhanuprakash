@@ -42,8 +42,7 @@ const Choose = () => {
                            <span className="sub-title" style={{color:"#168e6a !important"}}>Why Choose Us</span>
                            <h2 className="title bold">Learn with Bhanu Prakash</h2>
                         </div>
-                        <p>Bhanu Prakash is dedicated to providing high-quality medical education with immersive learning experiences. Explore our courses and elevate your knowledge with interactive and cutting-edge resources.</p>
-                        <ul className="about__info-list list-wrap">
+<p>Bhanu Prakash is dedicated to providing high-quality medical education with immersive learning experiences. Explore our courses and elevate your knowledge with interactive and cutting-edge resources.</p>                        <ul className="about__info-list list-wrap">
                            <li className="about__info-list-item">
                               <i className="flaticon-angle-right"></i>
                               <p className="content">Animated Videos</p>

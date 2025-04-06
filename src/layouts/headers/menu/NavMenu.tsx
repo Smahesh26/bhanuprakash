@@ -32,7 +32,7 @@ const NavMenu = () => {
             return (
                <li key={menu.id} className={`menu-item-has-children ${isAnyChildActive(allLinks) ? "active" : ""}`}>
                   <Link href={menu.link}>{menu.title}</Link>
-                  <ul className={`sub-menu ${menu.menu_class}`}>
+                  {/* <ul className={`sub-menu ${menu.menu_class}`}>
                      {menu.home_sub_menu ? (
                         <>
                            {menu.home_sub_menu.map((h_menu_details, i) => (
@@ -82,7 +82,7 @@ const NavMenu = () => {
                            );
                         })
                      )}
-                  </ul>
+                  </ul> */}
                </li>
             );
          })}

@@ -245,7 +245,7 @@ const course_data: DataType[] = [
       page: "home_7",
       thumb: course_thumb17,
       review: "(4.8 Reviews)",
-      title: "Smooth Muscle Physiology",
+      title: "Muscle Physiology",
       price: 55,
       lesson: "05",
       student: 22,

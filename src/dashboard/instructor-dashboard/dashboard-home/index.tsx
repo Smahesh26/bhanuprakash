@@ -5,7 +5,7 @@ import DashboardHomeArea from './DashboardHomeArea'
 const DashboardHome = () => {
   return (
     <>
-      <HeaderOne />
+      {/* <HeaderOne /> */}
       <main className="main-area fix">
         <DashboardHomeArea />
       </main>

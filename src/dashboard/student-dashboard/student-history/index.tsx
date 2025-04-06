@@ -1,15 +1,16 @@
 import FooterOne from '@/layouts/footers/FooterOne'
 import HeaderOne from '@/layouts/headers/HeaderOne'
 import StudentHistoryArea from './StudentHistoryArea'
+import FooterTwo from '@/layouts/footers/FooterTwo'
 
 const StudentHistory = () => {
    return (
       <>
-         <HeaderOne />
+         {/* <HeaderOne /> */}
          <main className="main-area fix">
             <StudentHistoryArea />
          </main>
-         <FooterOne />
+         <FooterTwo />
       </>
    )
 }

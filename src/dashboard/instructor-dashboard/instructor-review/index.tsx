@@ -5,7 +5,7 @@ import InstructorReviewArea from './InstructorReviewArea'
 const InstructorReview = () => {
   return (
    <>
-         <HeaderOne />
+         {/* <HeaderOne /> */}
          <main className="main-area fix">
             <InstructorReviewArea />
          </main>

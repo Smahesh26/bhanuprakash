@@ -46,6 +46,7 @@ const HomeOne = () => {
                      <Cta />
                      <Choose />
                      <Categories />
+                     <Features/>
                      <Counter/>
                      {/* <Categories1/> */}
                      {/* <Instructor /> */}
