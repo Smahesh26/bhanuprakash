@@ -9,17 +9,25 @@ datasource db {
 
 // ---------------- LMS MODELS ----------------
 model LatestVideo {
-  id         String   @id @default(cuid())
-  title      String
-  tag        String
-  review     String
-  price      Float
-  lesson     Int
-  student    Int
-  page       String   @default("home_7")
-  thumb      String
-  youtubeUrl String?   // <-- Add this line
-  createdAt  DateTime @default(now())
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  
+  // NEW fields for your API
+  videoUrl     String?
+  thumbnailUrl String?
+  
+  // EXISTING fields (keep to preserve data)
+  tag          String?
+  review       String?
+  price        Float?
+  lesson       Int?
+  student      Int?
+  page         String?
+  thumb        String?
+  youtubeUrl   String?
+  
+  createdAt    DateTime @default(now())
 }
 
 model Subject {

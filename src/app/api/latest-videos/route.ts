@@ -22,7 +22,6 @@ export async function POST(req: Request) {
     const video = await prisma.latestVideo.create({
       data: {
         title,
-        description,
         videoUrl,
         thumbnailUrl,
       },

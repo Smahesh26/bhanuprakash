@@ -1,28 +1,24 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../../lib/prisma";
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
+    const { id } = params;
     const body = await req.json();
-    const { title, tag, review, price, lesson, student, thumb, youtubeUrl } = body;
+
+    if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 
     const updated = await prisma.latestVideo.update({
-      where: { id: context.params.id },
-      data: {
-        title,
-        tag,
-        review,
-        price: parseFloat(price),
-        lesson: parseInt(lesson), // <-- convert to int
-        student: parseInt(student),
-        thumb,
-        youtubeUrl, // <-- update YouTube URL
-      },
+      where: { id },
+      data: body,
     });
 
     return NextResponse.json({ message: "Video updated", data: updated });
-  } catch (err: any) {
-    console.error("Update error:", err.message || err);
-    return NextResponse.json({ error: "Update failed" }, { status: 500 });
+  } catch (err) {
+    console.error("Error updating video:", err);
+    return NextResponse.json({ error: "Failed to update video" }, { status: 500 });
   }
 }
