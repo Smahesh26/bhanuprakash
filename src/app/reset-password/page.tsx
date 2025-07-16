@@ -1,17 +1,26 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-
+  const [token, setToken] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = async (e: any) => {
+  useEffect(() => {
+    if (searchParams) {
+      const tokenParam = searchParams.get("token");
+      setToken(tokenParam);
+      if (!tokenParam) {
+        toast.error("Invalid reset link.");
+      }
+    }
+  }, [searchParams]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!token) return toast.error("Invalid reset link.");
@@ -52,6 +61,7 @@ const ResetPassword = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter new password"
+                    required
                   />
                 </div>
 
@@ -62,6 +72,7 @@ const ResetPassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm password"
+                    required
                   />
                 </div>
 
