@@ -1,8 +1,6 @@
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import LessonArea from "./LessonArea"
-import HeaderSeven from "@/layouts/headers/HeaderSeven"
-import FooterTwo from "@/layouts/footers/FooterTwo"
 
 const Lesson = () => {
    return (
