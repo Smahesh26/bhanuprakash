@@ -6,10 +6,6 @@ import InjectableSvg from "@/hooks/InjectableSvg";
 import UseSticky from "@/hooks/UseSticky";
 import { useState } from "react";
 import MobileSidebar from "./menu/MobileSidebar";
-import dynamic from "next/dynamic";
-const TotalCart = dynamic(() => import("@/components/common/TotalCart"), {
-  ssr: false,
-});
 
 import logo from "@/assets/img/bg/logo1.png";
 
@@ -64,14 +60,13 @@ const HeaderSeven = () => {
                           />
                         </li>
                         <li>
-  <Link
-    href="/registration"
-    className="btn arrow-btn"
-  >
-    Regsiter Now
-  </Link>
-</li>
-
+                          <Link
+                            href="/registration"
+                            className="btn arrow-btn"
+                          >
+                            Register Now
+                          </Link>
+                        </li>
                       </ul>
                     </div>
                     <div className="mobile-login-btn">

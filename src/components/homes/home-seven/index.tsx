@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Courses from "./Courses";
 import Cta from "./Cta";
