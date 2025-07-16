@@ -8,10 +8,12 @@ import Wrapper from "@/layouts/Wrapper";
 export const metadata = {
    title: "Shop Details Dr.Bhanu Prakash Online Educational Platform",
 };
-const index = ({ params }: { params: { id: number } }) => {
 
+const index = async ({ params }: { params: Promise<{ id: string }> }) => {
+   const { id } = await params;
+   
    const products = product_data;
-   const single_product = products.find((item) => Number(item.id) === Number(params.id));
+   const single_product = products.find((item) => Number(item.id) === Number(id));
 
    return (
       <Wrapper>
