@@ -10,11 +10,22 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-  const router = useRouter();
+  const token = searchParams?.get("token");
+  const route
+  useEffect(() => {
+    if (!token) {
+      toast.error("Invalid reset link.");
+      router.push("/login");
+    }
+  }, [token, router]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!token) {
+      toast.error("Invalid reset link.");
+      return;
+    }
 
     if (!password || !cpassword) {
       toast.error("All fields are required.");
@@ -34,7 +45,6 @@ const ResetPassword = () => {
         body: JSON.stringify({ token, password }),
       });
       
-
       const result = await res.json();
 
       if (res.ok) {
@@ -50,6 +60,24 @@ const ResetPassword = () => {
       setLoading(false);
     }
   };
+
+  // Don't render form if no token
+  if (!token) {
+    return (
+      <section className="singUp-area section-py-120">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-6 col-lg-8">
+              <div className="singUp-wrap">
+                <h2 className="title">Invalid Reset Link</h2>
+                <p>The reset link is invalid or has expired. Please request a new password reset.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="singUp-area section-py-120">
