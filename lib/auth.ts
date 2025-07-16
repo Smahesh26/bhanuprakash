@@ -1,10 +1,10 @@
+// lib/auth.ts
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../../../../../lib/prisma";
+import prisma from "./prisma";
 
-// Don't export this from a route file
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -18,17 +18,20 @@ const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id ?? "";
+        // Remove these custom properties to avoid type errors
+        // token.isNewUser = user.isNewUser ?? false;
+        // token.isVerified = user.isVerified ?? false;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        // Remove these custom properties to avoid type errors
+        // session.user.isNewUser = token.isNewUser as boolean;
+        // session.user.isVerified = token.isVerified as boolean;
       }
       return session;
     },
   },
 };
-
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
