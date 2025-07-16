@@ -11,7 +11,8 @@ const ResetPassword = () => {
 
   const searchParams = useSearchParams();
   const token = searchParams?.get("token");
-  const route
+  const router = useRouter(); // Fixed: Complete the router declaration
+
   useEffect(() => {
     if (!token) {
       toast.error("Invalid reset link.");
