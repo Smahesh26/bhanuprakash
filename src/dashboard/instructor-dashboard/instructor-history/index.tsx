@@ -1,11 +1,11 @@
 import FooterTwo from '@/layouts/footers/FooterTwo'
-import Headerseven from '@/layouts/headers/Headerseven'
+import HeaderSeven from '@/layouts/headers/HeaderSeven'
 import InstructorHistoryArea from './InstructorHistoryArea'
 
 const InstructorHistory = () => {
    return (
       <>
-         <Headerseven />
+         <HeaderSeven />
          <main className="main-area fix">
             <InstructorHistoryArea />
          </main>

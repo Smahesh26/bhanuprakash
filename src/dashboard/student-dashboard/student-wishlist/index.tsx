@@ -1,12 +1,11 @@
 import FooterTwo from '@/layouts/footers/FooterTwo'
-import Headerseven from '@/layouts/headers/Headerseven'
+import HeaderSeven from '@/layouts/headers/HeaderSeven'
 import StudentWishlistArea from './StudentWishlistArea'
-import FooterTwo from '@/layouts/footers/FooterTwo'
 
 const StudentWishlist = () => {
    return (
       <>
-         {/* <Headerseven /> */}
+         {/* <HeaderSeven /> */}
          <main className="main-area fix">
             <StudentWishlistArea />
          </main>

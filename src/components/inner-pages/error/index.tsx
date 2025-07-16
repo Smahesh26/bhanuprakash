@@ -1,7 +1,6 @@
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import ErrorArea from "./ErrorArea"
-import HeaderSeven from "@/layouts/headers/Headerseven"
 const NotFound = () => {
    return (
       <>

@@ -1,5 +1,5 @@
 import FooterTwo from '@/layouts/footers/FooterTwo'
-import Headerseven from '@/layouts/headers/Headerseven'
+import HeaderSeven from '@/layouts/headers/HeaderSeven'
 import InstructorSettingArea from './InstructorSettingArea'
 import HeaderSeven from '@/layouts/headers/HeaderSeven'
 

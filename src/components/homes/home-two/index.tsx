@@ -11,12 +11,12 @@ import Newsletter from "./Newsletter"
 import WorkArea from "./WorkArea"
 import BrandOne from "@/components/common/brands/BrandOne"
 import Instructor from "./Instructor"
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 
 const HomeTwo = () => {
    return (
       <>
-         <Headerseven />
+         <HeaderSeven />
          <main className="main-area fix">
             <Banner />
             <BrandOne style={true} />

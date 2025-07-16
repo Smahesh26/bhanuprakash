@@ -1,5 +1,5 @@
 import FooterTwo from "@/layouts/footers/FooterTwo"
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import LessonArea from "./LessonArea"
 import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import FooterTwo from "@/layouts/footers/FooterTwo"

@@ -1,4 +1,4 @@
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import InstructorArea from "./InstructorArea"
@@ -6,7 +6,7 @@ import InstructorArea from "./InstructorArea"
 const Instructors = () => {
    return (
       <>
-         <Headerseven />
+         <HeaderSeven />
          <main className="main-area fix">
             <BreadcrumbOne title="All Instructors" sub_title="Instructors" />
             <InstructorArea />

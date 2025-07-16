@@ -13,7 +13,7 @@ import UseSticky from "@/hooks/UseSticky"
 import UseCartInfo from "@/hooks/UseCartInfo"
 import MobileSidebar from "./menu/MobileSidebar"
 
-const Headerseven = () => {
+const HeaderSeven = () => {
 
    const [selectedOption, setSelectedOption] = React.useState(null);
 
@@ -74,4 +74,4 @@ const Headerseven = () => {
    )
 }
 
-export default Headerseven
+export default HeaderSeven

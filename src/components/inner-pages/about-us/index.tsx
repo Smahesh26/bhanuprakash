@@ -1,4 +1,4 @@
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import About from "./About"
@@ -7,7 +7,6 @@ import Feature from "@/components/homes/home-two/Feature"
 import Newsletter from "@/components/homes/home-two/Newsletter"
 import Features from "@/components/homes/home-one/Features"
 import Testimonial from "./Testimonial"
-import HeaderSeven from "@/layouts/headers/Headerseven"
 import Faq from "@/components/homes/home-six/Faq"
 
 const AboutUs = () => {

@@ -14,7 +14,7 @@ const TotalCart = dynamic(() => import("@/components/common/TotalCart"), { ssr: 
 
 import logo from "@/assets/img/logo/logo.svg"
 
-const Headerseven = () => {
+const HeaderSeven = () => {
 
    const [isSearch, setIsSearch] = useState<boolean>(false);
    const [offcanvas, setOffcamvas] = useState<boolean>(false);
@@ -76,4 +76,4 @@ const Headerseven = () => {
    )
 }
 
-export default Headerseven
+export default HeaderSeven

@@ -3,7 +3,7 @@ import { Accordion, Card } from 'react-bootstrap';
 import { FaFilePdf, FaQuestionCircle, FaBookOpen, FaArrowLeft, FaLock, FaRegSmileBeam } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import HeaderSeven from '@/layouts/headers/Headerseven';
+import HeaderSeven from '@/layouts/headers/HeaderSeven'; 
 
 const getYoutubeVideoId = (url: string) => {
   try {

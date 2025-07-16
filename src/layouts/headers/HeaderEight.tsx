@@ -12,7 +12,7 @@ const TotalCart = dynamic(() => import("@/components/common/TotalCart"), { ssr: 
 
 import logo from "@/assets/img/logo/logo.svg"
 
-const Headerseven = () => {
+const HeaderSeven = () => {
 
   const { sticky } = UseSticky();
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -79,4 +79,4 @@ const Headerseven = () => {
   )
 }
 
-export default Headerseven
+export default HeaderSeven

@@ -1,8 +1,6 @@
 import FooterTwo from '@/layouts/footers/FooterTwo'
-import Headerseven from '@/layouts/headers/Headerseven'
-import StudentDashboardArea from './StudentDashboardArea'
 import HeaderSeven from '@/layouts/headers/HeaderSeven'
-import FooterTwo from '@/layouts/footers/FooterTwo'
+import StudentDashboardArea from './StudentDashboardArea'
 
 const StudentDashboard = () => {
    return (

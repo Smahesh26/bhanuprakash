@@ -1,11 +1,11 @@
 import FooterTwo from '@/layouts/footers/FooterTwo'
-import Headerseven from '@/layouts/headers/Headerseven'
+import HeaderSeven from '@/layouts/headers/HeaderSeven'
 import StudentProfileArea from './StudentProfileArea'
 
 const StudentProfile = () => {
    return (
       <>
-         {/* <Headerseven /> */}
+         {/* <HeaderSeven /> */}
          <main className="main-area fix">
             <StudentProfileArea />
          </main>

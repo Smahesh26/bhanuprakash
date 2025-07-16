@@ -1,8 +1,7 @@
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import LoginArea from "./LoginArea"
-import HeaderSeven from "@/layouts/headers/Headerseven"
 
 const Login = () => {
    return (

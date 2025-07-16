@@ -9,7 +9,7 @@ const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "plyr-react/plyr.css";
-import HeaderSeven from "@/layouts/headers/Headerseven";
+import HeaderSeven from "@/layouts/headers/HeaderSeven";
 
 
 const Banner = () => {

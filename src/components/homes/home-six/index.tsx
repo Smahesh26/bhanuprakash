@@ -7,12 +7,12 @@ import Faq from "./Faq"
 import Counter from "../home-two/Counter"
 import Blog from "./Blog"
 import Testimonial from "./Testimonial"
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 
 const HomeSix = () => {
    return (
       <>
-         <Headerseven />
+         <HeaderSeven />
          <main className="main-area fix">
             <Banner />
             <Categories />

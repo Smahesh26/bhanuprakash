@@ -1,4 +1,4 @@
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import BlogThreeArea from "./BlogThreeArea"
@@ -6,7 +6,7 @@ import BlogThreeArea from "./BlogThreeArea"
 const BlogThree = () => {
    return (
       <>
-         <Headerseven />
+         <HeaderSeven />
          <main className="main-area fix">
             <BreadcrumbOne title="Blog Full Width" sub_title="Blogs" />
             <BlogThreeArea />

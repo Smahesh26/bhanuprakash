@@ -1,4 +1,4 @@
-import Headerseven from "@/layouts/headers/Headerseven"
+import HeaderSeven from "@/layouts/headers/HeaderSeven"
 import CheckOutArea from "./CheckOutArea"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import FooterTwo from "@/layouts/footers/FooterTwo"
@@ -6,7 +6,7 @@ import FooterTwo from "@/layouts/footers/FooterTwo"
 const CheckOut = () => {
    return (
       <>
-         <Headerseven />
+         <HeaderSeven />
          <main className="main-area fix">
             <BreadcrumbOne title="check-out" sub_title="check-out" />
             <CheckOutArea />
