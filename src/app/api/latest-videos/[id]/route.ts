@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../../lib/prisma";
 
 // ✅ DELETE video
-export async function DELETE(req: Request) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop(); // or use regex if needed
+    const { id } = await params;
 
     if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 
@@ -21,10 +23,12 @@ export async function DELETE(req: Request) {
 }
 
 // ✅ PATCH video
-export async function PATCH(req: Request) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
+    const { id } = await params;
 
     if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 
