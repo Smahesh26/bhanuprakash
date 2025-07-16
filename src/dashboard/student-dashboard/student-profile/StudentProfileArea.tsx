@@ -13,7 +13,7 @@ const StudentProfileArea = () => {
             <div className="dashboard__inner-wrap">
                <div className="row">
                   <DashboardSidebarTwo />
-                  <InstructorProfileContent style={true} />
+                  <InstructorProfileContent />
                </div>
             </div>
          </div>
