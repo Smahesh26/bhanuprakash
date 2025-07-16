@@ -1,15 +1,14 @@
-import Course from "@/components/courses/course";
+"use client";
+
 import Wrapper from "@/layouts/Wrapper";
+import Course from "@/components/courses/course";
 
-export const metadata = {
-   title: "Course Dr.Bhanu Prakash Online Educational Platform",
+const CoursePage = () => {
+  return (
+    <Wrapper>
+      <Course />
+    </Wrapper>
+  );
 };
-const page = () => {
-   return (
-      <Wrapper>
-         <Course />
-      </Wrapper>
-   )
-}
 
-export default page
+export default CoursePage;

@@ -12,7 +12,7 @@ const FooterTwo = ({ style }: any) => {
                   <div className="col-xl-2 col-lg-4 col-md-6">
                      <div className="footer__widget">
                         <div className="logo mb-35">
-                           <Link href="/"><h5 style={{color:"#fff"}}>Dr.Bhanu Prakash</h5></Link>
+                           <Link href="/"><img src="/assets/img/bg/logo1.png" style={{height:"100px"}}/></Link>
                         </div>
                         <div className="footer__content footer__content-two">
                            <p>Hyderabad</p>

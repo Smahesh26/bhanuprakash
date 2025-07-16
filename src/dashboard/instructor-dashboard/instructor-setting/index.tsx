@@ -1,15 +1,16 @@
-import FooterOne from '@/layouts/footers/FooterOne'
-import HeaderOne from '@/layouts/headers/HeaderOne'
+import FooterTwo from '@/layouts/footers/FooterTwo'
+import Headerseven from '@/layouts/headers/Headerseven'
 import InstructorSettingArea from './InstructorSettingArea'
+import HeaderSeven from '@/layouts/headers/HeaderSeven'
 
 const InstructorSetting = () => {
    return (
       <>
-         <HeaderOne />
+         <HeaderSeven />
          <main className="main-area fix">
             <InstructorSettingArea />
          </main>
-         <FooterOne />
+         <FooterTwo />
       </>
    )
 }

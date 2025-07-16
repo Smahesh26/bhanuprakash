@@ -10,12 +10,12 @@ import Blog from "./Blog"
 import Cta from "./Cta"
 import Testimonial from "./Testimonial"
 import FooterTwo from "@/layouts/footers/FooterTwo"
-import HeaderFour from "@/layouts/headers/HeaderFour"
+import Headerseven from "@/layouts/headers/Headerseven"
 
 const HomeFour = () => {
    return (
       <>
-         <HeaderFour />
+         <Headerseven />
          <main className="main-area fix">
             <Banner />
             <Features />

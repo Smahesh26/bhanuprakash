@@ -1,8 +1,10 @@
-export const animationCreate = () => {
-  if (typeof window !== "undefined") {
-    import("wowjs").then((module) => {
-      const WOW = module.default;
-      new WOW.WOW({live: false}).init()
-    });
+export const animationCreate = async () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const WOW = (await import('wowjs')).default;
+      new WOW().init();
+    } catch (error) {
+      console.error('Error loading WOW.js:', error);
+    }
   }
 };

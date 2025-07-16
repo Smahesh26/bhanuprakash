@@ -10,7 +10,7 @@ const ErrorArea = () => {
                <div className="col-lg-8">
                   <div className="error-wrap text-center">
                      <div className="error-img">
-                        <InjectableSvg src="assets/img/others/error_img.svg" alt="img" className="injectable" />
+                        <InjectableSvg src="/assets/img/others/error_img.svg" alt="img" className="injectable" />
                      </div>
                      <div className="error-content">
                         <h2 className="title">ERROR PAGE! <span>Sorry! This Page is Not Available!</span></h2>

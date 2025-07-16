@@ -39,21 +39,21 @@ const Choose = () => {
                   <div className="col-lg-6">
                      <div className="choose__content-four">
                         <div className="section__title mb-20">
-                           <span className="sub-title" style={{color:"#168e6a !important"}}>Why Choose Us</span>
-                           <h2 className="title bold">Learn with Bhanu Prakash</h2>
+                           <span className="sub-title" style={{color:"#168e6a !important"}}>Who we are</span>
+                           <h2 className="title bold">Why Choose us</h2>
                         </div>
-<p>Bhanu Prakash is dedicated to providing high-quality medical education with immersive learning experiences. Explore our courses and elevate your knowledge with interactive and cutting-edge resources.</p>                        <ul className="about__info-list list-wrap">
+<p>Welcome to Med School Simplified! Our channel is dedicated to providing top-notch medical education tailored specifically for MBBS students, USMLE aspirants, and those preparing for FMGE and NEET PG exams. We aim to make complex medical concepts easy to grasp through clear and concise videos, detailed lectures, and practical insights. Whether you're starting your medical journey or gearing up for crucial exams, our content is designed to help you excel. Join us and simplify your path to medical success!</p>                        <ul className="about__info-list list-wrap">
                            <li className="about__info-list-item">
                               <i className="flaticon-angle-right"></i>
-                              <p className="content">Animated Videos</p>
+                              <p className="content">All subjects Video lectures </p>
                            </li>
                            <li className="about__info-list-item">
                               <i className="flaticon-angle-right"></i>
-                              <p className="content">Clear Understanding</p>
+                              <p className="content">In-depth Explanation of Concepts</p>
                            </li>
                            <li className="about__info-list-item">
                               <i className="flaticon-angle-right"></i>
-                              <p className="content">100% Trustable</p>
+                              <p className="content">Lectures notes / MCQs and Cases with Premium features</p>
                            </li>
                         </ul>
                         <Link href="/login" className="btn arrow-btn btn-four">Contact Now<BtnArrow /></Link>

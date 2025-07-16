@@ -22,7 +22,7 @@ const CourseSidebar = ({ setCourses }: any) => {
    const skillFilter = useSelector(selectCourses).map(course => course.skill_level);
    const instructorFilter = useSelector(selectCourses).map(course => course.instructors);
 
-   const allCategory = ['All Category', ...new Set(categoryFilter)];
+   const allCategory = [ ...new Set(categoryFilter)];
    const allLanguage = ['All Language', ...new Set(languageFilter)];
    const allPrice = ['All Price', ...new Set(priceFilter)];
    const allSkill = ['All Skill', ...new Set(skillFilter)];

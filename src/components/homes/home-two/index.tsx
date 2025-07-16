@@ -1,4 +1,4 @@
-import FooterOne from "@/layouts/footers/FooterOne"
+import FooterTwo from "@/layouts/footers/FooterTwo"
 import Blog from "../home-one/Blog"
 import CourseArea from "../home-one/CourseArea"
 import InstructorTwo from "../home-one/InstructorTwo"
@@ -11,12 +11,12 @@ import Newsletter from "./Newsletter"
 import WorkArea from "./WorkArea"
 import BrandOne from "@/components/common/brands/BrandOne"
 import Instructor from "./Instructor"
-import HeaderTwo from "@/layouts/headers/HeaderTwo"
+import Headerseven from "@/layouts/headers/Headerseven"
 
 const HomeTwo = () => {
    return (
       <>
-         <HeaderTwo />
+         <Headerseven />
          <main className="main-area fix">
             <Banner />
             <BrandOne style={true} />
@@ -31,7 +31,7 @@ const HomeTwo = () => {
             <Blog style={true} />
             <InstructorTwo style={true} />
          </main>
-         <FooterOne style={true} />
+         <FooterTwo style={true} />
       </>
    )
 }

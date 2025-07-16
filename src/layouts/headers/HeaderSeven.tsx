@@ -65,10 +65,10 @@ const HeaderSeven = () => {
                         </li>
                         <li>
   <Link
-    href="/login"
+    href="/registration"
     className="btn arrow-btn"
   >
-    Login
+    Regsiter Now
   </Link>
 </li>
 

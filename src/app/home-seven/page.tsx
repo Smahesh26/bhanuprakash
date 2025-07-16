@@ -1,15 +1,21 @@
-import HomeSeven from "@/components/homes/home-seven";
+import dynamic from "next/dynamic";
 import Wrapper from "@/layouts/Wrapper";
 
-export const metadata = {
-   title: "Home Seven Dr.Bhanu Prakash Online Educational Platform",
-};
-const page = () => {
-   return (
-      <Wrapper>
-         <HomeSeven />
-      </Wrapper>
-   )
-}
+// ✅ Dynamic import to prevent SSR-related errors
+const HomeSeven = dynamic(() => import("@/components/homes/home-seven"), {
+  ssr: false,
+});
 
-export default page
+export const metadata = {
+  title: "Home Seven Dr.Bhanu Prakash Online Educational Platform",
+};
+
+const Page = () => {
+  return (
+    <Wrapper>
+      <HomeSeven />
+    </Wrapper>
+  );
+};
+
+export default Page;

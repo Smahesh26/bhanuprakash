@@ -15,7 +15,7 @@ const DashboardBanner = ({ style }: any) => {
                   <Image src={style ? avatar_2 : avatar} alt="img" />
                </div>
                <div className="content">
-                  <h4 className="title">{style ? "Emily Hannah" : "John Due"}</h4>
+                  <h4 className="title">{style ? "Student" : "Admin"}</h4>
                   <div className="review__wrap review__wrap-two">
                      <div className="rating">
                         <i className="fas fa-star"></i>
@@ -28,9 +28,9 @@ const DashboardBanner = ({ style }: any) => {
                   </div>
                </div>
             </div>
-            <div className="dashboard__instructor-info-right">
+            {/* <div className="dashboard__instructor-info-right">
                <Link href="#" className="btn btn-two arrow-btn">Create a New Course <BtnArrow /></Link>
-            </div>
+            </div> */}
          </div>
       </div>
    )

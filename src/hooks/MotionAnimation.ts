@@ -1,3 +1,4 @@
+// src/hooks/MotionAnimation.tsx
 "use client";
 import { useEffect } from 'react';
 import { TweenMax } from 'gsap';
@@ -31,11 +32,12 @@ const MotionAnimation = () => {
     };
 
     document.addEventListener('mousemove', handleMouseMove);
-
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  return null;  // important: return a valid React node
 };
 
 export default MotionAnimation;

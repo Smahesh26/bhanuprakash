@@ -44,7 +44,7 @@ const Banner: React.FC = () => {
                      </p>
                      <div className="banner__btn-wrap" data-aos="fade-right" data-aos-delay="800">
                         <Link href="/contact" className="btn arrow-btn">
-                           Start Free Trial <BtnArrow />
+                           Get Started <BtnArrow />
                         </Link>
                      </div>
                   </div>

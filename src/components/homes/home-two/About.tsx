@@ -63,7 +63,7 @@ const About = () => {
                         </li>
                      </ul>
                      <div className="tg-button-wrap">
-                        <Link href="/about-us" className="btn arrow-btn">Start Free Trial <BtnArrow /></Link>
+                        <Link href="/about-us" className="btn arrow-btn">Get Started <BtnArrow /></Link>
                      </div>
                   </div>
                </div>

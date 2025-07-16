@@ -1,9 +1,7 @@
-import FooterOne from "@/layouts/footers/FooterOne"
-import HeaderOne from "@/layouts/headers/HeaderOne"
-import CourseArea from "./CourseArea"
-import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
-import HeaderSeven from "@/layouts/headers/HeaderSeven"
-import FooterTwo from "@/layouts/footers/FooterTwo"
+import FooterTwo from "@/layouts/footers/FooterTwo";
+import HeaderSeven from "@/layouts/headers/Headerseven";
+import CourseArea from "./CourseArea";
+import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne";
 
 const Course = () => {
    return (
@@ -18,4 +16,4 @@ const Course = () => {
    )
 }
 
-export default Course
+export default Course;

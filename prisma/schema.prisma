@@ -7,29 +7,124 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ✅ Required by NextAuth.js for Google login
+// ---------------- LMS MODELS ----------------
+model LatestVideo {
+  id         String   @id @default(cuid())
+  title      String
+  tag        String
+  review     String
+  price      Float
+  lesson     Int
+  student    Int
+  page       String   @default("home_7")
+  thumb      String
+  youtubeUrl String?   // <-- Add this line
+  createdAt  DateTime @default(now())
+}
+
+model Subject {
+  id       String           @id @default(cuid())
+  name     String           @unique
+  chapters SubjectChapter[]
+}
+
+model SubjectChapter {
+  id        String  @id @default(cuid())
+  title     String
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  topics    Topic[]
+
+  @@unique([subjectId, title])
+}
+
+model Topic {
+  id           String         @id @default(cuid())
+  title        String
+  chapterId    String
+  youtubeUrl   String?
+  pdfUrl       String?
+  mcqUrl       String?
+  caseStudyUrl String?
+  pdfAccess    PdfAccessType? // enum below
+  subtopics    Subtopic[]
+  mcqs         MCQ[] // MCQs directly under Topic
+  chapter      SubjectChapter @relation(fields: [chapterId], references: [id])
+
+  @@unique([chapterId, title])
+}
+
+model Subtopic {
+  id           String        @id @default(cuid())
+  title        String
+  topicId      String
+  youtubeUrl   String
+  pdfUrl       String?
+  mcqUrl       String?
+  caseStudyUrl String?
+  pdfAccess    PdfAccessType @default(VIEW)
+  topic        Topic         @relation(fields: [topicId], references: [id])
+  mcqs         MCQ[] // MCQs under subtopic
+}
+
+// ✅ MCQ Model
+model MCQ {
+  id           String  @id @default(cuid())
+  question     String
+  options      Json // Example: ["Option A", "Option B", "Option C", "Option D"]
+  correctIndex Int // Index 0-3
+  topicId      String?
+  subtopicId   String?
+
+  topic    Topic?    @relation(fields: [topicId], references: [id])
+  subtopic Subtopic? @relation(fields: [subtopicId], references: [id])
+}
+
+// ---------------- VIDEO LIBRARY ----------------
+
+model CourseVideo {
+  id         String          @id @default(cuid())
+  title      String
+  videoId    String
+  playlistId String
+  overview   String?
+  pdfUrl     String?
+  access     PdfAccessType   @default(VIEW)
+  createdAt  DateTime        @default(now())
+  chapters   LegacyChapter[]
+}
+
+model LegacyChapter {
+  id            String      @id @default(cuid())
+  title         String
+  timeStamp     String
+  courseVideoId String
+  courseVideo   CourseVideo @relation(fields: [courseVideoId], references: [id])
+}
+
+// ---------------- AUTH MODELS ----------------
+
 model User {
-  id            String    @id @default(cuid())
-  name          String? // from Google profile
-  email         String?   @unique
+  id            String       @id @default(cuid())
+  name          String?
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
-
-  // 👇 your custom fields
-  fname      String?
-  lname      String?
-  phone      String?
-  country    String?
-  state      String?
-  city       String?
-  university String?
-  password   String?
-  createdAt  DateTime @default(now())
-
-  // NextAuth relations
-  accounts    Account[]
-  sessions    Session[]
-  resetTokens ResetToken[]
+  fname         String?
+  lname         String?
+  phone         String?
+  country       String?
+  state         String?
+  city          String?
+  university    String?
+  password      String?
+  createdAt     DateTime     @default(now())
+  isVerified    Boolean      @default(false)
+  isNewUser     Boolean      @default(true)
+  accounts      Account[]
+  paidAccesses  PaidAccess[]
+  resetTokens   ResetToken[]
+  sessions      Session[]
 }
 
 model Account {
@@ -45,8 +140,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -56,28 +150,64 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+model OTP {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
 }
 
 model ResetToken {
   id        String   @id @default(cuid())
   token     String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   expiresAt DateTime
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-model LatestVideo {
-  id        String   @id @default(cuid())
-  title     String
-  tag       String?
-  review    String
-  price     Float
-  lesson    String
-  student   Int
-  thumb     String   // store image URL or relative path
-  page    String?   // Optional string field
 
+model PaidAccess {
+  id        String   @id @default(cuid())
+  userId    String
+  videoId   String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// ---------------- ENUMS ----------------
+
+enum PdfAccessType {
+  VIEW
+  DOWNLOAD
+  PAID
+}
+model Admin {
+  id          String   @id @default(uuid())
+  firstName   String
+  lastName    String
+  userName    String   @unique
+  phoneNumber String?
+  skill       String?
+  displayName String?
+  bio         String?
+  avatar      String?
+  email       String   @unique
+  password    String
+  facebook    String?
+  twitter     String?
+  linkedin    String?
+  website     String?
+  github      String?
+}
+model Curriculum {
+  id        String    @id @default(cuid())
+  subject   String
+  chapters  Json      // Store chapters/topics as JSON for simplicity
+  createdAt DateTime  @default(now())
 }

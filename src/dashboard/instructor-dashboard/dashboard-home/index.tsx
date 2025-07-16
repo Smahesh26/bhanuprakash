@@ -1,15 +1,14 @@
-import FooterOne from '@/layouts/footers/FooterOne'
-import HeaderOne from '@/layouts/headers/HeaderOne'
+import FooterTwo from '@/layouts/footers/FooterTwo'
+import Headerseven from '@/layouts/headers/Headerseven'
 import DashboardHomeArea from './DashboardHomeArea'
 
 const DashboardHome = () => {
   return (
     <>
-      {/* <HeaderOne /> */}
+      {/* <Headerseven /> */}
       <main className="main-area fix">
         <DashboardHomeArea />
       </main>
-      <FooterOne />
     </>
   )
 }

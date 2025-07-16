@@ -1,89 +1,170 @@
-"use client"
-import Image from "next/image"
-import Link from "next/link"
-import BtnArrow from "@/svg/BtnArrow"
-import course_data from "@/data/home-data/CourseDataTwo"
-import InjectableSvg from "@/hooks/InjectableSvg"
-import { useDispatch } from "react-redux"
-import { addToWishlist } from "@/redux/features/wishlistSlice"
-import { useEffect } from "react"
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+"use client";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const Courses = () => {
-  const dispatch = useDispatch();
+interface LatestVideo {
+  id: string;
+  title: string;
+  tag: string;
+  review: string;
+  price: number;
+  lesson: string;
+  student: number;
+  thumb: string;
+  page?: string;
+  youtubeUrl?: string; // <-- Add this line
+}
+
+const LatestVideos = () => {
+  const [videos, setVideos] = useState<LatestVideo[]>([]);
 
   useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-      easing: 'ease-in-out',
-    });
+    AOS.init({ duration: 800, once: true });
   }, []);
 
-  const handleAddToWishlist = (item: any) => {
-    dispatch(addToWishlist(item));
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const res = await fetch("/api/latest-videos");
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setVideos(data);
+        } else if (Array.isArray(data.data)) {
+          setVideos(data.data);
+        } else {
+          console.warn("Unexpected response format", data);
+          setVideos([]);
+        }
+      } catch (err) {
+        console.error("Failed to load videos:", err);
+      }
+    };
+    fetchVideos();
+  }, []);
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    arrows: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: { slidesToShow: 3 },
+      },
+      {
+        breakpoint: 992,
+        settings: { slidesToShow: 2 },
+      },
+      {
+        breakpoint: 576,
+        settings: { slidesToShow: 1 },
+      },
+    ],
   };
 
   return (
-    <section className="courses-area-six grey-bg-two">
+    <section className="courses-area-six grey-bg-two py-5 mt-5 mb-5">
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-xl-6">
-            <div className="section__title text-center mb-50" 
-                 data-aos="fade-up"
-                 data-aos-delay="200">
-              <span className="sub-title" style={{color:"#168e6a !important"}}>10,000+ unique online courses</span>
-              <h2 className="title bold">Latest Videos</h2>
-            </div>
+        <div className="row justify-content-center" data-aos="fade-up">
+          <div className="col-xl-6 text-center mb-4">
+            <span
+              className="btn arrow-btn"
+              style={{
+                background: "#f9a116",
+                padding: "6px 12px",
+                borderRadius: "15px",
+                fontWeight: 600,
+                color: "#fff",
+                marginBottom: "20px",
+              }}
+            >
+              Exhaustive Library with 2000+ Videos
+            </span>
+            <h2 className="title bold">Latest Videos</h2>
           </div>
         </div>
-        <div className="row justify-content-center">
-          {course_data.filter((items) => items.page === "home_7").map((item, index) => (
-            <div key={item.id} className="col-xl-3 col-lg-4 col-md-6"
-                 data-aos="fade-up"
-                 data-aos-delay={`${300 + (index * 100)}`}>
-              <div className="courses__item-eight shine__animate-item">
-                <div className="courses__item-thumb-seven shine__animate-link">
-                  <Link href="/course-details"><Image src={item.thumb} alt="img" /></Link>
-                  <Link href="/courses" className="courses__item-tag-three">{item.tag}</Link>
+
+        {/* ✅ SLIDER WITH SPACING */}
+        <Slider {...sliderSettings}>
+          {videos.map((video, index) => {
+            const CardContent = (
+              <div className="courses__item-eight" style={{ height: "100%" }}>
+                <div className="courses__item-thumb-seven">
+                  <Image
+                    src={video.thumb}
+                    alt="video"
+                    width={300}
+                    height={180}
+                    style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+                  />
+                  <span className="courses__item-tag-three">{video.tag}</span>
                 </div>
                 <div className="courses__item-content-seven">
-                  <ul className="courses__item-meta list-wrap">
-                    <li className="courses__wishlist">
-                      <a onClick={() => handleAddToWishlist(item)}><InjectableSvg src="/assets/img/icons/heart02.svg" alt="" className="injectable" /></a>
-                    </li>
-                  </ul>
-                  <h2 className="title"><Link href="/course-details">{item.title}</Link></h2>
+                  <h5 className="title">{video.title}</h5>
                   <div className="courses__review">
                     <div className="rating">
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
+                      {[...Array(5)].map((_, i) => (
+                        <i key={i} className="fas fa-star"></i>
+                      ))}
                     </div>
-                    <span>(4.8 Reviews)</span>
+                    <span>({video.review}) Reviews</span>
+                  </div>
+                  <div
+                    className="courses__item-bottom-three courses__item-bottom-five"
+                    style={{ marginTop: "10px" }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        fontSize: "14px",
+                        color: "#555",
+                      }}
+                    >
+                      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <i className="flaticon-book"></i> Lessons {video.lesson}
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <i className="skillgro-group"></i> Students {video.student}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="courses__item-bottom-three courses__item-bottom-five">
-                  <ul className="list-wrap">
-                    <li><i className="flaticon-book"></i>Lessons {item.lesson}</li>
-                    <li><i className="skillgro-group"></i>Students {item.student}</li>
-                  </ul>
-                </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="discover-courses-btn text-center mt-30"
-             data-aos="fade-up"
-             data-aos-delay="500">
-          <Link href="/courses" className="btn arrow-btn btn-four">Discover All Class <BtnArrow /></Link>
-        </div>
+            );
+
+            return (
+              <div key={video.id} className="px-3" data-aos="fade-up" data-aos-delay={`${index * 100}`}>
+                {video.youtubeUrl ? (
+                  <a
+                    href={video.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "inherit", display: "block", height: "100%" }}
+                  >
+                    {CardContent}
+                  </a>
+                ) : (
+                  CardContent
+                )}
+              </div>
+            );
+          })}
+        </Slider>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Courses
+export default LatestVideos;

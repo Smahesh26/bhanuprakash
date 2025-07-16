@@ -9,7 +9,7 @@ const dashboard_count_data: DataType[] = [
    {
       id: 1,
       icon: "skillgro-book",
-      count: 30,
+      count: 90,
       title: "Enrolled Courses",
    },
    {

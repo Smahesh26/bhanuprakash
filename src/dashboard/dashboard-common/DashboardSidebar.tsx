@@ -18,7 +18,7 @@ interface DataType {
 const sidebar_data: DataType[] = [
    {
       id: 1,
-      title: "Welcome, Jone Due",
+      title: "Welcome, admin",
       sidebar_details: [
          {
             id: 1,
@@ -34,34 +34,47 @@ const sidebar_data: DataType[] = [
          },
          {
             id: 3,
-            link: "/instructor-enrolled-courses",
-            icon: "skillgro-book",
-            title: "Enrolled Courses",
+            link: "/instructor-latest-videos",
+            icon: "skillgro-video-tutorial",
+            title: "Manage Latest Videos",
          },
+
          {
             id: 4,
-            link: "/instructor-wishlist",
-            icon: "skillgro-label",
-            title: "Wishlist",
-         },
-         {
+            link: "/instructor-student", // new route
+            icon: "skillgro-group",
+            title: "Students",
+          },
+          {
             id: 5,
-            link: "/instructor-review",
-            icon: "skillgro-book-2",
-            title: "Reviews",
-         },
-         {
-            id: 6,
-            link: "/instructor-attempts",
-            icon: "skillgro-question",
-            title: "My Quiz Attempts",
-         },
-         {
-            id: 7,
-            link: "/instructor-history",
-            icon: "skillgro-satchel",
-            title: "Order History",
-         },
+            link: "/instructor-course-pages", // new route
+            icon: "skillgro-group",
+            title: "Add New Course",
+          }
+         // {
+         //    id: 4,
+         //    link: "/instructor-wishlist",
+         //    icon: "skillgro-label",
+         //    title: "Wishlist",
+         // },
+         // {
+         //    id: 5,
+         //    link: "/instructor-review",
+         //    icon: "skillgro-book-2",
+         //    title: "Reviews",
+         // },
+         // {
+         //    id: 6,
+         //    link: "/instructor-attempts",
+         //    icon: "skillgro-question",
+         //    title: "My Quiz Attempts",
+         // },
+         // {
+         //    id: 7,
+         //    link: "/instructor-history",
+         //    icon: "skillgro-satchel",
+         //    title: "Order History",
+         // },
       ],
    },
    {

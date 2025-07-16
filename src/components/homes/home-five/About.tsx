@@ -53,7 +53,7 @@ const About = () => {
                         </li>
                      </ul>
                      <div className="about__content-bottom">
-                        <Link href="/contact" className="btn arrow-btn">Start Free Trial <BtnArrow /></Link>
+                        <Link href="/contact" className="btn arrow-btn">Get Started <BtnArrow /></Link>
                         <div className="about__contact">
                            <div className="icon">
                               <i className="skillgro-phone-call"></i>

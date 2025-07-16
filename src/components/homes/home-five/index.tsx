@@ -6,13 +6,13 @@ import Faq from "./Faq"
 import Instructor from "./Instructor"
 import Blog from "./Blog"
 import Testimonial from "./Testimonial"
-import FooterThree from "@/layouts/footers/FooterThree"
-import HeaderFive from "@/layouts/headers/HeaderFive"
+import FooterTwo from "@/layouts/footers/FooterTwo"
+import Headerseven from "@/layouts/headers/Headerseven"
 
 const HomeFive = () => {
    return (
       <>
-         <HeaderFive />
+         <Headerseven />
          <main className="main-area fix">
             <Banner />
             <Features />
@@ -23,7 +23,7 @@ const HomeFive = () => {
             <Testimonial />
             <Blog />
          </main>
-         <FooterThree />
+         <FooterTwo />
       </>
    )
 }

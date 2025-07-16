@@ -10,7 +10,7 @@ import shape_2 from "@/assets/img/others/h5_footer_shape02.svg"
 import shape_3 from "@/assets/img/others/h5_footer_shape03.svg"
 import shape_4 from "@/assets/img/others/h5_footer_shape04.svg"
 
-const FooterThree = () => {
+const FooterTwo = () => {
    return (
       <footer className="footer__area-four footer__bg" style={{ backgroundImage: `url(/assets/img/bg/h5_footer.jpg)` }}>
          <div className="footer__bg-shape">
@@ -122,4 +122,4 @@ const FooterThree = () => {
    )
 }
 
-export default FooterThree
+export default FooterTwo

@@ -1,15 +1,19 @@
-import Registration from "@/components/inner-pages/registration";
-import Wrapper from "@/layouts/Wrapper";
+'use client';
 
-export const metadata = {
-   title: "Registration Dr.Bhanu Prakash Online Educational Platform",
-};
-const index = () => {
-   return (
-      <Wrapper>
-         <Registration />
-      </Wrapper>
-   )
+import HeaderSeven from '@/layouts/headers/HeaderSeven';
+import FooterTwo from '@/layouts/footers/FooterTwo';
+import BreadcrumbOne from '@/components/common/breadcrumb/BreadcrumbOne';
+import RegistrationArea from '@/components/inner-pages/registration/RegistrationArea';
+
+export default function RegistrationPage() {
+  return (
+    <>
+      <HeaderSeven />
+      <main className="main-area fix">
+        <BreadcrumbOne title="Student SignUp" sub_title="SignUp" />
+        <RegistrationArea />
+      </main>
+      <FooterTwo />
+    </>
+  );
 }
-
-export default index

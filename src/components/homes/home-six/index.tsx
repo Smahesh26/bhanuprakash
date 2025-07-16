@@ -1,4 +1,4 @@
-import FooterOne from "@/layouts/footers/FooterOne"
+import FooterTwo from "@/layouts/footers/FooterTwo"
 import Banner from "./Banner"
 import Categories from "./Categories"
 import Choose from "./Choose"
@@ -7,12 +7,12 @@ import Faq from "./Faq"
 import Counter from "../home-two/Counter"
 import Blog from "./Blog"
 import Testimonial from "./Testimonial"
-import HeaderSix from "@/layouts/headers/HeaderSix"
+import Headerseven from "@/layouts/headers/Headerseven"
 
 const HomeSix = () => {
    return (
       <>
-         <HeaderSix />
+         <Headerseven />
          <main className="main-area fix">
             <Banner />
             <Categories />
@@ -23,7 +23,7 @@ const HomeSix = () => {
             <Counter style={true} />
             <Blog />
          </main>
-         <FooterOne />
+         <FooterTwo />
       </>
    )
 }

@@ -36,9 +36,11 @@ const Categories = () => {
         <div className="row justify-content-center">
           <div className="col-xl-6 col-lg-8">
             <div className="section__title text-center mb-40">
-              <span className="sub-title">Explore Categories</span>
-              <h2 className="title">Medical Subjects We Cover</h2>
-              <p className="desc">Select from a wide range of medical fields to enhance your knowledge.</p>
+              <span className="sub-title">Access a meticulously organized repository of medical sciences, tailored for academic rigor and clinical mastery.</span>
+                           <h2 className="title">Explore the Knowledge Hub</h2>
+
+              <p className="desc">Pick your favorite specialty and start learning smarter, faster, better.</p>
+
             </div>
           </div>
         </div>

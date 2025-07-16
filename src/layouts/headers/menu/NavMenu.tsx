@@ -30,7 +30,7 @@ const NavMenu = () => {
             const allLinks = [...subMenuLinks, ...megaMenuLinks, ...homeSubMenuLinks].filter(Boolean) as string[];
 
             return (
-               <li key={menu.id} className={`menu-item-has-children ${isAnyChildActive(allLinks) ? "active" : ""}`}>
+               <li key={menu.id} className={`menu-item ${isAnyChildActive(allLinks) ? "active" : ""}`}>
                   <Link href={menu.link}>{menu.title}</Link>
                   {/* <ul className={`sub-menu ${menu.menu_class}`}>
                      {menu.home_sub_menu ? (

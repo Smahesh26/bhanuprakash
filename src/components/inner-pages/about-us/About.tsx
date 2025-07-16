@@ -35,33 +35,34 @@ const About = () => {
                         <div className="section__title mb-10">
                            <span className="sub-title" style={{color:"#168e6a !important"}}>Get More About Us</span>
                            <h2 className="title">
-                              Empowering Students to reach their
-                              <span className="position-relative title-shape-wrap">
+Who We Are                              
+{/* <span className="position-relative title-shape-wrap">
                                  <svg x="0px" y="0px" preserveAspectRatio="none" viewBox="0 0 209 59" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4.74438 7.70565C69.7006 -1.18799 136.097 -2.38304 203.934 4.1205C207.178 4.48495 209.422 7.14626 208.933 10.0534C206.793 23.6481 205.415 36.5704 204.801 48.8204C204.756 51.3291 202.246 53.5582 199.213 53.7955C136.093 59.7623 74.1922 60.5985 13.5091 56.3043C10.5653 56.0924 7.84371 53.7277 7.42158 51.0325C5.20725 38.2627 2.76333 25.6511 0.0898448 13.1978C-0.465589 10.5873 1.61173 8.1379 4.73327 7.70565" fill="currentcolor" />
                                  </svg>
                                  potential
                               </span>
-                              Goal For Next Level Challenge.
+                              Goal For Next Level Challenge. */}
                            </h2>
                         </div>
-                        <p className="desc">when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.</p>
+                        <p className="desc">We are MedSchool Simplified, an online platform built to transform the way MBBS students and allied health professionals approach medical education. Our mission is to bring together a vast array of subjects, chapters, and topics in a logical sequence, creating a synchronous learning experience for everyone from first-year students to seasoned practitioners. By organizing our materials meticulously, we ensure that users can follow a natural progression, reinforcing foundational knowledge while advancing toward more complex concepts.</p>
                         <ul className="about__info-list list-wrap">
-                           <li className="about__info-list-item">
-                              <i className="flaticon-angle-right"></i>
-                              <p className="content">The Most World Class Instructors</p>
-                           </li>
-                           <li className="about__info-list-item">
+                          
+                           {/* <li className="about__info-list-item">
                               <i className="flaticon-angle-right"></i>
                               <p className="content">Access Your Class anywhere</p>
                            </li>
                            <li className="about__info-list-item">
                               <i className="flaticon-angle-right"></i>
-                              <p className="content">Flexible Course Plan</p>
+                              <p className="content">In-depth Explanation of Concepts</p>
                            </li>
+                           <li className="about__info-list-item">
+                              <i className="flaticon-angle-right"></i>
+                              <p className="content">Lectures notes / MCQs and Cases with Premium features</p>
+                           </li> */}
                         </ul>
                         <div className="tg-button-wrap">
-                           <Link href="/contact" className="btn arrow-btn">Start Free Trial <BtnArrow /></Link>
+                           <Link href="/contact" className="btn arrow-btn">Get Started <BtnArrow /></Link>
                         </div>
                      </div>
                   </div>

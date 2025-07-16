@@ -1,17 +1,17 @@
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
-import FooterOne from "@/layouts/footers/FooterOne"
-import HeaderOne from "@/layouts/headers/HeaderOne"
+import FooterTwo from "@/layouts/footers/FooterTwo"
+import Headerseven from "@/layouts/headers/Headerseven"
 import ProductArea from "./ProductArea"
 
 const Product = () => {
    return (
       <>
-         <HeaderOne />
+         <Headerseven />
          <main className="main-area fix">
             <BreadcrumbOne title="Shop Page" sub_title="Shop Page" />
             <ProductArea />
          </main>
-         <FooterOne />
+         <FooterTwo />
       </>
    )
 }

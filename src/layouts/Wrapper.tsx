@@ -1,36 +1,34 @@
 "use client";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
-import { animationCreate } from "@/utils/utils";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import AOS from "aos";
-import MotionAnimation from "@/hooks/MotionAnimation";
+
+// Dynamically import MotionAnimation so it loads client-side only
+const MotionAnimation = dynamic(() => import("@/hooks/MotionAnimation"), { ssr: false });
 
 if (typeof window !== "undefined") {
-    require("bootstrap/dist/js/bootstrap");
+  import("bootstrap/dist/js/bootstrap");
 }
 
 const Wrapper = ({ children }: any) => {
-    useEffect(() => {
-        // animation
-        const timer = setTimeout(() => {
-            animationCreate();
-        }, 100);
+  useEffect(() => {
+    import("@/utils/utils").then((mod) => mod.animationCreate());
+  }, []);
 
-        return () => clearTimeout(timer);
-    }, []);
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
-    useEffect(() => {
-        AOS.init();
-    }, [])
+  return (
+    <>
+      {children}
+      <MotionAnimation />
+      <ScrollToTop />
+      <ToastContainer position="top-center" />
+    </>
+  );
+};
 
-    MotionAnimation();
-
-    return <>
-        {children}
-        <ScrollToTop />
-        <ToastContainer position="top-center" />
-    </>;
-}
-
-export default Wrapper
+export default Wrapper;

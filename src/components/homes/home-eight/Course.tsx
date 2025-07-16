@@ -33,7 +33,7 @@ const Course = () => {
             <div className="row justify-content-center">
                <div className="col-xl-6">
                   <div className="section__title text-center mb-30">
-                     <span className="sub-title">10,000+ unique online courses</span>
+                     <span className="sub-title">Exhaustive Library with 2000+ Videos</span>
                      <h2 className="title bold">Most Popular Courses</h2>
                   </div>
                   <div className="courses__nav-two mb-50">
@@ -88,7 +88,7 @@ const Course = () => {
                ))}
             </div>
             <div className="discover-courses-btn-two text-center mt-30">
-               <Link href="/courses" className="btn arrow-btn btn-four">Discover All Class <BtnArrow /></Link>
+               <Link href="/courses" className="btn arrow-btn btn-four">Explore Courses / Subjects <BtnArrow /></Link>
             </div>
          </div>
          <div className="courses__shape-wrap-four">

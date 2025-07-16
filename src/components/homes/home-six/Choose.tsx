@@ -49,7 +49,7 @@ const Choose = () => {
                               </div>
                            </div>
                         </div>
-                        <Link href="/lesson" className="btn arrow-btn btn-four">Start Free Trial <BtnArrow /></Link>
+                        <Link href="/lesson" className="btn arrow-btn btn-four">Get Started<BtnArrow /></Link>
                      </div>
                   </div>
                </div>

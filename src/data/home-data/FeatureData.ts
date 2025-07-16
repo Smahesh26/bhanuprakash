@@ -55,7 +55,7 @@ const feature_data: DataType[] = [
       page: "home_2",
       icon_2: "/assets/img/icons/h2_features_icon01.svg",
       title: "Expert Tutors",
-      desc: "when an unknown printer took a galley offe type and scrambled makes.",
+      desc: "Our tutors are highly qualified and deeply committed to simplifying complex medical concepts. They bring a wealth of academic and clinical experience to each lecture, ensuring that intricate theories become relatable and understandable. By combining expert knowledge with relatable teaching methods, they help demystify topics ranging from basic sciences to advanced surgical procedures, all while nurturing critical thinking skills vital for any healthcare professional.",
    },
 
    {
@@ -63,15 +63,15 @@ const feature_data: DataType[] = [
       page: "home_2",
       icon_2: "/assets/img/icons/h2_features_icon02.svg",
       title: "Effective Courses",
-      desc: "when an unknown printer took a galley offe type and scrambled makes.",
+      desc: "Every course on our platform is built on a clear, step-by-step framework that guides you through subjects sequentially. This thoughtful organization helps you connect theoretical knowledge with clinical practice, reinforcing retention and understanding. Whether you need to revisit foundational content or delve deeper into advanced topics, our structured curriculum—complete with subject-wise chapters and targeted modules—offers a solid, cohesive path to mastery.",
    },
 
    {
       id: 3,
       page: "home_2",
       icon_2: "/assets/img/icons/h2_features_icon03.svg",
-      title: "Earn Certificate",
-      desc: "when an unknown printer took a galley offe type and scrambled makes.",
+      title: "Premium Features",
+      desc: "To further enrich your learning experience, MedSchool Simplified provides premium features such as in-depth lecture notes, advanced case discussions, and specialized MCQs tailored to major medical exams. By upgrading to our premium offerings, you gain exclusive access to refined learning tools that sharpen clinical reasoning, deepen conceptual clarity, and keep you well-prepared for both theoretical and practical challenges in your medical journey.",
    },
 
    // home_3

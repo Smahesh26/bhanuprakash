@@ -36,7 +36,7 @@ const count_data: DataType[] = [
 
 const Counter = () => {
    return (
-      <section className="fact__area">
+      <section className="fact__area mb-5">
          <div className="container">
             <div className="fact__inner-wrap">
                <div className="row">

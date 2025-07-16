@@ -33,7 +33,7 @@ const InstructorSettingContent = ({ style }: any) => {
                   </div>
                   <div className="tab-content" id="myTabContent">
                      <div className={`tab-pane fade ${activeTab === 0 ? 'show active' : ''}`} id="itemOne-tab-pane" role="tabpanel" aria-labelledby="itemOne-tab" >
-                        <InstructorSettingProfile style={style} />
+                        <InstructorSettingProfile style={style} goToNextTab={() => setActiveTab(1)} />
                      </div>
                      <div className={`tab-pane fade ${activeTab === 1 ? 'show active' : ''}`} id="itemTwo-tab-pane" role="tabpanel" aria-labelledby="itemTwo-tab" >
                         <InstructorSettingPassword />

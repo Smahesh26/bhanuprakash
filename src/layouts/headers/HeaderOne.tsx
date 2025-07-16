@@ -14,7 +14,7 @@ const CustomSelect = dynamic(() => import("@/ui/CustomSelect"), { ssr: false });
 
 import logo from "@/assets/img/logo/logo.svg"
 
-const HeaderOne = () => {
+const Headerseven = () => {
 
    const [selectedOption, setSelectedOption] = React.useState(null);
 
@@ -80,4 +80,4 @@ const HeaderOne = () => {
    )
 }
 
-export default HeaderOne
+export default Headerseven

@@ -6,7 +6,7 @@ import Link from "next/link"
 import icon_1 from "@/assets/img/others/google-play.svg"
 import icon_2 from "@/assets/img/others/apple-store.svg"
 
-const FooterOne = ({ style, style_2 }: any) => {
+const FooterTwo = ({ style, style_2 }: any) => {
    return (
       <footer className={`footer__area ${style_2 ? "footer__area-five" : style ? "footer__area-two" : ""}`}>
          <div className={`footer__top ${style_2 ? "footer__top-three" : ""}`}>
@@ -56,4 +56,4 @@ const FooterOne = ({ style, style_2 }: any) => {
    )
 }
 
-export default FooterOne
+export default FooterTwo

@@ -1,17 +1,17 @@
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
-import HeaderOne from "@/layouts/headers/HeaderOne"
+import Headerseven from "@/layouts/headers/Headerseven"
 import WishlistArea from "./WishlistArea"
-import FooterOne from "@/layouts/footers/FooterOne"
+import FooterTwo from "@/layouts/footers/FooterTwo"
 
 const Wishlist = () => {
    return (
       <>
-         <HeaderOne />
+         <Headerseven />
          <main className="main-area fix">
             <BreadcrumbOne title="Wishlist" sub_title="Wishlist" />
             <WishlistArea />
          </main>
-         <FooterOne />
+         <FooterTwo />
       </>
    )
 }

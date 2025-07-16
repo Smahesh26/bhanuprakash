@@ -59,7 +59,7 @@ const Courses = () => {
           ))}
         </div>
         <div className="view-all-btn view-all-categories">
-          <Link href="/courses"><span>Discover All Class</span><BtnArrow /></Link>
+          <Link href="/courses"><span>Explore Courses / Subjects</span><BtnArrow /></Link>
         </div>
       </div>
     </section>

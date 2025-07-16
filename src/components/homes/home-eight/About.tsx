@@ -61,7 +61,7 @@ const About = () => {
                            <p className="content">Flexible Course Plan</p>
                         </li>
                      </ul>
-                     <Link href="/courses" className="btn arrow-btn btn-four">Discover All Class <BtnArrow /></Link>
+                     <Link href="/courses" className="btn arrow-btn btn-four">Explore Courses / Subjects<BtnArrow /></Link>
                   </div>
                </div>
             </div>

@@ -1,17 +1,17 @@
-import HeaderOne from "@/layouts/headers/HeaderOne"
-import FooterOne from "@/layouts/footers/FooterOne"
+import Headerseven from "@/layouts/headers/Headerseven"
+import FooterTwo from "@/layouts/footers/FooterTwo"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import EventArea from "./EventArea"
 
 const Event = () => {
    return (
       <>
-         <HeaderOne />
+         <Headerseven />
          <main className="main-area fix">
             <BreadcrumbOne title="All Events" sub_title="Events" />
             <EventArea />
          </main>
-         <FooterOne />
+         <FooterTwo />
       </>
    )
 }

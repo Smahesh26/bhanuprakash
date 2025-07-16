@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Image from "next/image"
 import BtnArrow from "@/svg/BtnArrow"
 import Link from "next/link"
@@ -34,7 +34,7 @@ const Banner = () => {
                            Make of it. Make it Yours at SkillGro.
                         </h3>
                         <div className="banner__btn-two" data-aos="fade-right" data-aos-delay="600">
-                           <Link href="/contact" className="btn arrow-btn">Start Free Trial <BtnArrow /></Link>
+                           <Link href="/contact" className="btn arrow-btn">Get Started <BtnArrow /></Link>
                            <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="play-btn popup-video"><i className="fas fa-play"></i> Watch Our <br /> Class Demo</a>
                         </div>
                      </div>

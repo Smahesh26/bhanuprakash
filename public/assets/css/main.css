@@ -1,44 +1,4 @@
-/*============================================
 
-   Theme Name: SkillGro - Online Courses & Education Template
-   Author : ThemeGenix
-   Support: themegenix@gmail.com
-   Description: SkillGro - Online Courses & Education Template
-   Version: 1.0
-
-==============================================*/
-/* CSS Index
-==============================================
-
-    01. Theme Default CSS
-    02. Header
-    03. Mobile Menu
-    04. Banner
-    05. Slider
-    06. Brand
-    07. About
-    08. Courses
-    09. Categories
-    10. Online
-    11. Testimonial
-    12. Instructor
-    13. Mentor
-    14. CTA
-    15. Fact
-    16. Events
-    17. Quick Action
-    18. FAQ
-    19. Shop
-    20. Blog
-    21. Newsletter
-    22. Contact
-    23. 404 Error
-    24. Footer
-
-==============================================*/
-/*============================================
-/*  01. Theme Default CSS
-==============================================*/
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap");
 :root {
   --tg-body-font-family: 'Inter', sans-serif;
@@ -6816,7 +6776,6 @@ textarea {
 }
 .courses__item-thumb img {
   width: 100%;
-  height: 190px;
   object-fit: cover;
   border-radius: 6px;
 }
@@ -7636,11 +7595,11 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1;
 }
 .courses__item-bottom-three .list-wrap li i {
-  font-size: 20px;
+  font-size: 13px;
   line-height: 0;
 }
 .courses__item-bottom-four {
@@ -20714,4 +20673,11 @@ blockquote > p {
 .features__item-six span {
   font-size: 10px;
   color: #7f8c8d; /* Grey color for the tag */
+}
+.list-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }

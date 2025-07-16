@@ -1,7 +1,7 @@
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
-import HeaderOne from "@/layouts/headers/HeaderOne"
+import Headerseven from "@/layouts/headers/Headerseven"
 import ProductDetailsArea from "./ProductDetailsArea"
-import FooterOne from "@/layouts/footers/FooterOne"
+import FooterTwo from "@/layouts/footers/FooterTwo"
 import HeaderSeven from "@/layouts/headers/HeaderSeven"
 
 const ProductDetails = () => {
@@ -12,7 +12,7 @@ const ProductDetails = () => {
         <BreadcrumbOne title="Course Details" sub_title="Course Details" />
         <ProductDetailsArea />
       </main>
-      <FooterOne />
+      <FooterTwo />
     </>
   )
 }

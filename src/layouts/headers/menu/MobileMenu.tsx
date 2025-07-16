@@ -51,7 +51,7 @@ const MobileMenu = () => {
             const allLinks = [...subMenuLinks, ...megaMenuLinks, ...homeSubMenuLinks].filter(Boolean) as string[];
 
             return (
-               <li key={menu.id} className={`menu-item-has-children ${isAnyChildActive(allLinks) ? "active" : ""}`}>
+               <li key={menu.id} className={`menu-item ${isAnyChildActive(allLinks) ? "active" : ""}`}>
                   <Link href={menu.link}>{menu.title}</Link>
                   <ul className={`sub-menu ${menu.menu_class}`} style={{ display: navTitle === menu.title ? "block" : "none" }}>
                      {menu.home_sub_menu ? (
@@ -88,7 +88,7 @@ const MobileMenu = () => {
                            );
 
                            return (
-                              <li key={index} className={`${sub_m.dropdown ? "menu-item-has-children" : ""} ${isSubMenuActive || isAnyMegaChildActive ? "active" : ""}`}>
+                              <li key={index} className={`${sub_m.dropdown ? "menu-item" : ""} ${isSubMenuActive || isAnyMegaChildActive ? "active" : ""}`}>
                                  <Link href={sub_m.link}>{sub_m.title}</Link>
                                  {sub_m.mega_menus && (
                                     <ul className="sub-menu" style={{ display: subNavTitle === sub_m.title ? "block" : "none" }}>

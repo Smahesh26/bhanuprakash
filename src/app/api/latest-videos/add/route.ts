@@ -1,17 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../lib/prisma";
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, tag, review, price, lesson, student, page, thumb } = body;
+    const { title, tag, review, price, lesson, student, page, thumb, youtubeUrl } = body;
 
-    // Validate required fields
-    if (!title || !tag || !thumb) {
-      return NextResponse.json(
-        { error: "Title, tag, and thumb are required" },
-        { status: 400 }
-      );
+    // Validation
+    if (!title || !tag || !review || price === undefined || lesson === undefined || student === undefined || !thumb) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     const newVideo = await prisma.latestVideo.create({
@@ -19,18 +15,19 @@ export async function POST(req: Request) {
         title,
         tag,
         review,
-        price,
-        lesson,
-        student,
-        page,
+        price: typeof price === "string" ? parseFloat(price) : price,
+        lesson: typeof lesson === "string" ? parseInt(lesson) : lesson,
+        student: typeof student === "string" ? parseInt(student) : student,
         thumb,
-      },
+        page: page || "home_7",
+        youtubeUrl: youtubeUrl || null, // Save YouTube URL or null
+      }
     });
 
-    return NextResponse.json({ message: "Video added", data: newVideo });
+    return NextResponse.json({ message: "Video added successfully", data: newVideo });
 
-  } catch (err) {
-    console.error("Error adding video:", err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Error adding video:", err.message || err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

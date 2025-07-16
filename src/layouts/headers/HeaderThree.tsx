@@ -15,7 +15,7 @@ import UseSticky from "@/hooks/UseSticky"
 import MobileSidebar from "./menu/MobileSidebar"
 import dynamic from "next/dynamic"
 
-const HeaderThree = () => {
+const Headerseven = () => {
 
    const [isSearch, setIsSearch] = useState<boolean>(false);
    const { sticky } = UseSticky();
@@ -79,4 +79,4 @@ const HeaderThree = () => {
    )
 }
 
-export default HeaderThree
+export default Headerseven
