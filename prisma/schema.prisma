@@ -196,26 +196,32 @@ enum PdfAccessType {
   PAID
 }
 model Admin {
-  id          String   @id @default(uuid())
-  firstName   String
-  lastName    String
-  userName    String   @unique
-  phoneNumber String?
-  skill       String?
-  displayName String?
-  bio         String?
-  avatar      String?
+  id          String   @id @default(cuid())
   email       String   @unique
   password    String
+  name        String?
+  
+  // Keep all existing fields to preserve data
+  bio         String?
+  displayName String?
   facebook    String?
-  twitter     String?
-  linkedin    String?
-  website     String?
+  firstName   String?
   github      String?
+  lastName    String?
+  linkedin    String?
+  phoneNumber String?
+  skill       String?
+  twitter     String?
+  userName    String?
+  website     String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
 }
+
 model Curriculum {
-  id        String    @id @default(cuid())
+  id        String   @id @default(cuid())
   subject   String
-  chapters  Json      // Store chapters/topics as JSON for simplicity
-  createdAt DateTime  @default(now())
+  chapters  Json     // Store chapters/topics as JSON
+  createdAt DateTime @default(now())
 }
