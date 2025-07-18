@@ -1,91 +1,180 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
-const ResetPassword = () => {
-  const router = useRouter();
+// Create a separate component for the form that uses useSearchParams
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
-  const [token, setToken] = useState<string | null>(null);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const token = searchParams?.get('token') ?? '';
+  
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    if (searchParams) {
-      const tokenParam = searchParams.get("token");
-      setToken(tokenParam);
-      if (!tokenParam) {
-        toast.error("Invalid reset link.");
-      }
-    }
-  }, [searchParams]);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    }
 
-    if (!token) return toast.error("Invalid reset link.");
-    if (password !== confirmPassword) return toast.error("Passwords do not match");
-
+    setLoading(true);
     try {
-      const res = await fetch("/api/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, password }),
+      // Add your password reset logic here
+      const response = await fetch('/api/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password })
       });
 
-      const result = await res.json();
-
-      if (res.ok) {
-        toast.success("Password reset successfully!");
-        setTimeout(() => router.push("/login"), 2000);
-      } else {
-        toast.error(result.error || "Reset failed");
-      }
-    } catch (err) {
-      toast.error("Something went wrong");
+      const data = await response.json();
+      setMessage(data.message || 'Password reset successfully');
+    } catch (error) {
+      setMessage('Error resetting password');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section className="singUp-area section-py-120">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-xl-6 col-lg-8">
-            <div className="singUp-wrap">
-              <h2 className="title">Reset Password</h2>
-              <form onSubmit={handleSubmit} className="account__form">
-                <div className="form-grp">
-                  <label>New Password</label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter new password"
-                    required
-                  />
-                </div>
+    <div style={{ 
+      padding: 40,
+      minHeight: '100vh',
+      background: '#f5f5f5',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      <div style={{
+        maxWidth: 400,
+        width: '100%',
+        background: 'white',
+        padding: 40,
+        borderRadius: 12,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+      }}>
+        <h1 style={{ 
+          color: '#5624d0',
+          marginBottom: 20,
+          textAlign: 'center'
+        }}>
+          Reset Password
+        </h1>
 
-                <div className="form-grp">
-                  <label>Confirm Password</label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm password"
-                    required
-                  />
-                </div>
-
-                <button type="submit" className="btn btn-two arrow-btn mt-3">
-                  Update Password
-                </button>
-              </form>
-            </div>
+        {message && (
+          <div style={{
+            padding: 12,
+            marginBottom: 20,
+            borderRadius: 6,
+            background: message.includes('Error') ? '#fee' : '#efe',
+            color: message.includes('Error') ? '#c33' : '#383',
+            border: `1px solid ${message.includes('Error') ? '#fcc' : '#cfc'}`
+          }}>
+            {message}
           </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ 
+              display: 'block',
+              marginBottom: 6,
+              fontWeight: 'bold',
+              color: '#333'
+            }}>
+              New Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: 12,
+                border: '1px solid #ddd',
+                borderRadius: 6,
+                fontSize: 16
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ 
+              display: 'block',
+              marginBottom: 6,
+              fontWeight: 'bold',
+              color: '#333'
+            }}>
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: 12,
+                border: '1px solid #ddd',
+                borderRadius: 6,
+                fontSize: 16
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: 12,
+              background: loading ? '#ccc' : '#5624d0',
+              color: 'white',
+              border: 'none',
+              borderRadius: 6,
+              fontSize: 16,
+              fontWeight: 'bold',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {loading ? 'Resetting...' : 'Reset Password'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ 
+        padding: 40,
+        minHeight: '100vh',
+        background: '#f5f5f5',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div style={{
+          maxWidth: 400,
+          width: '100%',
+          background: 'white',
+          padding: 40,
+          borderRadius: 12,
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          textAlign: 'center'
+        }}>
+          Loading...
         </div>
       </div>
-    </section>
+    }>
+      <ResetPasswordForm />
+    </Suspense>
   );
-};
-
-export default ResetPassword;
+}
