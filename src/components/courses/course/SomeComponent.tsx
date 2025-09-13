@@ -142,10 +142,11 @@ const CourseSidebar = ({ setCourses }: any) => {
                         <li key={i}>
                            <div className="form-check">
                               <input className="form-check-input" type="checkbox" checked={category === categorySelected} readOnly id={`cat_${i}`} />
+                              {/* Link to /course-details/[category] */}
                               <label className="form-check-label" htmlFor={`cat_${i}`}>
-                                <Link href={`/course-details/${encodeURIComponent(category)}`}>
+                                 <Link href={`/course-details/${encodeURIComponent(category)}`}>
                                     {category}
-                                </Link>
+                                 </Link>
                               </label>
                            </div>
                         </li>

@@ -5,6 +5,7 @@ import VideoPopup from "@/modals/VideoPopup";
 
 import icon_1 from "@/assets/img/icons/lock.svg"
 
+// Fix DataType definition
 interface DataType {
    id: number;
    title: string;
@@ -15,8 +16,8 @@ interface DataType {
       lock: boolean;
       title: string;
       duration: string;
-   }[]
-}[]
+   }[];
+}
 
 const faq_data: DataType[] = [
    {
@@ -124,9 +125,9 @@ const Curriculum = () => {
                                        </li>) : (
                                        <li className="course-item open-item">
                                           <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="course-item-link popup-video">
-                                             <span className="item-name">Course Installation</span>
+                                             <span className="item-name">{list.title}</span>
                                              <div className="course-item-meta">
-                                                <span className="item-meta duration">03:03</span>
+                                                <span className="item-meta duration">{list.duration}</span>
                                              </div>
                                           </a>
                                        </li>

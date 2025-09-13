@@ -8,6 +8,7 @@ interface MCQ {
   question: string;
   options: string[];
   correctAnswerIndex: number;
+  description?: string; // <-- Add this line
 }
 
 interface QuizProps {
@@ -25,6 +26,9 @@ const StudentQuiz: React.FC<QuizProps> = ({ allMcqs, duration = 300 }) => {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(duration);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [currentMcq, setCurrentMcq] = useState<MCQ | null>(null);
+  const [isCorrect, setIsCorrect] = useState(false);
 
   useEffect(() => {
     const selected = shuffleArray(allMcqs).slice(0, 10);
@@ -55,6 +59,12 @@ const StudentQuiz: React.FC<QuizProps> = ({ allMcqs, duration = 300 }) => {
     });
     setScore(sc);
     setSubmitted(true);
+  };
+
+  const handleReview = (mcq: MCQ, userAnswer: number) => {
+    setCurrentMcq(mcq);
+    setIsCorrect(userAnswer === mcq.correctAnswerIndex);
+    setShowAnswer(true);
   };
 
   return (
@@ -95,6 +105,15 @@ const StudentQuiz: React.FC<QuizProps> = ({ allMcqs, duration = 300 }) => {
           <Button onClick={() => window.location.reload()} className="mt-2" variant="success">
             🔄 Retake Quiz
           </Button>
+        </div>
+      )}
+
+      {showAnswer && currentMcq && (
+        <div className={isCorrect ? "text-success" : "text-danger"}>
+          {isCorrect ? "Correct!" : "Incorrect."}
+          <div className="mt-2">
+            <b>Explanation:</b> {currentMcq.description}
+          </div>
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@ interface MCQ {
   question: string;
   options: string[];
   correctAnswerIndex: number;
+  description?: string; // <-- already present
 }
 interface Subtopic {
   title: string;
@@ -44,6 +45,18 @@ interface Curriculum {
   chapters: Chapter[];
 }
 
+// add Course type and fetch logic
+type Course = {
+  id: string;
+  title: string;
+  category?: string | null;
+  instructors?: string | null;
+  thumb?: string | null;
+  isFree?: boolean;
+  price?: number;
+  createdAt?: string;
+};
+
 const UploadContent = () => {
   const [curriculum, setCurriculum] = useState<Curriculum[]>([
     {
@@ -68,6 +81,10 @@ const UploadContent = () => {
     },
   ]);
 
+  // dynamic courses list fetched from API
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(false);
+
   // For displaying all curriculums
   const [allCurriculums, setAllCurriculums] = useState<Curriculum[]>([]);
   const [loadingCurriculums, setLoadingCurriculums] = useState(false);
@@ -83,8 +100,24 @@ const UploadContent = () => {
     setLoadingCurriculums(false);
   };
 
+  const fetchCourses = async () => {
+    try {
+      setLoadingCourses(true);
+      const res = await fetch("/api/course-add");
+      if (!res.ok) throw new Error("Failed to load courses");
+      const data = await res.json();
+      setCourses(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("fetchCourses error:", err);
+      setCourses([]);
+    } finally {
+      setLoadingCourses(false);
+    }
+  };
+
   useEffect(() => {
     fetchCurriculums();
+    fetchCourses();
   }, []);
 
   const handleInputChange = (value: string, field: keyof Topic, i: number, j: number, k: number) => {
@@ -182,6 +215,13 @@ const UploadContent = () => {
               onChange={(e) => onChange(idx, "correctAnswerIndex", parseInt(e.target.value))}
             />
           </div>
+          <Form.Label>Explanation / Description</Form.Label>
+          <Form.Control
+            className="mb-2"
+            value={mcq.description || ""}
+            onChange={(e) => onChange(idx, "description", e.target.value)}
+            placeholder="Enter explanation for this question (shown after answering)"
+          />
         </div>
       ))}
       <div className="mb-3">
@@ -713,6 +753,33 @@ const UploadContent = () => {
                 Submit Curriculum
               </Button>
             </Form>
+
+            {/* Dynamic courses fetched from API */}
+            <div className="mt-4 p-3 bg-white border rounded">
+              <h5 className="mb-3">Available Courses</h5>
+              {loadingCourses ? (
+                <div>Loading courses…</div>
+              ) : courses.length === 0 ? (
+                <div className="text-muted">No courses found</div>
+              ) : (
+                <div style={{ maxHeight: 220, overflow: "auto" }}>
+                  {courses.map((c) => (
+                    <div key={c.id} className="d-flex align-items-center justify-content-between mb-2">
+                      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                        <img src={c.thumb || ""} alt="" style={{ width: 64, height: 40, objectFit: "cover", borderRadius: 6, background: "#f3f3f3" }} />
+                        <div>
+                          <div style={{ fontWeight: 700 }}>{c.title}</div>
+                          <div style={{ fontSize: 12, color: "#666" }}>{c.category} • {c.instructors}</div>
+                        </div>
+                      </div>
+                      <div>
+                        <a className="btn btn-sm btn-outline-primary" href={`/course/${c.id}`} target="_blank" rel="noreferrer">View</a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
         <hr className="my-5" />
             {/* Subject-wise Table */}

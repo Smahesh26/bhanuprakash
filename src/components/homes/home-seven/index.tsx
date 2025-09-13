@@ -7,7 +7,7 @@ import Choose from "./Choose";
 import Categories from "./Categories";
 import Testimonial from "./Testimonial";
 import Newsletter from "./Newsletter";
-import FooterTwo from "@/layouts/footers/FooterTwo";
+// import FooterTwo from "@/layouts/footers/FooterTwo"; // removed (use global footer in layout)
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
 import Categories1 from "./Categories1";
 import Counter from "./FactArea";
@@ -29,7 +29,6 @@ const HomeSeven = () => {
         <Testimonial />
         <Newsletter />
       </main>
-      <FooterTwo style={true} />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Providers from "./Providers"; // ✅ Import client-side wrapper
 import FooterTwo from "@/layouts/footers/FooterTwo";
-
+import Preloader from "@/components/common/Preloader";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -18,11 +18,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <body>
         <Providers>
+          <Preloader />
           <main className="min-h-[calc(100vh-200px)]">
             {children}
           </main>
           <ToastContainer position="top-right" autoClose={3000} />
-          <FooterTwo />
+          {/* <FooterTwo /> */}
         </Providers>
       </body>
     </html>
