@@ -1,10 +1,7 @@
+"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Wrapper from "@/layouts/Wrapper";
-
-export const metadata = {
-   title: "Login Dr.Bhanu Prakash Online Educational Platform",
-};
 
 const StudentLogin = () => {
   const [email, setEmail] = useState("");

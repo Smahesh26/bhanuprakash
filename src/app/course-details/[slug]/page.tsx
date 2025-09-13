@@ -36,9 +36,21 @@ export default function CourseDetailsPage({ params }: CourseDetailsPageProps) {
   const [curriculum, setCurriculum] = useState<Chapter[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState({ chapter: 0, topic: 0, subtopic: 0 });
+  const [slug, setSlug] = useState<string | null>(null);
+
+  // Handle params promise in Next.js 15
+  useEffect(() => {
+    const getSlug = async () => {
+      const resolvedParams = await params;
+      setSlug(resolvedParams.slug);
+    };
+    getSlug();
+  }, [params]);
 
   useEffect(() => {
-    fetch(`/api/curriculum/${params.slug}`)
+    if (!slug) return;
+    
+    fetch(`/api/curriculum/${slug}`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {
@@ -49,7 +61,7 @@ export default function CourseDetailsPage({ params }: CourseDetailsPageProps) {
           setError(null);
         }
       });
-  }, [params.slug]);
+  }, [slug]);
 
   if (error) return <div style={{textAlign:'center',marginTop:40,color:'#e74c3c',fontWeight:600}}>No curriculum found.</div>;
   if (!curriculum) return <div style={{textAlign:'center',marginTop:40}}>Loading...</div>;
