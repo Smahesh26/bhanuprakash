@@ -41,13 +41,13 @@ const Categories = () => {
         <div className="row">
           {categories_data.map((item) => (
             <div key={item.id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
-              <div className="categories__item-three text-center">
-                <Link href="/courses" className="block p-4 border rounded-lg hover:shadow-lg transition">
+              <div className="categories__item-three text-center" >
+                <Link href="/courses" className="block p-4 border rounded-lg hover:shadow-lg transition"  style={{backgroundColor:"#f1c40f"}}>
                   <div className="icon text-4xl mb-3 text-blue-600">
-                    <i className={item.icon}></i>
+                    <i className={item.icon} style={{color:"#230908"}}></i>
                   </div>
-                  <span className="name block font-semibold mb-1">{item.title}</span>
-                  <span className="courses text-gray-500" style={{fontSize:"10px !important"}}>{item.tag}</span>
+                  <span className="name block font-semibold mb-1" style={{color:"#230908"}}>{item.title}</span>
+                  <span className="courses text-gray-500" style={{fontSize:"13px !important", color:"#230908"}}>{item.tag}</span>
                 </Link>
               </div>
             </div>

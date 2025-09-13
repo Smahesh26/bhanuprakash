@@ -48,9 +48,23 @@ const sidebar_data: DataType[] = [
           {
             id: 5,
             link: "/instructor-course-pages", // new route
-            icon: "skillgro-group",
+            icon: "fas fa-plus-circle",
             title: "Add New Course",
-          }
+          },
+          {
+             
+            id: 6,
+            link: "/instructor-banner", 
+            icon: "skillgro-video-tutorial",
+            title: "Banner Videos Update",
+          },
+          
+{
+  id: 7,
+  link: "/instructor-main-courses", // <-- update this to the correct route you want
+  icon: "fas fa-book",
+  title: "Add Main Courses",
+},
          // {
          //    id: 4,
          //    link: "/instructor-wishlist",

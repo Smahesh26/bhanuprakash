@@ -79,8 +79,9 @@ model Subtopic {
 model MCQ {
   id           String  @id @default(cuid())
   question     String
-  options      Json // Example: ["Option A", "Option B", "Option C", "Option D"]
-  correctIndex Int // Index 0-3
+  options      Json
+  correctIndex Int
+  explanation  String? // <-- Add this for answer feedback
   topicId      String?
   subtopicId   String?
 
@@ -224,4 +225,29 @@ model Curriculum {
   subject   String
   chapters  Json     // Store chapters/topics as JSON
   createdAt DateTime @default(now())
+}
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String?
+  videoUrl  String
+  posterUrl String?
+  createdAt DateTime @default(now())
+}
+
+model MainCourse {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  subject   String?  
+  thumb       String?
+  slug        String?   @unique // <-- make it optional for now
+  isFeatured  Boolean  @default(false)
+  isFree      Boolean  @default(true)
+  price       Float    @default(0)
+  courseIds   String
+  createdAt   DateTime @default(now())
+  description String?
+  rating      Float?
+  uploadedBy  String?
 }

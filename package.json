@@ -88,7 +88,7 @@
     "eslint-config-next": "14.2.3",
     "ignore-loader": "^0.1.2",
     "postcss": "^8.5.3",
-    "prisma": "^6.5.0",
+    "prisma": "^6.15.0",
     "typescript": "^5"
   }
 }

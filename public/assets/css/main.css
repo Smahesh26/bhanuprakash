@@ -1682,7 +1682,7 @@ textarea {
   font-size: 16px;
   font-weight: var(--tg-fw-medium);
   text-transform: capitalize;
-  color: var(--tg-heading-color);
+  color: #FFFFFF;
   font-family: var(--tg-heading-font-family);
   padding: 37px 10px;
   display: -webkit-box;
@@ -13117,7 +13117,7 @@ textarea {
   }
 }
 .fact__inner-wrap {
-  background: #168e6a !important;
+  background:#230908 !important;
   padding: 94px 70px 64px;
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
@@ -19965,7 +19965,7 @@ blockquote > p {
   padding: 230px 0 60px;
 }
 .footer__area-three {
-  background: #282568 ;
+  background: #230908 ;
 }
 .footer__area-five {
   padding-top: 100px;
