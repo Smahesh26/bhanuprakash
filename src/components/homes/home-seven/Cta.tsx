@@ -8,10 +8,11 @@ import cta_img2 from "@/assets/img/others/h7_cta_shape.svg"
 const Cta = () => {
 
    return (
-      <section className="cta__area-three">
+      <section className="cta__area-three mt-5">
          <div className="container">
             <div className="row justify-content-center">
-               <div className="col-xl-10">
+               <div className="col-xl-10 mt-5">
+                  <br /><br />
                   <div className="cta__bg-three" style={{ backgroundImage: `url(/assets/img/others/cta.jpg)` }}>
                      <div className="cta__img-two">
                         <Image src={cta_img1} alt="img" />
@@ -21,7 +22,7 @@ const Cta = () => {
                            <h2 className="title">Finding Your Right Courses</h2>
                            <p>intuitive shared inbox makes it easy for team member</p>
                         </div>
-                        <Link href="/login" className="btn arrow-btn">GET sTARTED <BtnArrow /></Link>
+                        <Link href="/register" className="btn arrow-btn">GET sTARTED <BtnArrow /></Link>
                      </div>
                      <div className="cta__shape-two">
                         <Image src={cta_img2} alt="shape" />

@@ -26,6 +26,12 @@ const nextConfig = {
   },
   // Updated property name for Next.js 15
   serverExternalPackages: ['canvas'],
+  images: {
+    domains: [
+      "img.freepik.com",
+      // add more domains here if needed
+    ],
+  },
 };
 
 module.exports = nextConfig;

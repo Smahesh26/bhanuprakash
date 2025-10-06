@@ -5,7 +5,10 @@ import Social from "@/components/common/Social"
 
 const FooterTwo = ({ style }: any) => {
    return (
-      <footer className={`footer__area ${style ? "footer__area-five" : "footer__area-three"}`}>
+      <footer
+         className={`footer__area ${style ? "footer__area-five" : "footer__area-three"}`}
+         style={{ background: "#230908" }}
+      >
          <div className="footer__top footer__top-two">
             <div className="container">
                <div className="row">

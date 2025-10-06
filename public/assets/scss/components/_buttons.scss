@@ -28,13 +28,13 @@
     vertical-align: middle;
     @include border-radius(50px);
     white-space: nowrap;
-    box-shadow: 4px 6px 0px 0px var(--tg-common-color-blue);
+    // box-shadow: 4px 6px 0px 0px var(--tg-common-color-blue);
     overflow: hidden;
     &:hover,
     &:focus-visible {
         background: var(--tg-theme-secondary);
         color: var(--tg-heading-color);
-        box-shadow: 0 0 0 0 var(--tg-common-color-blue);
+        // box-shadow: 0 0 0 0 var(--tg-common-color-blue);
     }
     & .text {
         display: block;
@@ -85,7 +85,7 @@
         &:focus-visible {
             background: var(--tg-theme-primary);
             color: var(--tg-common-color-white);
-            box-shadow: 0 0 0 0 var(--tg-common-color-blue);
+            // box-shadow: 0 0 0 0 var(--tg-common-color-blue);
             border-color: var(--tg-theme-primary);
             & svg {
                 color: var(--tg-common-color-white) !important;

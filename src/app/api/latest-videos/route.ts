@@ -17,17 +17,17 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, description, videoUrl, thumbnailUrl } = body;
+    const { title, videoUrl, thumbnailUrl } = body;
+
+    if (!title || !videoUrl || !thumbnailUrl) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
 
     const video = await prisma.latestVideo.create({
-      data: {
-        title,
-        videoUrl,
-        thumbnailUrl,
-      },
+      data: { title, videoUrl, thumbnailUrl },
     });
 
-    return NextResponse.json(video);
+    return NextResponse.json(video, { status: 201 });
   } catch (error) {
     console.error("Create error:", error);
     return NextResponse.json({ error: "Failed to create video" }, { status: 500 });

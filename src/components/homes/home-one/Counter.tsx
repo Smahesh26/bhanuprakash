@@ -38,13 +38,23 @@ const Counter = () => {
    return (
       <section className="fact__area mb-5">
          <div className="container">
-            <div className="fact__inner-wrap">
+            <div
+               className="fact__inner-wrap"
+               style={{
+                  background: "#230908",
+                  borderRadius: "24px",
+                  padding: "48px 0",
+               }}
+            >
                <div className="row">
                   {count_data.map((item) => (
                      <div key={item.id} className="col-lg-3 col-6">
                         <div className="fact__item">
-                           <h2 className="count"><Count number={item.count} />{item.count_text}</h2>
-                           <p>{item.text}</p>
+                           <h2 className="count" style={{color: "#FFD600" }}>
+                              <Count number={item.count} />
+                              {item.count_text}
+                           </h2>
+                           <p style={{ color: "#fff", fontWeight: 500 }}>{item.text}</p>
                         </div>
                      </div>
                   ))}

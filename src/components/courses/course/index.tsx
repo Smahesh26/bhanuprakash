@@ -11,7 +11,6 @@ const Course = () => {
             <BreadcrumbOne title="All Courses" sub_title="Courses" />
             <CourseArea />
          </main>
-         <FooterTwo />
       </>
    )
 }

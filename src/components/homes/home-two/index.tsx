@@ -31,7 +31,6 @@ const HomeTwo = () => {
             <Blog style={true} />
             <InstructorTwo style={true} />
          </main>
-         <FooterTwo style={true} />
       </>
    )
 }

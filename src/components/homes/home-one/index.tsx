@@ -51,7 +51,6 @@ const HomeOne = () => {
                      {/* <Blog /> */}
                      <Newsletter />
                   </main>
-                  <FooterTwo style={true} />
       </>
    )
 }

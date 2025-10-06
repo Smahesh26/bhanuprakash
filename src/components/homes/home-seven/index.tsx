@@ -29,7 +29,6 @@ const HomeSeven = () => {
         <Testimonial />
         <Newsletter />
       </main>
-      <FooterTwo style={true} />
     </>
   );
 };

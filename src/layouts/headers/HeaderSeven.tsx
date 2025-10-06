@@ -62,9 +62,9 @@ const HeaderSeven = () => {
                         <li>
                           <Link
                             href="/registration"
-                            className="btn arrow-btn"
+                            className="btn"
                           >
-                            Register Now
+                            Register Now →
                           </Link>
                         </li>
                       </ul>

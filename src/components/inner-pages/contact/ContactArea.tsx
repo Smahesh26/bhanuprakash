@@ -46,7 +46,7 @@ const ContactArea = () => {
 
                <div className="col-lg-8">
                   <div className="contact-form-wrap">
-                     <h4 className="title">Send Us Message</h4>
+                     <h4 className="title"></h4>
                      <p>Your email address will not be published. Required fields are marked *</p>
                      <ContactForm />
                      <p className="ajax-response mb-0"></p>

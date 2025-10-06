@@ -3,12 +3,12 @@ import prisma from "../../../../../../lib/prisma";
 
 export async function DELETE(
   _req: Request, 
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     await prisma.latestVideo.delete({
-      where: { id },
+      where: { id }, // id is a string!
     });
 
     return NextResponse.json({ message: "Video deleted successfully" });

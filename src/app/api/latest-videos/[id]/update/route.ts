@@ -3,16 +3,16 @@ import prisma from "../../../../../../lib/prisma";
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const body = await req.json();
 
     if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 
     const updated = await prisma.latestVideo.update({
-      where: { id },
+      where: { id }, // id is a string
       data: body,
     });
 

@@ -26,31 +26,53 @@ const sidebar_data: DataType[] = [
             icon: "fas fa-home",
             title: "Dashboard",
          },
-         {
-            id: 2,
-            link: "/instructor-profile",
-            icon: "skillgro-avatar",
-            title: "My Profile",
-         },
-         {
+          {
+            id: 6,
+            link: "/instructor-banner-videos",
+            icon: "skillgro-video-tutorial",
+            title: "Add Banner Videos",
+          },
+           {
             id: 3,
             link: "/instructor-latest-videos",
             icon: "skillgro-video-tutorial",
             title: "Manage Latest Videos",
          },
-
-         {
+           {
+  id: 7,
+  link: "/instructor-upload-course",
+  icon: "skillgro-video-tutorial",
+  title: "Upload Main Course",
+},
+          {
+            id: 5,
+            link: "/instructor-course-pages", // new route
+            icon: "skillgro-group",
+            title: "Add New Course",
+          },
+            {
             id: 4,
             link: "/instructor-student", // new route
             icon: "skillgro-group",
             title: "Students",
           },
           {
-            id: 5,
-            link: "/instructor-course-pages", // new route
+            id: 8,
+            link: "/instructor-blogs", // new route
             icon: "skillgro-group",
-            title: "Add New Course",
-          }
+            title: "Blogs",
+          },
+         {
+            id: 2,
+            link: "/instructor-profile",
+            icon: "skillgro-avatar",
+            title: "My Profile",
+         },
+        
+
+      
+         
+       
          // {
          //    id: 4,
          //    link: "/instructor-wishlist",
@@ -77,37 +99,37 @@ const sidebar_data: DataType[] = [
          // },
       ],
    },
-   {
-      id: 2,
-      title: "INSTRUCTOR",
-      class_name: "mt-40",
-      sidebar_details: [
-         {
-            id: 1,
-            link: "/instructor-courses",
-            icon: "skillgro-video-tutorial",
-            title: "My Courses",
-         },
-         {
-            id: 2,
-            link: "/instructor-announcement",
-            icon: "skillgro-marketing",
-            title: "Announcements",
-         },
-         {
-            id: 3,
-            link: "/instructor-quiz",
-            icon: "skillgro-chat",
-            title: "Quiz Attempts",
-         },
-         {
-            id: 4,
-            link: "/instructor-assignment",
-            icon: "skillgro-list",
-            title: "Assignments",
-         },
-      ],
-   },
+   // {
+   //    id: 2,
+   //    title: "INSTRUCTOR",
+   //    class_name: "mt-40",
+   //    sidebar_details: [
+   //       {
+   //          id: 1,
+   //          link: "/instructor-courses",
+   //          icon: "skillgro-video-tutorial",
+   //          title: "My Courses",
+   //       },
+   //       {
+   //          id: 2,
+   //          link: "/instructor-announcement",
+   //          icon: "skillgro-marketing",
+   //          title: "Announcements",
+   //       },
+   //       {
+   //          id: 3,
+   //          link: "/instructor-quiz",
+   //          icon: "skillgro-chat",
+   //          title: "Quiz Attempts",
+   //       },
+   //       {
+   //          id: 4,
+   //          link: "/instructor-assignment",
+   //          icon: "skillgro-list",
+   //          title: "Assignments",
+   //       },
+   //    ],
+   // },
    {
       id: 3,
       title: "User",

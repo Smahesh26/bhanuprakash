@@ -81,6 +81,7 @@ model MCQ {
   question     String
   options      Json // Example: ["Option A", "Option B", "Option C", "Option D"]
   correctIndex Int // Index 0-3
+  explanation  String? // <-- Add this line
   topicId      String?
   subtopicId   String?
 
@@ -224,4 +225,38 @@ model Curriculum {
   subject   String
   chapters  Json     // Store chapters/topics as JSON
   createdAt DateTime @default(now())
+}
+
+model Banner {
+  id           Int      @id @default(autoincrement())
+  heading      String
+  subheading   String
+  buttonText   String
+  buttonLink   String?   // <-- Make optional by adding ?
+  youtubeUrl   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  description String?
+  
+  thumb       String?
+  instructors String
+  price       Float?
+  videoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+model Blog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  author    String
+  date      DateTime @default(now())
+  tags      String[]
+  image     String
 }

@@ -168,6 +168,169 @@ h6 {
   list-style: none;
 }
 
+/* === Force header button main color and shadow, override inline and layout CSS === */
+header .btn,
+.tg-header__area .btn,
+.tgmenu__action > ul li.header-btn .btn,
+.tg-header__top-btn .btn,
+.tgmenu__action .btn,
+.tg-header__area [class*="btn"],
+.tgmenu__action [class*="btn"] {
+  background: #fec107 !important;
+  color: #230908 !important;
+  /* changed shadow from white to brown so the button matches brand */
+  box-shadow: 4px 6px 0px 0px #230908 !important;
+  border: none !important;
+}
+
+/* On hover/focus */
+header .btn:hover, header .btn:focus-visible,
+.tg-header__area .btn:hover, .tg-header__area .btn:focus-visible,
+.tgmenu__action > ul li.header-btn .btn:hover, .tgmenu__action > ul li.header-btn .btn:focus-visible,
+.tg-header__top-btn .btn:hover, .tg-header__top-btn .btn:focus-visible,
+.tgmenu__action .btn:hover, .tgmenu__action .btn:focus-visible {
+  background: #230908 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0 #fff !important;
+}
+
+/* === Sticky menu: menu items brown, button yellow with brown shadow === */
+.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
+.tg-header__area.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
+header.sticky-menu .tgmenu__navbar-wrap > ul > li > a {
+  color: #230908 !important;
+}
+
+/* --- Sticky header button and icon override --- */
+.sticky-menu .tgmenu__action > ul li.header-btn .btn,
+.tg-header__area.sticky-menu .tgmenu__action > ul li.header-btn .btn,
+header.sticky-menu .tgmenu__action > ul li.header-btn .btn,
+.sticky-menu .btn,
+.tg-header__area.sticky-menu .btn,
+header.sticky-menu .btn {
+  background: #fec107 !important;
+  color: #230908 !important;
+  box-shadow: 4px 6px 0px 0px #230908 !important;
+  border: none !important;
+}
+
+/* ===== High-specificity nav & sticky overrides to beat other styles (layout.css etc.) =====
+   - Ensure menu links keep desired color (brown) even if another stylesheet sets them to white with !important.
+   - Keep sticky header background/box-shadow unchanged (transparent) when scrolled.
+*/
+html body header .tgmenu__navbar-wrap ul li a,
+html body .header .tgmenu__navbar-wrap ul li a,
+html body .site-header .tgmenu__navbar-wrap ul li a,
+html body header.sticky-menu .tgmenu__navbar-wrap ul li a,
+html body .tg-header__area.sticky-menu .tgmenu__navbar-wrap ul li a,
+html body .sticky-menu .tgmenu__navbar-wrap ul li a {
+  color: #230908 !important; /* brand brown; change to #fff if you prefer white on dark headers */
+}
+
+/* Force sticky header background/box-shadow to remain transparent (or same as default header) */
+html body header.sticky-menu,
+html body .tg-header__area.sticky-menu,
+html body .sticky-menu {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Catch inline background styles set by JS and override them for header and sticky state */
+html body header[style*="background"],
+html body .tg-header__area[style*="background"],
+html body header.sticky-menu[style*="background"],
+html body .tg-header__area.sticky-menu[style*="background"],
+html body .sticky-menu[style*="background"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Inline-style override for buttons in header (ensure brown shadow everywhere) */
+header [style*="background"],
+.tg-header__area [style*="background"],
+.tgmenu__action [style*="background"],
+header.sticky-menu [style*="background"],
+.tg-header__area.sticky-menu [style*="background"] {
+  background: #fec107 !important;
+  color: #230908 !important;
+  box-shadow: 4px 6px 0px 0px #230908 !important;
+  -webkit-box-shadow: 4px 6px 0px 0px #230908 !important;
+  border: none !important;
+}
+
+/* Sticky header button hover/focus */
+.sticky-menu .tgmenu__action > ul li.header-btn .btn:hover,
+.sticky-menu .tgmenu__action > ul li.header-btn .btn:focus-visible,
+.tg-header__area.sticky-menu .tgmenu__action > ul li.header-btn .btn:hover,
+.tg-header__area.sticky-menu .tgmenu__action > ul li.header-btn .btn:focus-visible,
+header.sticky-menu .tgmenu__action > ul li.header-btn .btn:hover,
+header.sticky-menu .tgmenu__action > ul li.header-btn .btn:focus-visible,
+.sticky-menu .btn:hover, .sticky-menu .btn:focus-visible,
+.tg-header__area.sticky-menu .btn:hover, .tg-header__area.sticky-menu .btn:focus-visible,
+header.sticky-menu .btn:hover, header.sticky-menu .btn:focus-visible {
+  background: #230908 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0 #230908 !important;
+}
+
+/* --- Sticky header icons (FontAwesome, SVG, i) --- */
+.sticky-menu .tgmenu__action > ul li a i,
+.sticky-menu .tgmenu__action > ul li a svg,
+.sticky-menu .tgmenu__action > ul li a .fa,
+.tg-header__area.sticky-menu .tgmenu__action > ul li a i,
+.tg-header__area.sticky-menu .tgmenu__action > ul li a svg,
+.tg-header__area.sticky-menu .tgmenu__action > ul li a .fa,
+header.sticky-menu .tgmenu__action > ul li a i,
+header.sticky-menu .tgmenu__action > ul li a svg,
+header.sticky-menu .tgmenu__action > ul li a .fa {
+  color: #230908 !important;
+  fill: #230908 !important;
+  stroke: #230908 !important;
+}
+
+/* --- Sticky header menu items --- */
+header.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
+.tg-header__area.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
+.sticky-menu .tgmenu__navbar-wrap > ul > li > a {
+  color: #230908 !important;
+}
+
+/* --- Inline style override for sticky header buttons --- */
+.sticky-menu .tgmenu__action > ul li.header-btn [style*="background"],
+.tg-header__area.sticky-menu .tgmenu__action > ul li.header-btn [style*="background"],
+header.sticky-menu .tgmenu__action > ul li.header-btn [style*="background"] {
+  background: #fec107 !important;
+  color: #230908 !important;
+  box-shadow: 4px 6px 0px 0px #230908 !important;
+  border: none !important;
+}
+
+/* === Inline style override for buttons in header === */
+header [style*="background"],
+.tg-header__area [style*="background"],
+.tgmenu__action [style*="background"] {
+  background: #fec107 !important;
+  color: #230908 !important;
+  /* changed from #fff to brand brown so this duplicate doesn't reintroduce white shadow */
+  box-shadow: 4px 6px 0px 0px #230908 !important;
+  -webkit-box-shadow: 4px 6px 0px 0px #230908 !important;
+  border: none !important;
+}
+
+/* === Sticky menu inline style override === */
+header.sticky-menu [style*="background"],
+.tg-header__area.sticky-menu [style*="background"],
+.tgmenu__action.sticky-menu [style*="background"] {
+  background: #fec107 !important;
+  color: #230908 !important;
+  box-shadow: 4px 6px 0px 0px #230908 !important;
+  border: none !important;
+}
+
 p {
   font-family: var(--tg-body-font-family);
   font-size: var(--tg-body-font-size);
@@ -357,12 +520,13 @@ textarea {
   display: flex;
 }
 
+/* Header Button: Main color yellow, white box shadow */
 .btn {
   user-select: none;
   -moz-user-select: none;
-  background: #f9a116 none repeat scroll 0 0;
+  background: #fec107 none repeat scroll 0 0;
   border: medium none;
-  color: var(--tg-common-color-white);
+  color: #230908;
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
@@ -387,13 +551,13 @@ textarea {
   -ms-border-radius: 50px;
   border-radius: 50px;
   white-space: nowrap;
-  box-shadow: 4px 6px 0px 0px var(--tg-common-color-blue);
+  box-shadow: 4px 6px 0px 0px #230908; /* changed from #fff to brand brown */
   overflow: hidden;
 }
 .btn:hover, .btn:focus-visible {
-  background: var(--tg-theme-secondary);
-  color: var(--tg-heading-color);
-  box-shadow: 0 0 0 0 var(--tg-common-color-blue);
+  background: #230908;
+  color: #fff;
+  box-shadow: 0 0 0 0 #230908; /* changed from #fff */
 }
 .btn .text {
   display: block;
@@ -982,7 +1146,7 @@ textarea {
 .section__title .sub-title {
   display: inline-block;
   line-height: 1.62;
-  background: var(--tg-common-color-gray-2);
+  background:  #230908;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   -o-border-radius: 30px;
@@ -990,7 +1154,7 @@ textarea {
   border-radius: 30px;
   padding: 3px 16px;
   font-weight: var(--tg-fw-medium);
-  color: var(--tg-theme-primary);
+  color: #fff;
   margin: 0 0 14px;
 }
 .section__title .title {
@@ -2697,7 +2861,7 @@ textarea {
   top: 0;
   width: 100%;
   z-index: 99;
-  background: var(--tg-common-color-white);
+  background: #230908;
   -webkit-animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
   animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
   -webkit-box-shadow: 0 10px 15px rgba(25, 25, 25, 0.1);
@@ -13117,7 +13281,7 @@ textarea {
   }
 }
 .fact__inner-wrap {
-  background: #168e6a !important;
+  background: #f9a116 !important;
   padding: 94px 70px 64px;
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
@@ -19034,10 +19198,10 @@ blockquote > p {
   font-size: 18px;
 }
 .dashboard__sidebar-menu .list-wrap li a:hover {
-  color: var(--tg-theme-primary);
+  color: #230908;
 }
 .dashboard__sidebar-menu .list-wrap li.active a {
-  color: var(--tg-theme-primary);
+  color: #230908;
 }
 .dashboard__content-wrap {
   background: var(--tg-common-color-white);
@@ -20121,9 +20285,15 @@ blockquote > p {
   position: relative;
   margin-bottom: 25px;
 }
+.tg-header__area.sticky-menu .btn.arrow-btn {
+  background: #230908 !important;
+  color: #FFF !important;
+  border-radius: 20px;
+  font-weight: 700;
+}
 .footer__newsletter-form input {
   width: 100%;
-  background: #212040;
+  /* background: #212040; */
   padding: 13px 140px 13px 20px;
   border: none;
   -webkit-border-radius: 6px;

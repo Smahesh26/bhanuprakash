@@ -4,10 +4,10 @@ import prisma from "../../../../../lib/prisma";
 // ✅ DELETE video
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 
@@ -25,10 +25,10 @@ export async function DELETE(
 // ✅ PATCH video
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 

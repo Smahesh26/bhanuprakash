@@ -1,21 +1,33 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
-import img from "@/assets/img/blog/author.png"
+type BlogAuthorProps = {
+  author: string;
+  image?: string | null;
+};
 
-const BlogAuthor = () => {
-   return (
-      <div className="blog__post-author">
-         <div className="blog__post-author-thumb">
-            <Link href="#"><Image src={img} alt="img" /></Link>
-         </div>
-         <div className="blog__post-author-content">
-            <span className="designation">Author</span>
-            <h5 className="name">Brooklyn Simmons</h5>
-            <p>Finanappreciate your trust greatly Our clients choose dentace ducts a curae in tristique liberois ultrices diamraesent varius diam dui. Class aptent taciti sociosqu ad litora torquent per.</p>
-         </div>
+const BlogAuthor = ({ author, image }: BlogAuthorProps) => {
+  return (
+    <div className="blog__author mt-40 mb-40 d-flex align-items-center">
+      {image && (
+        <Image
+          src={image}
+          alt={author}
+          width={60}
+          height={60}
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+            marginRight: 16,
+          }}
+        />
+      )}
+      <div>
+        <h5 className="mb-1">{author}</h5>
+        <span>Author</span>
       </div>
-   )
-}
+    </div>
+  );
+};
 
-export default BlogAuthor
+export default BlogAuthor;

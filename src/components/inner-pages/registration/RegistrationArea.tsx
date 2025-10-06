@@ -29,7 +29,10 @@ export default function RegistrationArea() {
   }, [status, isVerified, router]);
 
   const handleGoogleLogin = async () => {
-    const result = await signIn("google", { redirect: false });
+    const result = await signIn("google", {
+      redirect: false,
+      role: "student", // Pass role for student registration
+    });
 
     if (!result?.error) {
       const updated = await update(); // Refresh session

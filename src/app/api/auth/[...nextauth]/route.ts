@@ -1,10 +1,9 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../../../../../lib/prisma";
+import prisma from "lib/prisma";
 
-// Don't export this from a route file
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -14,18 +13,63 @@ const authOptions: NextAuthOptions = {
   ],
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/instructor-login",
+  },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id ?? "";
+    async signIn({ user, account, profile }) {
+      const role =
+        (account as any)?.role ||
+        (profile as any)?.role ||
+        (user as any)?.role ||
+        "student";
+
+      if (role === "admin") {
+        let admin = await prisma.admin.findUnique({
+          where: { email: user.email ?? "" },
+        });
+        if (!admin) {
+          admin = await prisma.admin.create({
+            data: {
+              email: user.email ?? "",
+              name: user.name ?? "",
+              displayName: user.name ?? "",
+              userName: user.email?.split("@")[0] ?? "",
+              password: "",
+            },
+          });
+        }
+      } else {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email ?? "" },
+        });
+        if (!dbUser) {
+          await prisma.user.create({
+            data: {
+              email: user.email ?? "",
+              name: user.name ?? "",
+              password: "",
+            },
+          });
+        }
       }
-      return token;
+      return true;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
+    },
+    async jwt({ token, user, account, profile }) {
+      if (user) {
+        token.role =
+          (account as any)?.role ||
+          (profile as any)?.role ||
+          (user as any)?.role ||
+          "student";
+      }
+      return token;
     },
   },
 };

@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 
 export async function GET() {
-//   const courses = await prisma.course.count();
-const students = await prisma.user.count();
+  // If you want to include courses, uncomment the next line:
+  // const courses = await prisma.course.count();
+  const students = await prisma.user.count();
   const latestVideos = await prisma.latestVideo.count();
 
   return NextResponse.json([

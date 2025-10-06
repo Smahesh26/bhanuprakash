@@ -10,6 +10,7 @@ declare module "next-auth" {
       isNewUser: boolean;
       isVerified: boolean;
       email?: string | null;
+      role?: string; // <-- Add this line
     } & DefaultSession["user"];
   }
 
@@ -18,6 +19,7 @@ declare module "next-auth" {
     isNewUser: boolean;
     isVerified: boolean;
     email?: string | null;
+    role?: string; // <-- Add this line
   }
 }
 
@@ -28,5 +30,6 @@ declare module "next-auth/jwt" {
     isNewUser: boolean;
     isVerified: boolean;
     email?: string | null;
+    role?: string; // <-- Add this line
   }
 }

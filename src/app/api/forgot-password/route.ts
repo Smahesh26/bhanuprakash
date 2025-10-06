@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     });
 
     // 📧 Compose and send reset email
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

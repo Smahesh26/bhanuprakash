@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     const { email, otp } = await req.json();
 
@@ -10,27 +10,24 @@ export async function POST(req: NextRequest) {
     }
 
     const record = await prisma.oTP.findFirst({
-      where: { email, code: otp },
+      where: {
+        email,
+        code: otp,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!record) {
-      return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid or expired OTP" }, { status: 400 });
     }
 
-    if (record.expiresAt < new Date()) {
-      return NextResponse.json({ error: "OTP expired" }, { status: 400 });
-    }
+    // Optionally, delete OTP after successful verification
+    await prisma.oTP.delete({ where: { id: record.id } });
 
-    // ✅ Update user as verified
-    await prisma.user.update({
-      where: { email },
-      data: { isVerified: true },
-    });
-
-    return NextResponse.json({ message: "OTP verified" });
-
-  } catch (err) {
-    console.error("verify-otp error:", err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({ message: "OTP verified successfully" });
+  } catch (error: any) {
+    console.error("OTP Verify Error:", error.message || error);
+    return NextResponse.json({ error: "Failed to verify OTP" }, { status: 500 });
   }
 }

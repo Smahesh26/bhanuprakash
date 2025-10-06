@@ -44,7 +44,12 @@ const LoginArea = () => {
               <div className="account__social">
                 <button
                   type="button"
-                  onClick={() => signIn("google")}
+                  onClick={() =>
+                    signIn("google", {
+                      callbackUrl: "/student-dashboard",
+                      role: "student",
+                    })
+                  }
                   className="flex items-center justify-center gap-3 px-6 py-3 w-full border border-gray-300 rounded-md hover:bg-gray-100 transition"
                 >
                   <Image src={googleIcon} alt="Google" width={20} height={20} />

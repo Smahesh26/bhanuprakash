@@ -1,605 +1,1084 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Accordion } from 'react-bootstrap';
-import { FaArrowLeft, FaBookOpen, FaFilePdf, FaQuestionCircle, FaLock } from 'react-icons/fa';
-import HeaderSeven from "@/layouts/headers/HeaderSeven";
+import { useEffect, useMemo, useRef, useState, Suspense } from "react";
 import dynamic from "next/dynamic";
 
-// Dynamically import PDF components with no SSR
-const PDFViewer = dynamic(
-  () => import("./PDFViewerComponent"),
-  {
-    ssr: false,
-    loading: () => <div>Loading PDF viewer...</div>,
-  }
-);
+// Defer the heavy header for faster first paint on mobile
+const HeaderSeven = dynamic(() => import("@/layouts/headers/HeaderSeven"), {
+  ssr: false,
+});
 
-interface CourseData {
-  id: string;
-  name: string;
-  chapters: Chapter[];
-}
+const BRAND = {
+  main: "#fec107",      // gold
+  secondary: "#230908", // rich espresso (brown)
+  bg: "#faf7f0",        // warm paper
+  card: "#ffffff",
+  ink: "#1a1a1a",
+  subtle: "#8a7f73",
+  line: "#ece6dd",
+  glow: "0 10px 30px rgba(254, 193, 7, 0.18)",
+  softShadow: "0 10px 24px rgba(0,0,0,0.06)",
+};
 
-interface Chapter {
-  title: string;
-  topics: Topic[];
-}
+const BASE_SIDEBAR_WIDTH = 340;
 
-interface Topic {
-  title: string;
-  subtopics: Subtopic[];
-}
-
-interface Subtopic {
-  title: string;
-  videoUrl?: string;
-  pdfUrl?: string;
-  pdfAccess?: 'VIEW' | 'DOWNLOAD' | 'PAID';
-  caseStudyUrl?: string;
-  caseAccess?: 'VIEW' | 'DOWNLOAD' | 'PAID';
-  mcqs?: MCQ[];
-}
-
-interface MCQ {
-  question: string;
-  options: string[];
-  correctIndex: number;
-}
+type TabKey = "pdf" | "mcq" | "case";
 
 const CourseDetailsPage = () => {
   const params = useParams();
-  const id = params?.id as string;
-  
-  const [courseData, setCourseData] = useState<CourseData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selected, setSelected] = useState<{ chapter: number; topic: number; subtopic: number }>({ 
-    chapter: 0, 
-    topic: 0, 
-    subtopic: 0 
-  });
-  const [tab, setTab] = useState<'pdf' | 'case' | 'mcq'>('pdf');
-  const [mcqAnswers, setMcqAnswers] = useState<{ [idx: number]: number | null }>({});
-  const [mcqSubmitted, setMcqSubmitted] = useState(false);
+  const id = params ? (params["id"] as string) : undefined;
 
+  const [vw, setVw] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1440);
+  const [curriculum, setCurriculum] = useState<any>(null);
+  const [selected, setSelected] = useState({ chapter: 0, topic: 0, subtopic: 0 });
+  const [tab, setTab] = useState<TabKey>("pdf");
+  const [success, setSuccess] = useState(false);
+  const [mcqAnswers, setMcqAnswers] = useState<{ [key: number]: number | null }>({});
+  const [mcqFeedback, setMcqFeedback] = useState<{ [key: number]: string }>({});
+  const [openChapters, setOpenChapters] = useState<{ [key: number]: boolean }>({});
+  const [openTopics, setOpenTopics] = useState<{ [key: string]: boolean }>({});
+  const [showNav, setShowNav] = useState(false); // mobile drawer
+  const [mountRight, setMountRight] = useState(false); // defer upcoming lessons
+
+  const isMobile = vw < 768;
+  const isTablet = vw >= 768 && vw < 1100;
+  const SIDEBAR_WIDTH = isMobile ? Math.min(vw - 40, 360) : BASE_SIDEBAR_WIDTH;
+
+  // Resize listener (debounced)
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/course-details/get-course-details?id=${id}`);
-        
-        if (res.ok) {
-          const data = await res.json();
-          setCourseData(data);
-        } else {
-          console.error("Failed to fetch course data");
-        }
-      } catch (error) {
-        console.error("Error fetching course data:", error);
-      } finally {
-        setLoading(false);
-      }
+    let t: any;
+    const onResize = () => {
+      clearTimeout(t);
+      t = setTimeout(() => setVw(window.innerWidth), 100);
     };
+    window.addEventListener("resize", onResize);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
-    if (id) {
-      fetchData();
-    }
+  // Fetch with abort (faster route transitions + no state set after unmount)
+  useEffect(() => {
+    if (!id) return;
+    const ctrl = new AbortController();
+    fetch(`/api/course-details/get-course-details?id=${id}`, { signal: ctrl.signal })
+      .then((res) => res.json())
+      .then((data) => setCurriculum(data))
+      .catch((err) => {
+        if (err?.name !== "AbortError") setCurriculum({});
+      });
+    // mount right column after first paint
+    const r = requestAnimationFrame(() => setMountRight(true));
+    return () => {
+      ctrl.abort();
+      cancelAnimationFrame(r);
+    };
   }, [id]);
 
-  const getSelectedSubtopic = (): Subtopic | null => {
-    const chapter = courseData?.chapters?.[selected.chapter];
-    const topic = chapter?.topics?.[selected.topic];
-    return topic?.subtopics?.[selected.subtopic] || null;
+  const toggleChapter = (ci: number) => {
+    setOpenChapters((prev) => ({ ...prev, [ci]: !prev[ci] }));
+  };
+  const toggleTopic = (ci: number, ti: number) => {
+    setOpenTopics((prev) => ({ ...prev, [`${ci}-${ti}`]: !prev[`${ci}-${ti}`] }));
   };
 
-  const extractVideoId = (url: string): string | null => {
-    try {
-      return new URL(url).searchParams.get('v');
-    } catch {
-      return null;
-    }
-  };
+  const chapter = useMemo(
+    () => curriculum?.chapters?.[selected.chapter] ?? {},
+    [curriculum, selected.chapter]
+  );
+  const topic = useMemo(
+    () => chapter?.topics?.[selected.topic] ?? {},
+    [chapter, selected.topic]
+  );
+  const subtopic = useMemo(
+    () => topic?.subtopics?.[selected.subtopic] ?? {},
+    [topic, selected.subtopic]
+  );
 
-  const selectedSub = getSelectedSubtopic();
-  const videoId = selectedSub?.videoUrl ? extractVideoId(selectedSub.videoUrl) : null;
+  // Lazy thumbnail overlay state (only for skeleton & button)
+  const [playerReady, setPlayerReady] = useState(false);
+  const playerRef = useRef<HTMLIFrameElement | null>(null);
 
-  if (loading) {
+  useEffect(() => {
+    // reset player ready when subtopic changes
+    setPlayerReady(false);
+  }, [subtopic?.youtubeUrl]);
+
+  if (!curriculum) {
     return (
-      <div className="d-flex flex-column align-items-center justify-content-center" style={{ 
-        minHeight: '100vh', 
-        background: 'linear-gradient(120deg,#5624d0 0%,#f7b32b 100%)', 
-        fontFamily: 'Georgia,serif', 
-        color: '#fff' 
-      }}>
-        <div style={{
-          width: 100, 
-          height: 100, 
-          borderRadius: '50%', 
-          background: 'rgba(86,36,208,0.18)', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          marginBottom: 24, 
-          boxShadow: '0 0 32px #5624d088', 
-          border: '4px double #5624d0', 
-          borderTop: '8px solid #f7b32b', 
-          fontSize: 60
-        }}>
-          <FaBookOpen color="#f7b32b" />
-        </div>
-        <p style={{ 
-          fontWeight: 700, 
-          fontSize: 24, 
-          letterSpacing: 1, 
-          fontFamily: 'Georgia,serif', 
-          textShadow: '0 2px 8px #5624d0' 
-        }}>
-          Loading course details...
-        </p>
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "grid",
+          placeItems: "center",
+          fontWeight: 600,
+          color: BRAND.secondary,
+        }}
+      >
+        Loading…
       </div>
     );
   }
 
-  if (!courseData) {
-    return (
-      <div style={{ 
-        padding: 40, 
-        textAlign: 'center', 
-        color: '#5624d0', 
-        fontSize: 20 
-      }}>
-        <FaBookOpen size={40} color="#5624d0" style={{ marginBottom: 8 }} />
-        <div>Course not available</div>
-      </div>
-    );
-  }
-
-  const renderPdfSection = () => {
-    if (!selectedSub?.pdfUrl) {
-      return (
-        <div style={{ 
-          color: '#bbb', 
-          fontSize: 18, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          gap: 8 
-        }}>
-          <FaFilePdf size={32} color="#f7b32b" />
-          No PDF available
-        </div>
-      );
-    }
-
-    if (selectedSub.pdfAccess === 'PAID') {
-      return (
-        <div style={{ 
-          minHeight: 800, 
-          background: 'linear-gradient(135deg,#5624d0 60%,#f7b32b 100%)', 
-          borderRadius: 22, 
-          padding: 40, 
-          textAlign: 'center', 
-          fontSize: 22, 
-          margin: '40px 0', 
-          boxShadow: '0 8px 32px #5624d088', 
-          border: '4px double #fff8e1', 
-          fontFamily: 'Georgia,serif', 
-          letterSpacing: 1, 
-          position: 'relative' 
-        }}>
-          <FaLock size={60} color="#fff8e1" style={{ marginBottom: 8 }} />
-          <div style={{ 
-            fontWeight: 900, 
-            color: '#fff8e1', 
-            fontSize: 28 
-          }}>
-            This PDF is <span style={{ color: '#f7b32b' }}>PAID</span>
-          </div>
-          <div style={{ 
-            fontWeight: 600, 
-            fontSize: 18, 
-            marginTop: 8 
-          }}>
-            Please purchase to access.
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedSub.pdfAccess === 'VIEW') {
-      return (
-        <div style={{ 
-          background: 'linear-gradient(120deg,#f7b32b 0%,#fff 100%)', 
-          borderRadius: 18, 
-          boxShadow: '0 8px 32px #5624d088', 
-          padding: 32, 
-          margin: '32px 0', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          border: '3px double #5624d0', 
-          fontFamily: 'Georgia,serif', 
-          letterSpacing: 1 
-        }}>
-          <div style={{ 
-            fontWeight: 900, 
-            color: '#5624d0', 
-            marginBottom: 12, 
-            fontSize: 26, 
-            letterSpacing: 2, 
-            textShadow: '0 2px 8px #fff8e1', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 10, 
-            fontFamily: 'Georgia,serif' 
-          }}>
-            <FaFilePdf color="#f7b32b" size={28} /> PDF Viewer
-          </div>
-          <PDFViewer fileUrl={selectedSub.pdfUrl} />
-        </div>
-      );
-    }
-
-    return (
-      <div style={{ 
-        background: 'linear-gradient(120deg,#f7b32b 0%,#fff 100%)', 
-        borderRadius: 18, 
-        boxShadow: '0 8px 32px #5624d088', 
-        padding: 40, 
-        margin: '40px 0', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        border: '3px double #5624d0', 
-        fontFamily: 'Georgia,serif', 
-        letterSpacing: 1 
-      }}>
-        <div style={{ 
-          fontWeight: 900, 
-          color: '#5624d0', 
-          marginBottom: 12, 
-          fontSize: 26, 
-          letterSpacing: 2, 
-          textShadow: '0 2px 8px #fff8e1', 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: 10, 
-          fontFamily: 'Georgia,serif' 
-        }}>
-          <FaFilePdf color="#f7b32b" size={28} /> Downloadable PDF
-        </div>
-        <a 
-          href={selectedSub.pdfUrl} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="btn"
-          style={{ 
-            fontWeight: 900, 
-            borderRadius: 18, 
-            fontSize: 20, 
-            padding: '16px 48px', 
-            background: 'linear-gradient(90deg,#5624d0 60%,#f7b32b 100%)', 
-            color: '#fff', 
-            boxShadow: '0 2px 16px #f7b32b88', 
-            border: '4px double #5624d0', 
-            marginTop: 12, 
-            fontFamily: 'Georgia,serif', 
-            letterSpacing: 2, 
-            textShadow: '0 2px 8px #5a463288', 
-            textTransform: 'uppercase',
-            textDecoration: 'none'
-          }}
-        >
-          Download PDF
-        </a>
-      </div>
-    );
-  };
+  // Shared styles tuned for mobile (lighter shadows)
+  const cardShadow = isMobile ? "0 6px 14px rgba(0,0,0,0.05)" : BRAND.softShadow;
+  const glow = isMobile ? "0 6px 16px rgba(254,193,7,0.14)" : BRAND.glow;
 
   return (
     <>
       <HeaderSeven />
-      <div style={{ 
-        minHeight: '100vh', 
-        background: '#f7f8fa', 
-        fontFamily: 'Inter, Arial, sans-serif', 
-        color: '#222', 
-        paddingBottom: 0 
-      }}>
-        {/* Top bar */}
-        <div style={{ 
-          width: '100%', 
-          background: '#fff', 
-          borderBottom: '1px solid #e6e6e6', 
-          padding: '18px 0', 
-          boxShadow: '0 2px 8px #0001', 
-          position: 'sticky', 
-          top: 0, 
-          zIndex: 100 
-        }}>
-          <div style={{ 
-            maxWidth: 1400, 
-            margin: '0 auto', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 24, 
-            padding: '0 40px' 
-          }}>
-            <a 
-              href="/" 
-              style={{ 
-                color: '#5624d0', 
-                fontWeight: 900, 
-                fontSize: 22, 
-                letterSpacing: 1, 
-                textDecoration: 'none', 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 8 
+
+      {/* Sticky Title Bar */}
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 20,
+          background:
+            "linear-gradient(180deg, rgba(254,193,7,0.10) 0%, rgba(254,193,7,0.03) 100%)",
+          backdropFilter: "blur(6px)",
+          boxShadow: glow,
+          borderBottom: `1px solid ${BRAND.line}`,
+          padding: isMobile ? "14px 16px" : "20px 32px 14px 32px",
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        {isMobile && (
+          <button
+            onClick={() => setShowNav(true)}
+            aria-label="Open course content"
+            style={{
+              border: `1px solid ${BRAND.line}`,
+              background: BRAND.card,
+              borderRadius: 10,
+              padding: "8px 10px",
+              fontWeight: 800,
+              boxShadow: cardShadow,
+              marginRight: 6,
+              cursor: "pointer",
+            }}
+          >
+            ☰
+          </button>
+        )}
+        <div
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: 999,
+            background: BRAND.main,
+            boxShadow: glow,
+          }}
+        />
+        <span
+          style={{
+            fontWeight: 900,
+            color: BRAND.secondary,
+            fontSize: isMobile ? 20 : 26,
+            letterSpacing: "0.5px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+          title={curriculum.subject}
+        >
+          {curriculum.subject}
+        </span>
+      </div>
+
+      {/* Layout: stacks on mobile (main -> right), tablet 2-col, desktop 3-col */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile
+            ? "1fr"
+            : isTablet
+            ? `${SIDEBAR_WIDTH}px 1fr`
+            : `${SIDEBAR_WIDTH}px 1fr ${SIDEBAR_WIDTH}px`,
+          gap: isMobile ? 16 : 24,
+          background: BRAND.bg,
+          padding: isMobile ? "16px" : "24px 32px 40px",
+          minHeight: "calc(100vh - 80px)",
+        }}
+      >
+        {/* LEFT: Sidebar (desktop/tablet visible) */}
+        {!isMobile && (
+          <NavSidebar
+            SIDEBAR_WIDTH={SIDEBAR_WIDTH}
+            curriculum={curriculum}
+            selected={selected}
+            setSelected={setSelected}
+            openChapters={openChapters}
+            openTopics={openTopics}
+            toggleChapter={toggleChapter}
+            toggleTopic={toggleTopic}
+            cardShadow={cardShadow}
+            glow={glow}
+          />
+        )}
+
+        {/* CENTER: Main */}
+        <main>
+          {/* Player card */}
+          <div
+            style={{
+              borderRadius: 16,
+              border: `1px solid ${BRAND.line}`,
+              background: BRAND.card,
+              boxShadow: cardShadow,
+              overflow: "hidden",
+              marginBottom: 14,
+            }}
+          >
+            <div
+              style={{
+                aspectRatio: "16/9",
+                background:
+                  "radial-gradient(1200px 400px at 20% 0%, rgba(254,193,7,0.14), transparent), #111",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
               }}
             >
-              <FaArrowLeft /> Courses
-            </a>
-            <span style={{ 
-              fontWeight: 700, 
-              fontSize: 20, 
-              color: '#222', 
-              flex: 1 
-            }}>
-              {courseData.name}
-            </span>
-          </div>
-        </div>
-
-        <div style={{ 
-          maxWidth: 1400, 
-          margin: '0 auto', 
-          display: 'flex', 
-          gap: 36, 
-          padding: '40px' 
-        }}>
-          {/* LEFT SIDEBAR */}
-          <div style={{ 
-            width: 340, 
-            minWidth: 220, 
-            background: '#fff', 
-            borderRadius: 14, 
-            boxShadow: '0 2px 16px #0001', 
-            padding: 28, 
-            height: 'fit-content', 
-            border: '1px solid #e6e6e6' 
-          }}>
-            <div style={{ 
-              fontWeight: 900, 
-              color: '#5624d0', 
-              marginBottom: 18, 
-              fontSize: 22, 
-              letterSpacing: 1, 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 10 
-            }}>
-              <FaBookOpen color="#f7b32b" />
-              Course Content
-            </div>
-            
-            <Accordion defaultActiveKey="0" alwaysOpen>
-              {courseData.chapters.map((chapter: Chapter, i: number) => (
-                <Accordion.Item eventKey={String(i)} key={i}>
-                  <Accordion.Header>
-                    <span style={{ fontWeight: 700, color: '#222', fontSize: 16 }}>
-                      Chapter {i + 1}: {chapter.title}
-                    </span>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    {chapter.topics.map((topic: Topic, j: number) => (
-                      <div key={j} style={{ marginBottom: 10 }}>
-                        <div style={{ 
-                          fontWeight: 700, 
-                          color: '#5624d0', 
-                          marginBottom: 2, 
-                          fontSize: 15 
-                        }}>
-                          Topic {j + 1}: {topic.title}
-                        </div>
-                        <ul style={{ paddingLeft: 16, marginBottom: 0 }}>
-                          {topic.subtopics.map((sub: Subtopic, k: number) => (
-                            <li
-                              key={k}
-                              style={{
-                                cursor: 'pointer',
-                                fontSize: 15,
-                                color: selected.chapter === i && selected.topic === j && selected.subtopic === k ? '#fff' : '#222',
-                                fontWeight: selected.chapter === i && selected.topic === j && selected.subtopic === k ? 900 : 500,
-                                marginBottom: 2,
-                                background: selected.chapter === i && selected.topic === j && selected.subtopic === k ? 'linear-gradient(90deg,#5624d0 60%,#f7b32b 100%)' : undefined,
-                                borderRadius: 8,
-                                padding: '4px 10px',
-                                transition: 'all 0.2s',
-                                boxShadow: selected.chapter === i && selected.topic === j && selected.subtopic === k ? '0 2px 8px #f7b32b44' : undefined
-                              }}
-                              onClick={() => {
-                                setSelected({ chapter: i, topic: j, subtopic: k });
-                                setMcqAnswers({});
-                                setMcqSubmitted(false);
-                              }}
-                            >
-                              Subtopic {k + 1}: {sub.title}
-                            </li>
-                          ))}
-                        </ul>
+              {subtopic?.youtubeUrl ? (
+                <>
+                  {!playerReady && (
+                    <div
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        display: "grid",
+                        placeItems: "center",
+                        color: "#d0c7ba",
+                        fontSize: 16,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 56,
+                          height: 56,
+                          borderRadius: 999,
+                          border: `2px solid ${BRAND.secondary}`,
+                          display: "grid",
+                          placeItems: "center",
+                          boxShadow: cardShadow,
+                        }}
+                      >
+                        ▸
                       </div>
-                    ))}
-                  </Accordion.Body>
-                </Accordion.Item>
-              ))}
-            </Accordion>
-          </div>
-
-          {/* MAIN CONTENT */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ 
-              background: '#fff', 
-              borderRadius: 12, 
-              boxShadow: '0 2px 16px #0001', 
-              padding: 32, 
-              minHeight: 600, 
-              border: '1px solid #e6e6e6' 
-            }}>
-              <div style={{ 
-                fontWeight: 900, 
-                color: '#222', 
-                marginBottom: 18, 
-                fontSize: 22, 
-                letterSpacing: 1, 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 10 
-              }}>
-                {selectedSub?.title || 'Select a subtopic'}
-              </div>
-
-              {/* Video Player */}
-              <div style={{ 
-                aspectRatio: '16/9', 
-                borderRadius: 10, 
-                marginBottom: 24, 
-                background: '#eee', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                boxShadow: '0 2px 8px #0001', 
-                overflow: 'hidden', 
-                border: '1px solid #e6e6e6' 
-              }}>
-                {videoId ? (
+                      <span style={{ marginTop: 10, color: "#d0c7ba" }}>Loading video…</span>
+                    </div>
+                  )}
                   <iframe
-                    src={`https://www.youtube.com/embed/${videoId}`}
+                    ref={playerRef}
+                    src={subtopic.youtubeUrl.replace("watch?v=", "embed/")}
                     title="Course Video"
                     allow="autoplay; encrypted-media"
                     allowFullScreen
-                    style={{ width: '100%', height: '100%', border: 0, borderRadius: 10 }}
+                    loading="lazy"
+                    onLoad={() => setPlayerReady(true)}
+                    referrerPolicy="no-referrer-when-downgrade"
+                    style={{ width: "100%", height: "100%", border: 0 }}
                   />
-                ) : (
-                  <div style={{ 
-                    color: '#bbb', 
-                    fontSize: 20, 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    gap: 8 
-                  }}>
-                    <FaBookOpen size={32} color="#f7b32b" />
-                    No video available
-                  </div>
-                )}
-              </div>
-
-              {/* Tabs */}
-              <div style={{ 
-                display: 'flex', 
-                borderBottom: '2px solid #e6e6e6', 
-                marginBottom: 24, 
-                gap: 8 
-              }}>
-                <div 
-                  onClick={() => setTab('pdf')} 
+                </>
+              ) : (
+                <div
                   style={{
-                    padding: '10px 32px',
-                    cursor: 'pointer',
-                    borderBottom: tab === 'pdf' ? '4px solid #5624d0' : 'none',
-                    color: tab === 'pdf' ? '#5624d0' : '#222',
-                    fontWeight: tab === 'pdf' ? 900 : 600,
-                    fontSize: 18,
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    borderRadius: '12px 12px 0 0',
-                    background: tab === 'pdf' ? '#f7f8fa' : undefined,
-                    boxShadow: tab === 'pdf' ? '0 2px 8px #5624d044' : undefined
+                    color: "#d0c7ba",
+                    fontSize: 16,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 10,
                   }}
                 >
-                  <FaFilePdf /> PDF
+                  <button
+                    aria-label="No video available"
+                    disabled
+                    style={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: 999,
+                      border: `2px solid ${BRAND.secondary}`,
+                      background: "transparent",
+                      color: BRAND.card,
+                      opacity: 0.55,
+                      cursor: "not-allowed",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 18,
+                    }}
+                    title="No video available"
+                  >
+                    ▸
+                  </button>
+                  No video available
                 </div>
-                <div 
-                  onClick={() => setTab('case')} 
-                  style={{
-                    padding: '10px 32px',
-                    cursor: 'pointer',
-                    borderBottom: tab === 'case' ? '4px solid #43a047' : 'none',
-                    color: tab === 'case' ? '#43a047' : '#222',
-                    fontWeight: tab === 'case' ? 900 : 600,
-                    fontSize: 18,
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    borderRadius: '12px 12px 0 0',
-                    background: tab === 'case' ? '#f7f8fa' : undefined,
-                    boxShadow: tab === 'case' ? '0 2px 8px #43a04744' : undefined
-                  }}
-                >
-                  <FaBookOpen /> Case Study
-                </div>
-                <div 
-                  onClick={() => setTab('mcq')} 
-                  style={{
-                    padding: '10px 32px',
-                    cursor: 'pointer',
-                    borderBottom: tab === 'mcq' ? '4px solid #f7b32b' : 'none',
-                    color: tab === 'mcq' ? '#f7b32b' : '#222',
-                    fontWeight: tab === 'mcq' ? 900 : 600,
-                    fontSize: 18,
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    borderRadius: '12px 12px 0 0',
-                    background: tab === 'mcq' ? '#f7f8fa' : undefined,
-                    boxShadow: tab === 'mcq' ? '0 2px 8px #f7b32b44' : undefined
-                  }}
-                >
-                  <FaQuestionCircle /> MCQ
-                </div>
-              </div>
-
-              {/* Tab Content */}
-              <div style={{ minHeight: 140 }}>
-                {tab === 'pdf' && renderPdfSection()}
-                {tab === 'case' && (
-                  <div style={{ 
-                    color: '#bbb', 
-                    fontSize: 18, 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    gap: 8 
-                  }}>
-                    <FaBookOpen size={32} color="#f7b32b" />
-                    No Case Study
-                  </div>
-                )}
-                {tab === 'mcq' && (
-                  <div style={{ 
-                    color: '#bbb', 
-                    fontSize: 18, 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    gap: 8 
-                  }}>
-                    <FaQuestionCircle size={32} color="#f7b32b" />
-                    No MCQ available
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        </div>
+
+          {/* Tabs */}
+          <div
+            role="tablist"
+            aria-label="Resource tabs"
+            style={{
+              display: "flex",
+              gap: 8,
+              marginBottom: 14,
+              flexWrap: "wrap",
+            }}
+          >
+            {[
+              { key: "pdf", label: "PDF" },
+              { key: "mcq", label: "MCQ" },
+              { key: "case", label: "Case Study" },
+            ].map((t) => {
+              const active = tab === (t.key as TabKey);
+              return (
+                <button
+                  key={t.key}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setTab(t.key as TabKey)}
+                  style={{
+                    padding: isMobile ? "8px 14px" : "10px 16px",
+                    borderRadius: 999,
+                    border: `1px solid ${active ? BRAND.main : BRAND.line}`,
+                    background: active ? BRAND.main : BRAND.card,
+                    color: BRAND.secondary,
+                    fontWeight: 800,
+                    letterSpacing: 0.2,
+                    cursor: "pointer",
+                    boxShadow: active ? glow : "none",
+                  }}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Tab content */}
+          <div
+            style={{
+              background: BRAND.card,
+              border: `1px solid ${BRAND.line}`,
+              borderRadius: 16,
+              padding: isMobile ? 14 : 20,
+              boxShadow: cardShadow,
+            }}
+          >
+            {/* PDF */}
+            {tab === "pdf" &&
+              (subtopic?.pdf ? (
+                <a
+                  href={subtopic.pdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: BRAND.secondary,
+                    background: BRAND.main,
+                    padding: isMobile ? "8px 12px" : "10px 14px",
+                    borderRadius: 12,
+                    fontWeight: 800,
+                    display: "inline-block",
+                    boxShadow: glow,
+                  }}
+                >
+                  View PDF
+                </a>
+              ) : (
+                <div style={{ color: BRAND.subtle }}>No PDF available</div>
+              ))}
+
+            {/* MCQ */}
+            {tab === "mcq" &&
+              (subtopic?.mcqs?.length ? (
+                <div style={{ marginTop: 4 }}>
+                  {subtopic.mcqs.map((mcq: any, idx: number) => (
+                    <div
+                      key={idx}
+                      style={{
+                        padding: isMobile ? "14px 12px" : "18px 16px",
+                        marginBottom: 12,
+                        borderRadius: 14,
+                        border: `1px solid ${BRAND.line}`,
+                        background: "#fffdfa",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: 800,
+                          color: BRAND.secondary,
+                          marginBottom: 8,
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {mcq.question}
+                      </div>
+                      <div>
+                        {mcq.options.map((opt: string, oi: number) => {
+                          const chosen = mcqAnswers[idx];
+                          const isChosen = chosen === oi;
+                          const correct = oi === mcq.correctAnswerIndex;
+                          const bg =
+                            chosen == null
+                              ? "#fff"
+                              : isChosen
+                              ? correct
+                                ? "rgba(76,175,80,0.12)"
+                                : "rgba(211,47,47,0.10)"
+                              : "#fff";
+                          const border =
+                            chosen == null
+                              ? BRAND.line
+                              : isChosen
+                              ? correct
+                                ? "rgba(76,175,80,0.45)"
+                                : "rgba(211,47,47,0.45)"
+                              : BRAND.line;
+
+                          return (
+                            <label
+                              key={oi}
+                              style={{
+                                display: "block",
+                                marginBottom: 8,
+                                padding: isMobile ? "8px 10px" : "10px 12px",
+                                borderRadius: 10,
+                                border: `1px solid ${border}`,
+                                background: bg,
+                                cursor: chosen == null ? "pointer" : "default",
+                                userSelect: "none",
+                              }}
+                            >
+                              <input
+                                type="radio"
+                                name={`mcq-${idx}`}
+                                value={oi}
+                                disabled={chosen != null}
+                                checked={isChosen}
+                                onChange={() => {
+                                  setMcqAnswers({ ...mcqAnswers, [idx]: oi });
+                                  setMcqFeedback({
+                                    ...mcqFeedback,
+                                    [idx]: correct ? "Correct! 🎉" : "Incorrect. Try again!",
+                                  });
+                                }}
+                                style={{ marginRight: 8 }}
+                              />
+                              {opt}
+                            </label>
+                          );
+                        })}
+                      </div>
+
+                      {mcqAnswers[idx] != null && (
+                        <div
+                          style={{
+                            marginTop: 8,
+                            fontWeight: 700,
+                            color:
+                              mcqAnswers[idx] === mcq.correctAnswerIndex
+                                ? "rgba(67,160,71,1)"
+                                : "rgba(211,47,47,1)",
+                          }}
+                        >
+                          {mcqFeedback[idx]}
+                          {mcq.explanation && (
+                            <div
+                              style={{
+                                marginTop: 8,
+                                background: "rgba(254,193,7,0.12)",
+                                padding: isMobile ? "8px 10px" : "10px 12px",
+                                borderRadius: 10,
+                                border: `1px dashed ${BRAND.main}`,
+                                color: BRAND.secondary,
+                              }}
+                            >
+                              <strong>Explanation: </strong>
+                              {mcq.explanation}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ color: BRAND.subtle }}>No MCQs available</div>
+              ))}
+
+            {/* Case Study */}
+            {tab === "case" &&
+              (subtopic?.caseStudy ? (
+                <a
+                  href={subtopic.caseStudy}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: BRAND.card,
+                    background: BRAND.secondary,
+                    padding: isMobile ? "8px 12px" : "10px 14px",
+                    borderRadius: 12,
+                    fontWeight: 800,
+                    display: "inline-block",
+                    boxShadow: cardShadow,
+                    border: `1px solid ${BRAND.secondary}`,
+                  }}
+                >
+                  View Case Study
+                </a>
+              ) : (
+                <div style={{ color: BRAND.subtle }}>No Case Study available</div>
+              ))}
+          </div>
+
+          {/* Success toast */}
+          {success && (
+            <div
+              role="status"
+              style={{
+                marginTop: 16,
+                padding: "12px 14px",
+                background: "rgba(76,175,80,0.12)",
+                color: "rgba(46,125,50,1)",
+                borderRadius: 12,
+                fontWeight: 700,
+                border: "1px solid rgba(76,175,80,0.35)",
+                textAlign: "center",
+              }}
+            >
+              Curriculum updated successfully!
+            </div>
+          )}
+        </main>
+
+        {/* RIGHT: Upcoming Lessons (tablet hidden; desktop visible). On mobile it appears below main automatically. */}
+        {(mountRight && !isTablet && !isMobile) && (
+          <UpcomingLessons
+            SIDEBAR_WIDTH={SIDEBAR_WIDTH}
+            curriculum={curriculum}
+            selected={selected}
+            setSelected={setSelected}
+            cardShadow={cardShadow}
+            glow={glow}
+          />
+        )}
       </div>
+
+      {/* Mobile slide-in drawer for “Course Content” */}
+      {isMobile && (
+        <>
+          <button
+            onClick={() => setShowNav(true)}
+            aria-label="Open course content"
+            style={{
+              position: "fixed",
+              right: 16,
+              bottom: 16,
+              zIndex: 50,
+              width: 52,
+              height: 52,
+              borderRadius: 999,
+              border: `1px solid ${BRAND.line}`,
+              background: BRAND.main,
+              color: BRAND.secondary,
+              fontWeight: 900,
+              boxShadow: glow,
+            }}
+            title="Course Content"
+          >
+            📚
+          </button>
+
+          {showNav && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(0,0,0,0.45)",
+                zIndex: 60,
+                display: "flex",
+              }}
+              onClick={() => setShowNav(false)}
+            >
+              <div
+                style={{
+                  width: SIDEBAR_WIDTH,
+                  maxWidth: "86%",
+                  height: "100%",
+                  marginLeft: "auto",
+                  background: BRAND.card,
+                  borderLeft: `1px solid ${BRAND.line}`,
+                  boxShadow: cardShadow,
+                  transform: "translateX(0)",
+                  animation: "slideIn .18s ease-out",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <NavSidebar
+                  SIDEBAR_WIDTH={SIDEBAR_WIDTH}
+                  curriculum={curriculum}
+                  selected={selected}
+                  setSelected={(val) => {
+                    setSelected(val);
+                    setShowNav(false);
+                  }}
+                  openChapters={openChapters}
+                  openTopics={openTopics}
+                  toggleChapter={toggleChapter}
+                  toggleTopic={toggleTopic}
+                  cardShadow={cardShadow}
+                  glow={glow}
+                  compact
+                />
+              </div>
+              <style jsx>{`
+                @keyframes slideIn {
+                  from {
+                    transform: translateX(16px);
+                    opacity: 0.6;
+                  }
+                  to {
+                    transform: translateX(0);
+                    opacity: 1;
+                  }
+                }
+              `}</style>
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 };
 
 export default CourseDetailsPage;
+
+/* ---------------- Subcomponents ---------------- */
+
+function NavSidebar({
+  SIDEBAR_WIDTH,
+  curriculum,
+  selected,
+  setSelected,
+  openChapters,
+  openTopics,
+  toggleChapter,
+  toggleTopic,
+  cardShadow,
+  glow,
+  compact = false,
+}: {
+  SIDEBAR_WIDTH: number;
+  curriculum: any;
+  selected: { chapter: number; topic: number; subtopic: number };
+  setSelected: (v: { chapter: number; topic: number; subtopic: number }) => void;
+  openChapters: Record<number, boolean>;
+  openTopics: Record<string, boolean>;
+  toggleChapter: (ci: number) => void;
+  toggleTopic: (ci: number, ti: number) => void;
+  cardShadow: string;
+  glow: string;
+  compact?: boolean;
+}) {
+  return (
+    <aside
+      style={{
+        width: SIDEBAR_WIDTH,
+        background: BRAND.card,
+        borderRadius: 18,
+        boxShadow: cardShadow,
+        padding: compact ? "20px 14px" : "28px 20px",
+        border: `1px solid ${BRAND.line}`,
+        position: "sticky",
+        top: 86,
+        height: "calc(100vh - 118px)",
+        overflow: "auto",
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 800,
+          color: BRAND.secondary,
+          fontSize: 16,
+          marginBottom: 12,
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 28,
+            height: 28,
+            borderRadius: 999,
+            background: BRAND.main,
+            boxShadow: glow,
+            color: BRAND.secondary,
+            fontSize: 14,
+            fontWeight: 900,
+          }}
+        >
+          📚
+        </span>
+        Course Content
+      </div>
+
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {(curriculum?.chapters ?? []).map((ch: any, ci: number) => {
+          const isChapterOpen = openChapters[ci] ?? false;
+          const isActiveChapter = selected.chapter === ci;
+          return (
+            <li key={ci}>
+              <div
+                onClick={() => setSelected({ chapter: ci, topic: 0, subtopic: 0 })}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  padding: "12px 12px",
+                  margin: "6px 0",
+                  borderRadius: 12,
+                  cursor: "pointer",
+                  border: `1px solid ${isActiveChapter ? BRAND.main : BRAND.line}`,
+                  background: isActiveChapter ? "rgba(254,193,7,0.10)" : BRAND.card,
+                  boxShadow: isActiveChapter ? glow : "none",
+                  transition: "all .2s ease",
+                }}
+              >
+                <span
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 999,
+                    background: isActiveChapter ? BRAND.main : BRAND.secondary,
+                    outline: `2px solid ${isActiveChapter ? BRAND.secondary : BRAND.main}`,
+                  }}
+                />
+                <div style={{ fontWeight: 700, color: BRAND.secondary, fontSize: 15.5 }}>
+                  {ch.title || `Chapter ${ci + 1}`}
+                </div>
+                <button
+                  aria-label={isChapterOpen ? "Collapse chapter" : "Expand chapter"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleChapter(ci);
+                  }}
+                  style={{
+                    marginLeft: "auto",
+                    border: "none",
+                    background: "transparent",
+                    color: BRAND.secondary,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    transform: isChapterOpen ? "rotate(90deg)" : "rotate(0deg)",
+                    transition: "transform .2s ease",
+                  }}
+                >
+                  ▸
+                </button>
+              </div>
+
+              {/* Topics */}
+              {isChapterOpen && (
+                <ul style={{ listStyle: "none", paddingLeft: 8, marginTop: 6 }}>
+                  {ch.topics?.map((tp: any, ti: number) => {
+                    const key = `${ci}-${ti}`;
+                    const isTopicOpen = openTopics[key] ?? false;
+                    const isActiveTopic = isActiveChapter && selected.topic === ti;
+                    return (
+                      <li key={ti}>
+                        <div
+                          onClick={() => setSelected({ chapter: ci, topic: ti, subtopic: 0 })}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            padding: "10px 10px",
+                            margin: "6px 6px",
+                            borderRadius: 10,
+                            cursor: "pointer",
+                            border: `1px dashed ${
+                              isActiveTopic ? BRAND.main : "rgba(0,0,0,0.06)"
+                            }`,
+                            background: isActiveTopic ? "rgba(254,193,7,0.08)" : "#fff",
+                            transition: "all .2s ease",
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: 8,
+                              height: 8,
+                              borderRadius: 999,
+                              background: isActiveTopic ? BRAND.secondary : BRAND.main,
+                            }}
+                          />
+                          <div
+                            style={{
+                              fontWeight: 700,
+                              color: isActiveTopic ? BRAND.secondary : BRAND.subtle,
+                              fontSize: 14.5,
+                            }}
+                          >
+                            {tp.topic || `Topic ${ti + 1}`}
+                          </div>
+                          <button
+                            aria-label={isTopicOpen ? "Collapse topic" : "Expand topic"}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleTopic(ci, ti);
+                            }}
+                            style={{
+                              marginLeft: "auto",
+                              border: "none",
+                              background: "transparent",
+                              color: BRAND.secondary,
+                              cursor: "pointer",
+                              transform: isTopicOpen ? "rotate(90deg)" : "rotate(0deg)",
+                              transition: "transform .2s ease",
+                            }}
+                          >
+                            ▸
+                          </button>
+                        </div>
+
+                        {/* Subtopics */}
+                        {isTopicOpen && (
+                          <ul style={{ listStyle: "none", paddingLeft: 14, marginTop: 2 }}>
+                            {tp.subtopics?.map((sub: any, si: number) => {
+                              const isActiveSub = isActiveTopic && selected.subtopic === si;
+                              return (
+                                <li
+                                  key={si}
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    gap: 10,
+                                    padding: "8px 10px",
+                                    margin: "4px 8px",
+                                    borderRadius: 10,
+                                    cursor: "pointer",
+                                    border: `1px solid ${isActiveSub ? BRAND.main : "transparent"}`,
+                                    background: isActiveSub ? "#fff8e1" : "#fafafa",
+                                    color: isActiveSub ? BRAND.secondary : BRAND.subtle,
+                                    fontWeight: isActiveSub ? 700 : 500,
+                                    transition: "all .15s ease",
+                                  }}
+                                  onClick={() => setSelected({ chapter: ci, topic: ti, subtopic: si })}
+                                >
+                                  <span>{sub.title || `Subtopic ${si + 1}`}</span>
+                                  {sub.youtubeUrl && (
+                                    <button
+                                      aria-label="Play"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelected({ chapter: ci, topic: ti, subtopic: si });
+                                      }}
+                                      style={{
+                                        marginLeft: "auto",
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        width: 26,
+                                        height: 26,
+                                        borderRadius: 999,
+                                        border: `1px solid ${BRAND.secondary}`,
+                                        background: BRAND.secondary,
+                                        color: BRAND.card,
+                                        fontWeight: 900,
+                                        boxShadow: cardShadow,
+                                        cursor: "pointer",
+                                      }}
+                                      title="Play"
+                                    >
+                                      ▸
+                                    </button>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </aside>
+  );
+}
+
+function UpcomingLessons({
+  SIDEBAR_WIDTH,
+  curriculum,
+  selected,
+  setSelected,
+  cardShadow,
+  glow,
+}: {
+  SIDEBAR_WIDTH: number;
+  curriculum: any;
+  selected: { chapter: number; topic: number; subtopic: number };
+  setSelected: (v: { chapter: number; topic: number; subtopic: number }) => void;
+  cardShadow: string;
+  glow: string;
+}) {
+  return (
+    <aside
+      style={{
+        width: SIDEBAR_WIDTH,
+        background: BRAND.card,
+        borderRadius: 18,
+        boxShadow: cardShadow,
+        padding: "28px 20px",
+        border: `1px solid ${BRAND.line}`,
+        position: "sticky",
+        top: 86,
+        height: "calc(100vh - 118px)",
+        overflow: "auto",
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 800,
+          color: BRAND.secondary,
+          fontSize: 17,
+          marginBottom: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            width: 26,
+            height: 26,
+            borderRadius: 999,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: BRAND.secondary,
+            color: BRAND.card,
+            fontWeight: 900,
+            boxShadow: cardShadow,
+          }}
+        >
+          ⏭️
+        </span>
+        Upcoming Lessons
+      </div>
+
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {curriculum.chapters?.map((ch: any, ci: number) => (
+          <li key={ci} style={{ marginBottom: 12 }}>
+            <div
+              style={{
+                fontWeight: 800,
+                color: BRAND.secondary,
+                fontSize: 15.5,
+                marginBottom: 6,
+                borderLeft: `4px solid ${BRAND.main}`,
+                paddingLeft: 10,
+              }}
+            >
+              Chapter {ci + 1}: {ch.title}
+            </div>
+            <ul style={{ listStyle: "none", paddingLeft: 12 }}>
+              {ch.topics?.map((tp: any, ti: number) => (
+                <li key={ti} style={{ marginBottom: 6 }}>
+                  <div
+                    style={{
+                      fontWeight: 700,
+                      color: BRAND.subtle,
+                      fontSize: 14.5,
+                      marginBottom: 4,
+                    }}
+                  >
+                    Topic {ti + 1}: {tp.topic}
+                  </div>
+                  <ul style={{ listStyle: "none", paddingLeft: 10 }}>
+                    {tp.subtopics?.map((sub: any, si: number) => {
+                      const isNext =
+                        ci === selected.chapter &&
+                        ti === selected.topic &&
+                        si === selected.subtopic + 1;
+
+                      return (
+                        <li
+                          key={si}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "8px 10px",
+                            marginBottom: 6,
+                            borderRadius: 12,
+                            border: `1px solid ${isNext ? BRAND.main : BRAND.line}`,
+                            background: isNext ? "rgba(254,193,7,0.10)" : "#fcfbf9",
+                            boxShadow: isNext ? glow : "none",
+                            fontWeight: isNext ? 800 : 500,
+                            color: isNext ? BRAND.secondary : BRAND.subtle,
+                          }}
+                        >
+                          <span>
+                            Subtopic {si + 1}: {sub.title}
+                          </span>
+                          {sub.youtubeUrl && (
+                            <button
+                              aria-label="Play"
+                              onClick={() =>
+                                setSelected({ chapter: ci, topic: ti, subtopic: si })
+                              }
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: 28,
+                                height: 28,
+                                borderRadius: 999,
+                                border: `1px solid ${BRAND.secondary}`,
+                                background: BRAND.secondary,
+                                color: BRAND.card,
+                                fontWeight: 900,
+                                cursor: "pointer",
+                                boxShadow: isNext ? glow : cardShadow,
+                              }}
+                              title="Play"
+                            >
+                              ▸
+                            </button>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  );
+}

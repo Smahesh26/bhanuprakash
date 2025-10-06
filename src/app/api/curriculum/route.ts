@@ -14,8 +14,27 @@ export async function POST(req: Request) {
       );
     }
 
+    // Ensure MCQs have explanation field
+    const chaptersWithExplanation = chapters.map((chapter: any) => ({
+      ...chapter,
+      topics: chapter.topics.map((topic: any) => ({
+        ...topic,
+        mcqs: (topic.mcqs || []).map((mcq: any) => ({
+          ...mcq,
+          explanation: mcq.explanation ?? "", // default to empty string if not present
+        })),
+        subtopics: (topic.subtopics || []).map((sub: any) => ({
+          ...sub,
+          mcqs: (sub.mcqs || []).map((mcq: any) => ({
+            ...mcq,
+            explanation: mcq.explanation ?? "",
+          })),
+        })),
+      })),
+    }));
+
     const created = await prisma.curriculum.create({
-      data: { subject, chapters },
+      data: { subject, chapters: chaptersWithExplanation },
     });
 
     return NextResponse.json(created, { status: 201 });
@@ -33,7 +52,6 @@ export async function GET() {
     const curriculums = await prisma.curriculum.findMany({
       orderBy: { createdAt: "desc" },
     });
-
     return NextResponse.json(curriculums);
   } catch (err) {
     console.error("Curriculum fetch error:", err);
