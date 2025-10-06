@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { isServer }) => {
-    // Handle canvas for PDF.js
     if (!isServer) {
+      // Prevent bundling server-only modules on client
       config.resolve.fallback = {
         ...config.resolve.fallback,
         canvas: false,
@@ -10,26 +10,24 @@ const nextConfig = {
       };
     }
 
-    // Ignore .node files
+    // Ignore native .node files
     config.module.rules.push({
       test: /\.node$/,
-      use: 'ignore-loader'
-    });
-
-    // External canvas
-    config.externals = config.externals || [];
-    config.externals.push({
-      canvas: 'canvas',
+      use: 'ignore-loader',
     });
 
     return config;
   },
-  // Updated property name for Next.js 15
-  serverExternalPackages: ['canvas'],
+
+  // For Next.js 15+ (ensures canvas stays externalized)
+  serverExternalPackages: ["canvas"],
+
   images: {
-    domains: [
-      "img.freepik.com",
-      // add more domains here if needed
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
     ],
   },
 };
