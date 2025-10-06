@@ -96,7 +96,7 @@ export default function InstructorLogin() {
                 </form>
                 <div className="account__switch mt-4 text-center">
                   <p>
-                    Don't have an account? <a href="/instructor-registration">Register</a>
+                    Don&apos;t have an account? <a href="/instructor-registration">Register</a>
                   </p>
                 </div>
               </div>
