@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone', // <--- Add this line
+
+  productionBrowserSourceMaps: false, // <--- Optional, saves space
+
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Prevent bundling server-only modules on client
