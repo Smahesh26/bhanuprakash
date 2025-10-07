@@ -1,11 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import YouTube from "react-youtube";
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
-const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 interface Banner {
   id: number;
@@ -43,9 +40,14 @@ function getYouTubeId(input?: string | null): string | null {
   }
 }
 
-const BannerSlider = () => {
+const AUTOPLAY_MS = 7000;
+
+const BannerSlider: React.FC = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [index, setIndex] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverRef = useRef(false);
 
   useEffect(() => {
     fetch("/api/banner-videos")
@@ -55,7 +57,7 @@ const BannerSlider = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // Only keep items with valid video IDs
+  /** Only keep items with valid video IDs */
   const slides = useMemo(
     () =>
       (banners || [])
@@ -64,29 +66,29 @@ const BannerSlider = () => {
     [banners]
   );
 
-  const settings = {
-    dots: true,
-    arrows: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 7000,
-    adaptiveHeight: false,
-  } as const;
+  const count = slides.length;
 
-  const ytOpts = {
-    width: "100%",
-    height: "100%",
-    playerVars: {
-      autoplay: 0,
-      controls: 1,
-      modestbranding: 1,
-      rel: 0,
-      iv_load_policy: 3,
-    },
-  } as const;
+  /** autoplay */
+  useEffect(() => {
+    if (count <= 1) return;
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      if (!hoverRef.current) {
+        setIndex((i) => (i + 1) % count);
+      }
+    }, AUTOPLAY_MS);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [count]);
+
+  const goto = (i: number) => {
+    if (count === 0) return;
+    setIndex((i + count) % count);
+  };
+
+  const next = () => goto(index + 1);
+  const prev = () => goto(index - 1);
 
   return (
     <>
@@ -105,7 +107,7 @@ const BannerSlider = () => {
           padding: 0,
           overflow: "hidden",
           position: "relative",
-          color: "#fff", // force white text
+          color: "#fff",
         }}
       >
         <div className="banner-3d-cut" />
@@ -121,63 +123,82 @@ const BannerSlider = () => {
             position: "relative",
             zIndex: 2,
           }}
+          onMouseEnter={() => (hoverRef.current = true)}
+          onMouseLeave={() => (hoverRef.current = false)}
         >
           {loading ? (
             <div style={{ padding: 40, textAlign: "center" }}>Loading banners…</div>
-          ) : slides.length === 0 ? (
+          ) : count === 0 ? (
             <div style={{ padding: 40, textAlign: "center" }}>
               No playable YouTube videos. Please check your URLs/IDs.
             </div>
           ) : (
-            <Slider key={`slider-${slides.length}`} {...settings}>
-              {slides.map((banner) => (
-                <div key={banner.id} className="hero-slide">
-                  <div className="hero-content-row">
-                    {/* LEFT: TEXT */}
-                    <div className="hero-left">
-                      <h1 className="hero-title">{banner.heading}</h1>
-                      <p className="hero-sub">{banner.subheading}</p>
-                      <Link
-                        href={banner.buttonLink || "/register"}
-                        className="hero-cta"
-                      >
-                        {banner.buttonText || "Get Started Now →"}
-                      </Link>
-                    </div>
+            <div className="simple-slider">
+              {/* Slides */}
+              <div className="slides-viewport">
+                {slides.map((banner, i) => (
+                  <article
+                    key={banner.id}
+                    className={`slide ${i === index ? "is-active" : "is-inactive"}`}
+                    aria-hidden={i === index ? "false" : "true"}
+                  >
+                    <div className="hero-content-row">
+                      {/* LEFT: TEXT */}
+                      <div className="hero-left">
+                        <h1 className="hero-title">{banner.heading}</h1>
+                        <p className="hero-sub">{banner.subheading}</p>
+                        <Link href={banner.buttonLink || "/register"} className="hero-cta">
+                          {banner.buttonText || "Get Started Now →"}
+                        </Link>
+                      </div>
 
-                    {/* RIGHT: VIDEO */}
-                    <div className="hero-right">
-                      <div className="youtube-wrapper">
-                        <YouTube
-                          videoId={banner.videoId as string}
-                          opts={ytOpts}
-                          className="yt-iframe"
-                          iframeClassName="yt-iframe"
-                        />
+                      {/* RIGHT: VIDEO */}
+                      <div className="hero-right">
+                        <div className="youtube-wrapper">
+                          <iframe
+                            className="yt-iframe"
+                            src={`https://www.youtube.com/embed/${banner.videoId}?autoplay=0&controls=1&modestbranding=1&rel=0&iv_load_policy=3`}
+                            title={banner.heading || "Banner video"}
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          />
+                        </div>
                       </div>
                     </div>
+                  </article>
+                ))}
+              </div>
+
+              {/* Controls */}
+              {count > 1 && (
+                <>
+                  <button className="nav-btn prev" onClick={prev} aria-label="Previous slide">
+                    ‹
+                  </button>
+                  <button className="nav-btn next" onClick={next} aria-label="Next slide">
+                    ›
+                  </button>
+
+                  <div className="dots">
+                    {slides.map((_, i) => (
+                      <button
+                        key={i}
+                        className={`dot ${i === index ? "active" : ""}`}
+                        onClick={() => goto(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
                   </div>
-                </div>
-              ))}
-            </Slider>
+                </>
+              )}
+            </div>
           )}
         </div>
 
-        {/* Layout + slick stability + always-white text */}
+        {/* Styles */}
         <style jsx global>{`
-          /* Keep slick stable with flex content */
-          .slick-track {
-            display: flex !important;
-            align-items: stretch;
-          }
-          .slick-slide {
-            height: auto !important;
-          }
-          .slick-slide > div {
-            height: 100%;
-          }
-
-          /* Inner wrapper is the actual row */
+          /* Layout skeleton from your original styles */
           .hero-content-row {
             display: flex;
             flex-direction: row;
@@ -186,13 +207,6 @@ const BannerSlider = () => {
             gap: 24px;
             min-height: 50vh;
           }
-
-          /* Two-column hero slide container */
-          .hero-slide {
-            display: block; /* wrapper handles flex */
-            padding: 24px 20px;
-          }
-
           .hero-left {
             flex: 1;
             color: #fff;
@@ -202,7 +216,6 @@ const BannerSlider = () => {
             flex-direction: column;
             justify-content: center;
           }
-
           .hero-title {
             color: #fff !important;
             font-weight: 800;
@@ -211,7 +224,6 @@ const BannerSlider = () => {
             margin: 0 0 12px 0;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
           }
-
           .hero-sub {
             color: #fff !important;
             font-size: 18px;
@@ -219,7 +231,6 @@ const BannerSlider = () => {
             opacity: 0.95;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
           }
-
           .hero-cta {
             display: inline-block;
             background: #f9a116;
@@ -240,7 +251,6 @@ const BannerSlider = () => {
             transform: translateY(-1px);
             box-shadow: 0 6px 18px rgba(249, 161, 22, 0.35);
           }
-
           .hero-right {
             flex: 1.2;
             display: flex;
@@ -249,18 +259,17 @@ const BannerSlider = () => {
             min-height: 320px;
             padding: 12px 24px 24px 12px;
           }
-
           .youtube-wrapper {
             position: relative;
             width: 100%;
-            max-width: 900px; /* roomy on desktop */
+            max-width: 900px;
             aspect-ratio: 16 / 9;
             background: #000;
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 0 32px rgba(168, 107, 46, 0.2);
           }
-          .youtube-wrapper iframe.yt-iframe {
+          .youtube-wrapper .yt-iframe {
             width: 100%;
             height: 100%;
             border: 0;
@@ -290,9 +299,82 @@ const BannerSlider = () => {
               padding: 0 12px 20px;
             }
           }
+
+          /* Simple slider core */
+          .simple-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+          }
+          .slides-viewport {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+          .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateX(5%);
+            transition: opacity 400ms ease, transform 400ms ease;
+            padding: 24px 20px;
+          }
+          .slide.is-active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+          }
+
+          .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 5;
+          }
+          .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+          }
+          .nav-btn.prev {
+            left: 12px;
+          }
+          .nav-btn.next {
+            right: 12px;
+          }
+
+          .dots {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 14px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            z-index: 5;
+          }
+          .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            border: 0;
+            background: rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+          }
+          .dot.active {
+            background: #f9a116;
+          }
         `}</style>
 
-        {/* Decorative diagonal overlay */}
+        {/* Decorative diagonal overlay (kept) */}
         <style jsx>{`
           .banner-3d-cut {
             position: absolute;
@@ -306,8 +388,7 @@ const BannerSlider = () => {
             );
             clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
             box-shadow: 0 24px 64px rgba(80, 40, 10, 0.18);
-            animation: bannerCutAnim 2.5s cubic-bezier(0.77, 0.2, 0.22, 1)
-              forwards;
+            animation: bannerCutAnim 2.5s cubic-bezier(0.77, 0.2, 0.22, 1) forwards;
             opacity: 0.95;
           }
           @keyframes bannerCutAnim {

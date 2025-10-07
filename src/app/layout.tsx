@@ -8,8 +8,7 @@ import FooterTwo from "@/layouts/footers/FooterTwo";
 import Preloader from "@/components/Preloader";
 import React, { useEffect, useState } from "react";
 import { AuthProvider } from "@/context/AuthContext";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
