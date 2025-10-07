@@ -33,6 +33,7 @@ const nextConfig = {
         hostname: "img.freepik.com",
       },
     ],
+    domains: ['i.ytimg.com'],
   },
 };
 

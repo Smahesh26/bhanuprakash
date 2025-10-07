@@ -20788,6 +20788,9 @@ blockquote > p {
 .banner-slide {
   height: 100%;
 }
+/* global stylesheet */
+.container + .lv-after { margin-top: 0 !important; }
+
 .video-container iframe {
   pointer-events: none;
 }
