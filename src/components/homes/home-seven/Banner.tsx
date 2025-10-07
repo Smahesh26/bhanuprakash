@@ -5,11 +5,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import YouTube from "react-youtube";
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
-
-// Tip: Prefer importing these in app/layout.tsx or _app.tsx
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 interface Banner {
