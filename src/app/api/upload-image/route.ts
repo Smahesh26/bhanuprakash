@@ -1,28 +1,33 @@
-export const runtime = "nodejs"; // 👈 Important!
-
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { v4 as uuid } from "uuid";
-import { Buffer } from "buffer";
+import cloudinary from "lib/cloudinary";
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const data = await req.formData();
-  const file = data.get("file") as File;
+  const formData = await req.formData();
+  const file = formData.get("file") as File;
 
   if (!file) {
     return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
   }
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
 
-  const filename = `${uuid()}-${file.name}`;
-  const uploadDir = path.join(process.cwd(), "public/uploads");
-  await mkdir(uploadDir, { recursive: true });
+  try {
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        { folder: "courses" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      ).end(buffer);
+    });
 
-  const filepath = path.join(uploadDir, filename);
-  await writeFile(filepath, buffer);
-
-  return NextResponse.json({ filename });
+    // @ts-ignore
+    return NextResponse.json({ url: result.secure_url });
+  } catch (err) {
+    console.error("Cloudinary upload error:", err);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  }
 }

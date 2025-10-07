@@ -75,12 +75,12 @@ const InstructorUploadCourse = () => {
 
       const uploadData = await uploadRes.json();
 
-      if (!uploadRes.ok) {
+      if (!uploadRes.ok || !uploadData.url) {
         toast.error("Image upload failed");
         return;
       }
 
-      uploadedThumb = `/uploads/${uploadData.filename}`;
+      uploadedThumb = uploadData.url; // Cloudinary URL
     }
 
     const finalForm = { ...form, thumb: uploadedThumb };
@@ -142,12 +142,12 @@ const InstructorUploadCourse = () => {
 
       const uploadData = await uploadRes.json();
 
-      if (!uploadRes.ok) {
+      if (!uploadRes.ok || !uploadData.url) {
         toast.error("Image upload failed");
         return;
       }
 
-      updatedThumb = `/uploads/${uploadData.filename}`;
+      updatedThumb = uploadData.url; // Cloudinary URL
     }
 
     const finalEditForm = { ...editForm, thumb: updatedThumb };
