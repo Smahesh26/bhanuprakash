@@ -81,13 +81,15 @@ const BannerVideos = () => {
     }
 
     // POST only the model fields
-    const payload = banners.map((b) => ({
+    const b = banners[0]; // or the banner you want to send
+
+    const payload = {
       heading: b.heading.trim(),
       subheading: b.subheading.trim(),
       buttonText: b.buttonText.trim(),
       buttonLink: b.buttonLink?.trim() || null,
       youtubeUrl: b.youtubeUrl.trim(),
-    }));
+    };
 
     await fetch("/api/banner-videos", {
       method: "POST",
