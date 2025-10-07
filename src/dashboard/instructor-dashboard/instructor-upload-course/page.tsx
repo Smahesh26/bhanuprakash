@@ -56,11 +56,9 @@ const InstructorUploadCourse = () => {
     e.preventDefault();
     const payload = editId ? editForm : form;
     if (!payload) return;
-    const url = "/api/courses";
+    const url = editId ? `/api/courses/${editId}` : "/api/courses";
     const method = editId ? "PUT" : "POST";
-    const body = editId
-      ? JSON.stringify({ ...editForm, id: editId })
-      : JSON.stringify(form);
+    const body = JSON.stringify(payload);
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
@@ -102,10 +100,8 @@ const InstructorUploadCourse = () => {
 
   const handleDelete = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
-    await fetch("/api/courses", {
+    await fetch(`/api/courses/${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
     });
     fetchCourses();
   };
