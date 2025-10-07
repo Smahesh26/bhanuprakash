@@ -8,11 +8,10 @@ export async function DELETE(
 ) {
   try {
     const { id } = params;
-
     if (!id) return NextResponse.json({ error: "Missing video ID" }, { status: 400 });
 
     const deleted = await prisma.latestVideo.delete({
-      where: { id },
+      where: { id }, // id is a string
     });
 
     return NextResponse.json({ message: "Video deleted", data: deleted });
