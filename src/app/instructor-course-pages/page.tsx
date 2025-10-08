@@ -71,6 +71,8 @@ const UploadContent = () => {
   const [allCurriculums, setAllCurriculums] = useState<Curriculum[]>([]);
   const [loadingCurriculums, setLoadingCurriculums] = useState(false);
   const [editCurriculum, setEditCurriculum] = useState<Curriculum | null>(null);
+  const [showPdfIdx, setShowPdfIdx] = useState<number | null>(null);
+  const [showCaseIdx, setShowCaseIdx] = useState<number | null>(null);
 
   // Fetch all curriculums
   const fetchCurriculums = async () => {
@@ -608,8 +610,28 @@ const UploadContent = () => {
                               <div className="row g-2 align-items-end mb-2">
                                 <div className="col-md-6">
                                   <Form.Label>PDF</Form.Label>
-                                  {topic.pdf && typeof topic.pdf === "string" && (
-                                    <a href={topic.pdf} target="_blank" rel="noopener noreferrer" style={{ marginRight: 8 }}>View PDF</a>
+                                  {topic.pdf && typeof topic.pdf === "string" ? (
+                                    <>
+                                      <Button
+                                        variant="outline-primary"
+                                        size="sm"
+                                        onClick={() => setShowPdfIdx(showPdfIdx === k ? null : k)}
+                                      >
+                                        {showPdfIdx === k ? "Hide PDF" : "View PDF"}
+                                      </Button>
+                                      {showPdfIdx === k && (
+                                        <div style={{ marginTop: 10 }}>
+                                          <iframe
+                                            src={topic.pdf}
+                                            width="100%"
+                                            height="400px"
+                                            style={{ border: "1px solid #ccc" }}
+                                          />
+                                        </div>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <span className="text-muted">No PDF available</span>
                                   )}
                                   <div className="d-flex align-items-center">
                                     <Form.Select
