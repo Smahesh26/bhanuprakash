@@ -11,6 +11,8 @@ interface Course {
   instructors: string;
   price: string;
   videoUrl: string;
+  pdfUrl?: string;         // PDF field
+  caseStudyUrl?: string;   // Case Study field
 }
 
 const InstructorUploadCourse = () => {
@@ -23,6 +25,8 @@ const InstructorUploadCourse = () => {
     instructors: "",
     price: "",
     videoUrl: "",
+    pdfUrl: "",
+    caseStudyUrl: "",
   });
   const [editId, setEditId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<Omit<Course, "id"> | null>(null);
@@ -74,6 +78,8 @@ const InstructorUploadCourse = () => {
         instructors: "",
         price: "",
         videoUrl: "",
+        pdfUrl: "",
+        caseStudyUrl: "",
       });
       setEditId(null);
       setEditForm(null);
@@ -191,6 +197,56 @@ const InstructorUploadCourse = () => {
                 onChange={editId ? handleEditChange : handleChange}
               />
             </div>
+            <div className="col-md-6">
+              <label className="form-label fw-semibold">PDF Upload</label>
+              <input
+                className="form-control"
+                type="file"
+                accept="application/pdf"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const formData = new FormData();
+                  formData.append("file", file);
+                  formData.append("upload_preset", "bhanuprakash_upload");
+                  const res = await fetch("https://api.cloudinary.com/v1_1/dnycvwq6ad/upload", {
+                    method: "POST",
+                    body: formData,
+                  });
+                  const data = await res.json();
+                  if (editId) {
+                    setEditForm((f) => f ? { ...f, pdfUrl: data.secure_url } : null);
+                  } else {
+                    setForm((f) => ({ ...f, pdfUrl: data.secure_url }));
+                  }
+                }}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label fw-semibold">Case Study Upload</label>
+              <input
+                className="form-control"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const formData = new FormData();
+                  formData.append("file", file);
+                  formData.append("upload_preset", "bhanuprakash_upload");
+                  const res = await fetch("https://api.cloudinary.com/v1_1/dnycvwq6ad/upload", {
+                    method: "POST",
+                    body: formData,
+                  });
+                  const data = await res.json();
+                  if (editId) {
+                    setEditForm((f) => f ? { ...f, caseStudyUrl: data.secure_url } : null);
+                  } else {
+                    setForm((f) => ({ ...f, caseStudyUrl: data.secure_url }));
+                  }
+                }}
+              />
+            </div>
             <div className="col-12">
               <button type="submit" className="btn btn-primary">
                 {editId ? "Update Course" : "Add Course"}
@@ -223,13 +279,15 @@ const InstructorUploadCourse = () => {
                     <th>Instructor</th>
                     <th>Price</th>
                     <th>Video</th>
+                    <th>PDF</th>
+                    <th>Case Study</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {courses.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="text-center">
+                      <td colSpan={9} className="text-center">
                         No courses found.
                       </td>
                     </tr>
@@ -249,6 +307,24 @@ const InstructorUploadCourse = () => {
                             rel="noopener noreferrer"
                           >
                             Video
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td>
+                        {course.pdfUrl ? (
+                          <a href={course.pdfUrl} target="_blank" rel="noopener noreferrer">
+                            PDF
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td>
+                        {course.caseStudyUrl ? (
+                          <a href={course.caseStudyUrl} target="_blank" rel="noopener noreferrer">
+                            Case Study
                           </a>
                         ) : (
                           "-"

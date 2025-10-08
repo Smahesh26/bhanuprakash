@@ -29,7 +29,7 @@ const HomeFour = () => {
             <Blog />
             <Cta />
          </main>
-         <FooterTwo />
+         {/* <FooterTwo /> */}
       </>
    )
 }
