@@ -85,16 +85,7 @@ const UploadContent = () => {
     fetchCurriculums();
   }, []);
 
-  // Helper to upload a file and get its URL
-  async function uploadFile(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    const data = await res.json();
-    return data.url;
-  }
-
-  // Upload file and get URL
+  // Upload file and get URL from Cloudinary
   async function handleFileUpload(file: File) {
     const formData = new FormData();
     formData.append("file", file);
@@ -127,7 +118,6 @@ const UploadContent = () => {
       }
     }
 
-    // FIX: Send a single object, not an array
     await fetch("/api/curriculum", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -158,6 +148,40 @@ const UploadContent = () => {
     ]);
     fetchCurriculums();
   };
+
+  // Edit handler: upload files, build curriculum JSON, send to backend
+  async function handleEditSubmit(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
+    event.preventDefault();
+    if (!editCurriculum) return;
+
+    const updatedCurriculum: Curriculum = {
+      id: editCurriculum.id ?? "",
+      subject: editCurriculum.subject ?? "",
+      chapters: editCurriculum.chapters ? JSON.parse(JSON.stringify(editCurriculum.chapters)) : [],
+    };
+
+    for (const chapter of updatedCurriculum.chapters) {
+      for (const topic of chapter.topics) {
+        if (topic.pdf instanceof File) topic.pdf = await handleFileUpload(topic.pdf);
+        if (topic.caseStudy instanceof File) topic.caseStudy = await handleFileUpload(topic.caseStudy);
+        if (topic.hasSubtopics && topic.subtopics) {
+          for (const sub of topic.subtopics) {
+            if (sub.pdf instanceof File) sub.pdf = await handleFileUpload(sub.pdf);
+            if (sub.caseStudy instanceof File) sub.caseStudy = await handleFileUpload(sub.caseStudy);
+          }
+        }
+      }
+    }
+
+    await fetch(`/api/curriculum/${editCurriculum.id}/update`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedCurriculum),
+    });
+
+    setEditCurriculum(null);
+    fetchCurriculums();
+  }
 
   // File input handlers
   const handleFileChange = (
@@ -291,50 +315,6 @@ const UploadContent = () => {
   function cancelEdit(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
     event.preventDefault();
     setEditCurriculum(null);
-  }
-
-  async function handleEditSubmit(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
-    event.preventDefault();
-    if (!editCurriculum) return;
-
-    // Deep copy for editing
-    const updatedCurriculum: Curriculum = {
-      id: editCurriculum.id ?? "",
-      subject: editCurriculum.subject ?? "",
-      chapters: editCurriculum.chapters ? JSON.parse(JSON.stringify(editCurriculum.chapters)) : [],
-    };
-
-    // Upload files if any are File objects
-    for (const chapter of updatedCurriculum.chapters) {
-      for (const topic of chapter.topics) {
-        if (topic.pdf instanceof File) {
-          topic.pdf = await uploadFile(topic.pdf);
-        }
-        if (topic.caseStudy instanceof File) {
-          topic.caseStudy = await uploadFile(topic.caseStudy);
-        }
-        if (topic.hasSubtopics && topic.subtopics) {
-          for (const sub of topic.subtopics) {
-            if (sub.pdf instanceof File) {
-              sub.pdf = await uploadFile(sub.pdf);
-            }
-            if (sub.caseStudy instanceof File) {
-              sub.caseStudy = await uploadFile(sub.caseStudy);
-            }
-          }
-        }
-      }
-    }
-
-    // IMPORTANT: Use /update route for PUT
-    await fetch(`/api/curriculum/${editCurriculum.id}/update`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedCurriculum),
-    });
-
-    setEditCurriculum(null);
-    fetchCurriculums();
   }
 
   return (
