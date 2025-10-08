@@ -62,7 +62,7 @@ const CourseDetailsPage = () => {
   useEffect(() => {
     if (!id) return;
     const ctrl = new AbortController();
-    fetch(`/api/course-details/get-course-details?id=${id}`, { signal: ctrl.signal })
+    fetch(`/api/course-details/${id}`, { signal: ctrl.signal })
       .then((res) => res.json())
       .then((data) => setCurriculum(data))
       .catch((err) => {
