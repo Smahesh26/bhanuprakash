@@ -122,10 +122,11 @@ const UploadContent = () => {
       }
     }
 
+    // FIX: Send a single object, not an array
     await fetch("/api/curriculum", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newCurriculum),
+      body: JSON.stringify(newCurriculum[0]), // single object, not array
     });
 
     setCurriculum([
