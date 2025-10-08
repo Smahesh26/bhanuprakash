@@ -94,6 +94,15 @@ const UploadContent = () => {
     return data.url;
   }
 
+  // When building your curriculum object:
+  const handleFileUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/upload-file", { method: "POST", body: formData });
+    const data = await res.json();
+    return data.url; // Cloudinary file URL
+  };
+
   // Submit handler: upload files, build curriculum JSON, send to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
