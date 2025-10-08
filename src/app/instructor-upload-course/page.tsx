@@ -119,7 +119,7 @@ const InstructorUploadCourse = () => {
   // Edit course
   const handleEdit = (id: string) => {
     setEditId(id);
-    const course = courses.find((c) => c._id === id);
+    const course = courses.find((c) => c.id === id);
     if (course) {
       setEditForm(course);
       setEditFile(null);
@@ -446,13 +446,13 @@ const InstructorUploadCourse = () => {
                           </td>
                           <td>
                             <button
-                              onClick={() => handleEdit(course._id)}
+                              onClick={() => handleEdit(course.id)}
                               className="btn btn-sm btn-warning"
                             >
                               Edit
                             </button>
                             <button
-                              onClick={() => handleDelete(course._id)}
+                              onClick={() => handleDelete(course.id)}
                               className="btn btn-sm btn-danger ms-2"
                             >
                               Delete
