@@ -111,20 +111,27 @@ const UploadContent = () => {
     for (const subj of newCurriculum) {
       for (const chapter of subj.chapters) {
         for (const topic of chapter.topics) {
+          // Upload PDF/Case Study if they are File objects
           if (topic.pdf instanceof File) {
-            topic.pdf = await uploadFile(topic.pdf);
+            topic.pdf = await handleFileUpload(topic.pdf);
           }
           if (topic.caseStudy instanceof File) {
-            topic.caseStudy = await uploadFile(topic.caseStudy);
+            topic.caseStudy = await handleFileUpload(topic.caseStudy);
           }
+          // Force empty objects to null when submit
+          if (topic.pdf === null || typeof topic.pdf !== 'string') topic.pdf = null;
+          if (topic.caseStudy === null || typeof topic.caseStudy !== 'string') topic.caseStudy = null;
+
           if (topic.hasSubtopics && topic.subtopics) {
             for (const sub of topic.subtopics) {
               if (sub.pdf instanceof File) {
-                sub.pdf = await uploadFile(sub.pdf);
+                sub.pdf = await handleFileUpload(sub.pdf);
               }
               if (sub.caseStudy instanceof File) {
-                sub.caseStudy = await uploadFile(sub.caseStudy);
+                sub.caseStudy = await handleFileUpload(sub.caseStudy);
               }
+              if (sub.pdf === null || typeof sub.pdf !== 'string') sub.pdf = null;
+              if (sub.caseStudy === null || typeof sub.caseStudy !== 'string') sub.caseStudy = null;
             }
           }
         }
