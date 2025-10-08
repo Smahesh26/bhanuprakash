@@ -94,58 +94,90 @@ const UploadContent = () => {
     return data.url;
   }
 
+  // Helper to convert File/string/null to URL or null
+  const toUrl = async (v: File | string | null | undefined) => {
+    if (v instanceof File) return await handleFileUpload(v);
+    return typeof v === "string" && v.trim() ? v : null;
+  };
+
   // Submit handler: upload files, build curriculum JSON, send to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newCurriculum = JSON.parse(JSON.stringify(curriculum)); // deep copy
 
-    for (const subj of newCurriculum) {
-      for (const chapter of subj.chapters) {
-        for (const topic of chapter.topics) {
-          if (topic.pdf instanceof File) topic.pdf = await handleFileUpload(topic.pdf);
-          if (topic.caseStudy instanceof File) topic.caseStudy = await handleFileUpload(topic.caseStudy);
-          if (topic.pdf === null || typeof topic.pdf !== 'string') topic.pdf = null;
-          if (topic.caseStudy === null || typeof topic.caseStudy !== 'string') topic.caseStudy = null;
-          if (topic.hasSubtopics && topic.subtopics) {
-            for (const sub of topic.subtopics) {
-              if (sub.pdf instanceof File) sub.pdf = await handleFileUpload(sub.pdf);
-              if (sub.caseStudy instanceof File) sub.caseStudy = await handleFileUpload(sub.caseStudy);
-              if (sub.pdf === null || typeof sub.pdf !== 'string') sub.pdf = null;
-              if (sub.caseStudy === null || typeof sub.caseStudy !== 'string') sub.caseStudy = null;
+    const src = curriculum[0];
+
+    const chapters = await Promise.all(
+      (src.chapters || []).map(async (chapter) => ({
+        chapter: chapter.chapter || "",
+        topics: await Promise.all(
+          (chapter.topics || []).map(async (t) => {
+            if (t.hasSubtopics) {
+              return {
+                topic: t.topic || "",
+                hasSubtopics: true,
+                subtopics: await Promise.all(
+                  (t.subtopics || []).map(async (s) => ({
+                    title: s.title || "",
+                    youtubeUrl: s.youtubeUrl || "",
+                    pdfAccess: s.pdfAccess || "VIEW",
+                    pdf: await toUrl(s.pdf),
+                    caseStudyAccess: s.caseStudyAccess || "VIEW",
+                    caseStudy: await toUrl(s.caseStudy),
+                    mcqs: (s.mcqs || []).map(m => ({
+                      question: m.question || "",
+                      options: Array.isArray(m.options) ? m.options : ["", "", "", ""],
+                      correctAnswerIndex: Number.isInteger(m.correctAnswerIndex) ? m.correctAnswerIndex : 0,
+                      explanation: "",
+                    })),
+                  }))
+                ),
+              };
             }
-          }
-        }
-      }
-    }
+            return {
+              topic: t.topic || "",
+              hasSubtopics: false,
+              youtubeUrl: t.youtubeUrl || "",
+              pdfAccess: t.pdfAccess || "VIEW",
+              pdf: await toUrl(t.pdf),
+              caseStudyAccess: t.caseStudyAccess || "VIEW",
+              caseStudy: await toUrl(t.caseStudy),
+              mcqs: (t.mcqs || []).map(m => ({
+                question: m.question || "",
+                options: Array.isArray(m.options) ? m.options : ["", "", "", ""],
+                correctAnswerIndex: Number.isInteger(m.correctAnswerIndex) ? m.correctAnswerIndex : 0,
+                explanation: "",
+              })),
+            };
+          })
+        ),
+      }))
+    );
+
+    const payload = { subject: src.subject || "", chapters };
 
     await fetch("/api/curriculum", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newCurriculum[0]), // single object, not array
+      body: JSON.stringify(payload),
     });
 
-    setCurriculum([
-      {
-        subject: "",
-        chapters: [
-          {
-            chapter: "",
-            topics: [
-              {
-                topic: "",
-                hasSubtopics: false,
-                youtubeUrl: "",
-                pdfAccess: "VIEW",
-                pdf: null,
-                caseStudyAccess: "VIEW",
-                caseStudy: null,
-                mcqs: [],
-              },
-            ],
-          },
-        ],
-      },
-    ]);
+    // reset + refresh
+    setCurriculum([{
+      subject: "",
+      chapters: [{
+        chapter: "",
+        topics: [{
+          topic: "",
+          hasSubtopics: false,
+          youtubeUrl: "",
+          pdfAccess: "VIEW",
+          pdf: null,
+          caseStudyAccess: "VIEW",
+          caseStudy: null,
+          mcqs: [],
+        }],
+      }],
+    }]);
     fetchCurriculums();
   };
 
