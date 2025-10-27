@@ -54,7 +54,16 @@ export async function GET() {
     console.log("Fetching all curriculums");
 
     const curriculums = await prisma.curriculum.findMany({
-      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        subject: true,
+        chapters: true,
+        createdAt: true, // Keep createdAt for ordering
+        // Remove updatedAt to avoid the error
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     console.log(`Found ${curriculums.length} curriculums`);
