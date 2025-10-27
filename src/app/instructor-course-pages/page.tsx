@@ -73,6 +73,9 @@ const UploadContent = () => {
   const [editCurriculum, setEditCurriculum] = useState<Curriculum | null>(null);
   const [showPdfIdx, setShowPdfIdx] = useState<number | null>(null);
   const [showCaseIdx, setShowCaseIdx] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   // Fetch all curriculums
   const fetchCurriculums = async () => {
@@ -89,132 +92,277 @@ const UploadContent = () => {
 
   // Upload file and get URL from Cloudinary
   async function handleFileUpload(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await fetch("/api/upload-file", { method: "POST", body: formData });
-    const data = await res.json();
-    return data.url;
+    try {
+      console.log("🔥 Starting file upload:", { name: file.name, size: file.size, type: file.type });
+      
+      const formData = new FormData();
+      formData.append("file", file);
+      
+      console.log("📤 Sending request to /api/upload-file");
+      const res = await fetch("/api/upload-file", { method: "POST", body: formData });
+      
+      console.log("📥 Upload response status:", res.status);
+      
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        console.error("❌ Upload failed with status:", res.status, text);
+        throw new Error(`Upload failed (${res.status}) ${text}`);
+      }
+      
+      const data = await res.json();
+      console.log("📋 Upload response data:", data);
+      
+      if (!data || typeof data.url !== "string") {
+        console.error("❌ Invalid upload response:", data);
+        throw new Error("Upload response missing 'url'");
+      }
+      
+      console.log("✅ File uploaded successfully:", data.url);
+      return data.url;
+    } catch (err) {
+      console.error("💥 handleFileUpload error:", err);
+      setErrorMessage(`Failed to upload file: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      throw err;
+    }
   }
 
   // Helper to convert File/string/null to URL or null
   const toUrl = async (v: File | string | null | undefined) => {
-    if (v instanceof File) return await handleFileUpload(v);
-    return typeof v === "string" && v.trim() ? v : null;
+    console.log("🔄 toUrl called with:", v ? `${v.constructor.name} - ${v instanceof File ? v.name : v}` : 'null/undefined');
+    
+    if (v instanceof File) {
+      try {
+        console.log("📤 Converting file to URL:", v.name);
+        const url = await handleFileUpload(v);
+        console.log("✅ File converted to URL:", url);
+        return url;
+      } catch (error) {
+        console.error("❌ Error uploading file:", error);
+        // Return null instead of throwing to prevent submission failure
+        return null;
+      }
+    }
+    
+    const result = typeof v === "string" && v.trim() ? v : null;
+    console.log("📝 String/null result:", result);
+    return result;
   };
 
-  // Submit handler: upload files, build curriculum JSON, send to backend
+  // Submit handler with enhanced logging
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    setSaving(true);
 
-    const src = curriculum[0];
+    try {
+      console.log("🚀 Starting curriculum submission");
+      const src = curriculum[0];
+      
+      console.log("📊 Source curriculum:", JSON.stringify(src, null, 2));
 
-    const chapters = await Promise.all(
-      (src.chapters || []).map(async (chapter) => ({
-        chapter: chapter.chapter || "",
-        topics: await Promise.all(
-          (chapter.topics || []).map(async (t) => {
-            if (t.hasSubtopics) {
-              return {
-                topic: t.topic || "",
-                hasSubtopics: true,
-                subtopics: await Promise.all(
-                  (t.subtopics || []).map(async (s) => ({
-                    title: s.title || "",
-                    youtubeUrl: s.youtubeUrl || "",
-                    pdfAccess: s.pdfAccess || "VIEW",
-                    pdf: await toUrl(s.pdf),
-                    caseStudyAccess: s.caseStudyAccess || "VIEW",
-                    caseStudy: await toUrl(s.caseStudy),
-                    mcqs: (s.mcqs || []).map(m => ({
-                      question: m.question || "",
-                      options: Array.isArray(m.options) ? m.options : ["", "", "", ""],
-                      correctAnswerIndex: Number.isInteger(m.correctAnswerIndex) ? m.correctAnswerIndex : 0,
-                      explanation: "",
-                    })),
-                  }))
-                ),
-              };
-            }
-            return {
-              topic: t.topic || "",
-              hasSubtopics: false,
-              youtubeUrl: t.youtubeUrl || "",
-              pdfAccess: t.pdfAccess || "VIEW",
-              pdf: await toUrl(t.pdf),
-              caseStudyAccess: t.caseStudyAccess || "VIEW",
-              caseStudy: await toUrl(t.caseStudy),
-              mcqs: (t.mcqs || []).map(m => ({
-                question: m.question || "",
-                options: Array.isArray(m.options) ? m.options : ["", "", "", ""],
-                correctAnswerIndex: Number.isInteger(m.correctAnswerIndex) ? m.correctAnswerIndex : 0,
-                explanation: "",
-              })),
-            };
-          })
-        ),
-      }))
-    );
+      const chapters = await Promise.all(
+        (src.chapters || []).map(async (chapter, chapterIndex) => {
+          console.log(`📚 Processing chapter ${chapterIndex + 1}:`, chapter.chapter);
+          
+          return {
+            chapter: chapter.chapter || "",
+            topics: await Promise.all(
+              (chapter.topics || []).map(async (t, topicIndex) => {
+                console.log(`📖 Processing topic ${topicIndex + 1}:`, t.topic);
+                
+                if (t.hasSubtopics) {
+                  return {
+                    topic: t.topic || "",
+                    hasSubtopics: true,
+                    subtopics: await Promise.all(
+                      (t.subtopics || []).map(async (s, subtopicIndex) => {
+                        console.log(`📄 Processing subtopic ${subtopicIndex + 1}:`, s.title);
+                        console.log(`🔗 PDF file:`, s.pdf);
+                        console.log(`📋 Case study file:`, s.caseStudy);
+                        
+                        const pdfUrl = await toUrl(s.pdf);
+                        const caseStudyUrl = await toUrl(s.caseStudy);
+                        
+                        console.log(`✅ PDF URL result:`, pdfUrl);
+                        console.log(`✅ Case study URL result:`, caseStudyUrl);
+                        
+                        return {
+                          title: s.title || "",
+                          youtubeUrl: s.youtubeUrl || "",
+                          pdfAccess: s.pdfAccess || "VIEW",
+                          pdf: pdfUrl,
+                          caseStudyAccess: s.caseStudyAccess || "VIEW",
+                          caseStudy: caseStudyUrl,
+                          mcqs: (s.mcqs || []).map(m => ({
+                            question: m.question || "",
+                            options: Array.isArray(m.options) ? m.options : ["", "", "", ""],
+                            correctAnswerIndex: Number.isInteger(m.correctAnswerIndex) ? m.correctAnswerIndex : 0,
+                            explanation: "",
+                          })),
+                        };
+                      })
+                    ),
+                  };
+                }
+                
+                console.log(`📝 Topic PDF file:`, t.pdf);
+                console.log(`📋 Topic case study file:`, t.caseStudy);
+                
+                const topicPdfUrl = await toUrl(t.pdf);
+                const topicCaseStudyUrl = await toUrl(t.caseStudy);
+                
+                console.log(`✅ Topic PDF URL result:`, topicPdfUrl);
+                console.log(`✅ Topic case study URL result:`, topicCaseStudyUrl);
+                
+                return {
+                  topic: t.topic || "",
+                  hasSubtopics: false,
+                  youtubeUrl: t.youtubeUrl || "",
+                  pdfAccess: t.pdfAccess || "VIEW",
+                  pdf: topicPdfUrl,
+                  caseStudyAccess: t.caseStudyAccess || "VIEW",
+                  caseStudy: topicCaseStudyUrl,
+                  mcqs: (t.mcqs || []).map(m => ({
+                    question: m.question || "",
+                    options: Array.isArray(m.options) ? m.options : ["", "", "", ""],
+                    correctAnswerIndex: Number.isInteger(m.correctAnswerIndex) ? m.correctAnswerIndex : 0,
+                    explanation: "",
+                  })),
+                };
+              })
+            ),
+          };
+        })
+      );
 
-    const payload = { subject: src.subject || "", chapters };
+      const payload = { subject: src.subject || "", chapters };
+      
+      console.log("📤 Final payload being sent:", JSON.stringify(payload, null, 2));
 
-    await fetch("/api/curriculum", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      const res = await fetch("/api/curriculum", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    // reset + refresh
-    setCurriculum([{
-      subject: "",
-      chapters: [{
-        chapter: "",
-        topics: [{
-          topic: "",
-          hasSubtopics: false,
-          youtubeUrl: "",
-          pdfAccess: "VIEW",
-          pdf: null,
-          caseStudyAccess: "VIEW",
-          caseStudy: null,
-          mcqs: [],
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(`Failed to save curriculum (${res.status}) ${txt}`);
+      }
+
+      setSuccessMessage("Curriculum submitted successfully");
+      
+      // reset + refresh
+      setCurriculum([{
+        subject: "",
+        chapters: [{
+          chapter: "",
+          topics: [{
+            topic: "",
+            hasSubtopics: false,
+            youtubeUrl: "",
+            pdfAccess: "VIEW",
+            pdf: null,
+            caseStudyAccess: "VIEW",
+            caseStudy: null,
+            mcqs: [],
+          }],
         }],
-      }],
-    }]);
-    fetchCurriculums();
+      }]);
+      fetchCurriculums();
+    } catch (err: any) {
+      console.error("💥 handleSubmit error:", err);
+      setErrorMessage(err?.message ?? "Error submitting curriculum");
+    } finally {
+      setSaving(false);
+    }
   };
 
   // Edit handler: upload files, build curriculum JSON, send to backend
   async function handleEditSubmit(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
     event.preventDefault();
     if (!editCurriculum) return;
+    setErrorMessage(null);
+    setSaving(true);
+    
+    try {
+      console.log("🚀 Starting EDIT curriculum submission");
+      console.log("📊 Edit curriculum data:", JSON.stringify(editCurriculum, (key, value) => {
+        if (value instanceof File) {
+          return `[File: ${value.name}]`;
+        }
+        return value;
+      }, 2));
 
-    const updatedCurriculum: Curriculum = {
-      id: editCurriculum.id ?? "",
-      subject: editCurriculum.subject ?? "",
-      chapters: editCurriculum.chapters ? JSON.parse(JSON.stringify(editCurriculum.chapters)) : [],
-    };
+      // FIX: Don't deep clone with JSON.parse/stringify as it loses File objects
+      // Instead, work directly with the editCurriculum object
+      const updatedCurriculum: Curriculum = {
+        id: editCurriculum.id ?? "",
+        subject: editCurriculum.subject ?? "",
+        chapters: editCurriculum.chapters || [],
+      };
 
-    for (const chapter of updatedCurriculum.chapters) {
-      for (const topic of chapter.topics) {
-        if (topic.pdf instanceof File) topic.pdf = await handleFileUpload(topic.pdf);
-        if (topic.caseStudy instanceof File) topic.caseStudy = await handleFileUpload(topic.caseStudy);
-        if (topic.hasSubtopics && topic.subtopics) {
-          for (const sub of topic.subtopics) {
-            if (sub.pdf instanceof File) sub.pdf = await handleFileUpload(sub.pdf);
-            if (sub.caseStudy instanceof File) sub.caseStudy = await handleFileUpload(sub.caseStudy);
+      console.log("🔄 Processing edit chapters for file uploads...");
+
+      for (const chapter of updatedCurriculum.chapters) {
+        for (const topic of chapter.topics) {
+          console.log("📖 Processing topic:", topic.topic);
+          
+          if (topic.pdf instanceof File) {
+            console.log("📄 Uploading topic PDF:", topic.pdf.name);
+            topic.pdf = await handleFileUpload(topic.pdf);
+            console.log("✅ Topic PDF uploaded:", topic.pdf);
+          }
+          
+          if (topic.caseStudy instanceof File) {
+            console.log("📋 Uploading topic case study:", topic.caseStudy.name);
+            topic.caseStudy = await handleFileUpload(topic.caseStudy);
+            console.log("✅ Topic case study uploaded:", topic.caseStudy);
+          }
+          
+          if (topic.hasSubtopics && topic.subtopics) {
+            for (const sub of topic.subtopics) {
+              console.log("📄 Processing subtopic:", sub.title);
+              
+              if (sub.pdf instanceof File) {
+                console.log("📄 Uploading subtopic PDF:", sub.pdf.name);
+                sub.pdf = await handleFileUpload(sub.pdf);
+                console.log("✅ Subtopic PDF uploaded:", sub.pdf);
+              }
+              
+              if (sub.caseStudy instanceof File) {
+                console.log("📋 Uploading subtopic case study:", sub.caseStudy.name);
+                sub.caseStudy = await handleFileUpload(sub.caseStudy);
+                console.log("✅ Subtopic case study uploaded:", sub.caseStudy);
+              }
+            }
           }
         }
       }
+
+      console.log("📤 Final edit payload:", JSON.stringify(updatedCurriculum, null, 2));
+
+      const res = await fetch(`/api/curriculum/${editCurriculum.id}/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedCurriculum),
+      });
+      
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(`Failed to update (${res.status}) ${txt}`);
+      }
+
+      setEditCurriculum(null);
+      await fetchCurriculums();
+      setSuccessMessage("Curriculum updated");
+    } catch (err: any) {
+      console.error("💥 handleEditSubmit error:", err);
+      setErrorMessage(err?.message ?? "Error updating curriculum");
+    } finally {
+      setSaving(false);
     }
-
-    await fetch(`/api/curriculum/${editCurriculum.id}/update`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedCurriculum),
-    });
-
-    setEditCurriculum(null);
-    fetchCurriculums();
   }
 
   // File input handlers
@@ -226,13 +374,39 @@ const UploadContent = () => {
     k: number,
     s?: number
   ) => {
+    console.log(`📁 File selected:`, { 
+      file: file ? { 
+        name: file.name, 
+        size: file.size, 
+        type: file.type,
+        lastModified: file.lastModified 
+      } : null, 
+      type, 
+      location: { i, j, k, s },
+      isSubtopic: typeof s === "number"
+    });
+    
     const newData = [...curriculum];
     if (typeof s === "number") {
+      // Subtopic file
+      console.log(`📂 Setting subtopic file: chapters[${i}].topics[${k}].subtopics[${s}].${type}`);
       newData[i].chapters[j].topics[k].subtopics![s][type] = file;
+      console.log(`✅ Subtopic file set:`, newData[i].chapters[j].topics[k].subtopics![s][type]);
     } else {
+      // Topic file
+      console.log(`📂 Setting topic file: chapters[${i}].topics[${k}].${type}`);
       newData[i].chapters[j].topics[k][type] = file;
+      console.log(`✅ Topic file set:`, newData[i].chapters[j].topics[k][type]);
     }
     setCurriculum(newData);
+    
+    // Log the entire curriculum state after update
+    console.log(`📊 Updated curriculum state:`, JSON.stringify(newData, (key, value) => {
+      if (value instanceof File) {
+        return `[File: ${value.name}]`;
+      }
+      return value;
+    }, 2));
   };
 
   const handleInputChange = (value: string, field: keyof Topic, i: number, j: number, k: number) => {

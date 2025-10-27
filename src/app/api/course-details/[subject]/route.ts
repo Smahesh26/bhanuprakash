@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "lib/prisma";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { subject: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ subject: string }> }
 ) {
-  const subject = params.subject;
+  const { subject } = await params; // Fix: await params before using
 
   if (!subject) {
     return NextResponse.json({ error: "No subject provided" }, { status: 400 });

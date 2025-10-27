@@ -64,7 +64,22 @@ const CourseDetailsPage = () => {
     const ctrl = new AbortController();
     fetch(`/api/course-details/${id}`, { signal: ctrl.signal })
       .then((res) => res.json())
-      .then((data) => setCurriculum(data))
+      .then((data) => {
+        // Fix: Parse chapters if they come as JSON string from database
+        if (data && typeof data.chapters === 'string') {
+          try {
+            data.chapters = JSON.parse(data.chapters);
+          } catch (parseError) {
+            console.error('Failed to parse chapters:', parseError);
+            data.chapters = [];
+          }
+        }
+        // Ensure chapters is always an array
+        if (data && !Array.isArray(data.chapters)) {
+          data.chapters = [];
+        }
+        setCurriculum(data);
+      })
       .catch((err) => {
         if (err?.name !== "AbortError") setCurriculum({});
       });
@@ -378,52 +393,198 @@ const CourseDetailsPage = () => {
             {/* PDF */}
             {tab === "pdf" &&
               (subtopic?.pdf ? (
-                <a
-                  href={subtopic.pdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <div style={{ width: "100%" }}>
+                  {/* PDF Viewer - Try multiple approaches */}
+                  <div
+                    style={{
+                      width: "100%",
+                      height: isMobile ? "500px" : "700px",
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      border: `1px solid ${BRAND.line}`,
+                      boxShadow: cardShadow,
+                      background: "#f8f9fa",
+                      position: "relative",
+                    }}
+                  >
+                    {/* Try direct iframe first */}
+                    <iframe
+                      src={subtopic.pdf}
+                      title="Course PDF"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        border: "none",
+                        borderRadius: 12,
+                      }}
+                      loading="lazy"
+                      onError={(e) => {
+                        console.error("PDF iframe load error:", e);
+                        // Hide iframe and show alternative
+                        const iframe = e.target as HTMLIFrameElement;
+                        iframe.style.display = "none";
+                        const fallback = iframe.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = "flex";
+                      }}
+                    />
+                    
+                    {/* Fallback: Use Google Docs viewer */}
+                    <div
+                      style={{
+                        display: "none",
+                        width: "100%",
+                        height: "100%",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 16,
+                      }}
+                    >
+                      <iframe
+                        src={`https://docs.google.com/viewer?url=${encodeURIComponent(subtopic.pdf)}&embedded=true`}
+                        title="Course PDF (Google Viewer)"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          border: "none",
+                          borderRadius: 12,
+                        }}
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Direct download link */}
+                  <div style={{ marginTop: 12, textAlign: "center" }}>
+                    <a
+                      href={subtopic.pdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        color: BRAND.secondary,
+                        background: BRAND.main,
+                        padding: "8px 16px",
+                        borderRadius: 8,
+                        textDecoration: "none",
+                        fontSize: 14,
+                        fontWeight: 700,
+                        boxShadow: glow,
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.transform = "translateY(-1px)";
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                      }}
+                    >
+                      📄 Open PDF in New Tab
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div
                   style={{
-                    color: BRAND.secondary,
-                    background: BRAND.main,
-                    padding: isMobile ? "8px 12px" : "10px 14px",
+                    textAlign: "center",
+                    padding: "40px 20px",
+                    color: BRAND.subtle,
+                    background: "linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.01) 100%)",
                     borderRadius: 12,
-                    fontWeight: 800,
-                    display: "inline-block",
-                    boxShadow: glow,
+                    border: `1px dashed ${BRAND.line}`,
                   }}
                 >
-                  View PDF
-                </a>
-              ) : (
-                <div style={{ color: BRAND.subtle }}>No PDF available</div>
+                  <div style={{ fontSize: "48px", marginBottom: 16, opacity: 0.5 }}>📄</div>
+                  <div style={{ fontSize: 16, fontWeight: 600 }}>No PDF available</div>
+                  <div style={{ fontSize: 14, marginTop: 4 }}>
+                    PDF materials will appear here when available
+                  </div>
+                </div>
               ))}
 
             {/* MCQ */}
             {tab === "mcq" &&
               (subtopic?.mcqs?.length ? (
                 <div style={{ marginTop: 4 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      marginBottom: 20,
+                      padding: "12px 16px",
+                      background: "linear-gradient(135deg, rgba(67,160,71,0.1) 0%, rgba(67,160,71,0.05) 100%)",
+                      border: "1px solid rgba(67,160,71,0.2)",
+                      borderRadius: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 8,
+                        background: "rgba(67,160,71,1)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "16px",
+                        fontWeight: 900,
+                        color: "white",
+                      }}
+                    >
+                      ❓
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 800, color: BRAND.secondary, fontSize: 16 }}>
+                        Practice Questions ({subtopic.mcqs.length})
+                      </div>
+                      <div style={{ fontSize: 14, color: BRAND.subtle }}>
+                        Test your understanding with these questions
+                      </div>
+                    </div>
+                  </div>
+                  
                   {subtopic.mcqs.map((mcq: any, idx: number) => (
                     <div
                       key={idx}
                       style={{
-                        padding: isMobile ? "14px 12px" : "18px 16px",
-                        marginBottom: 12,
-                        borderRadius: 14,
+                        padding: isMobile ? "16px 14px" : "20px 18px",
+                        marginBottom: 16,
+                        borderRadius: 16,
                         border: `1px solid ${BRAND.line}`,
-                        background: "#fffdfa",
+                        background: "linear-gradient(135deg, #fffdfa 0%, #ffffff 100%)",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
                       }}
                     >
                       <div
                         style={{
                           fontWeight: 800,
                           color: BRAND.secondary,
-                          marginBottom: 8,
-                          lineHeight: 1.35,
+                          marginBottom: 12,
+                          lineHeight: 1.4,
+                          fontSize: isMobile ? 15 : 16,
                         }}
                       >
+                        <span
+                          style={{
+                            background: BRAND.main,
+                            color: BRAND.secondary,
+                            padding: "4px 8px",
+                            borderRadius: 6,
+                            fontSize: 12,
+                            fontWeight: 900,
+                            marginRight: 8,
+                          }}
+                        >
+                          Q{idx + 1}
+                        </span>
                         {mcq.question}
                       </div>
-                      <div>
+                      
+                      {/* Options */}
+                      <div style={{ display: "grid", gap: 8, marginBottom: 12 }}>
                         {mcq.options.map((opt: string, oi: number) => {
                           const chosen = mcqAnswers[idx];
                           const isChosen = chosen === oi;
@@ -433,30 +594,44 @@ const CourseDetailsPage = () => {
                               ? "#fff"
                               : isChosen
                               ? correct
-                                ? "rgba(76,175,80,0.12)"
-                                : "rgba(211,47,47,0.10)"
+                                ? "rgba(76,175,80,0.15)"
+                                : "rgba(211,47,47,0.15)"
                               : "#fff";
                           const border =
                             chosen == null
                               ? BRAND.line
                               : isChosen
                               ? correct
-                                ? "rgba(76,175,80,0.45)"
-                                : "rgba(211,47,47,0.45)"
+                                ? "rgba(76,175,80,0.6)"
+                                : "rgba(211,47,47,0.6)"
                               : BRAND.line;
 
                           return (
                             <label
                               key={oi}
                               style={{
-                                display: "block",
-                                marginBottom: 8,
-                                padding: isMobile ? "8px 10px" : "10px 12px",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: isMobile ? "10px 12px" : "12px 14px",
                                 borderRadius: 10,
-                                border: `1px solid ${border}`,
+                                border: `2px solid ${border}`,
                                 background: bg,
                                 cursor: chosen == null ? "pointer" : "default",
                                 userSelect: "none",
+                                transition: "all 0.2s ease",
+                                fontWeight: isChosen ? 700 : 500,
+                              }}
+                              onMouseOver={(e) => {
+                                if (chosen == null) {
+                                  e.currentTarget.style.borderColor = BRAND.main;
+                                  e.currentTarget.style.background = "rgba(254,193,7,0.05)";
+                                }
+                              }}
+                              onMouseOut={(e) => {
+                                if (chosen == null) {
+                                  e.currentTarget.style.borderColor = BRAND.line;
+                                  e.currentTarget.style.background = "#fff";
+                                }
                               }}
                             >
                               <input
@@ -472,38 +647,63 @@ const CourseDetailsPage = () => {
                                     [idx]: correct ? "Correct! 🎉" : "Incorrect. Try again!",
                                   });
                                 }}
-                                style={{ marginRight: 8 }}
+                                style={{ marginRight: 12, transform: "scale(1.2)" }}
                               />
+                              <span
+                                style={{
+                                  fontWeight: 700,
+                                  color: BRAND.main,
+                                  marginRight: 8,
+                                  minWidth: 20,
+                                }}
+                              >
+                                {String.fromCharCode(65 + oi)}.
+                              </span>
                               {opt}
                             </label>
                           );
                         })}
                       </div>
 
+                      {/* Feedback */}
                       {mcqAnswers[idx] != null && (
                         <div
                           style={{
-                            marginTop: 8,
-                            fontWeight: 700,
-                            color:
-                              mcqAnswers[idx] === mcq.correctAnswerIndex
-                                ? "rgba(67,160,71,1)"
-                                : "rgba(211,47,47,1)",
+                            padding: "12px 16px",
+                            borderRadius: 10,
+                            background: mcqAnswers[idx] === mcq.correctAnswerIndex
+                              ? "rgba(76,175,80,0.1)"
+                              : "rgba(211,47,47,0.1)",
+                            border: `1px solid ${mcqAnswers[idx] === mcq.correctAnswerIndex
+                              ? "rgba(76,175,80,0.3)"
+                              : "rgba(211,47,47,0.3)"
+                            }`,
                           }}
                         >
-                          {mcqFeedback[idx]}
+                          <div
+                            style={{
+                              fontWeight: 700,
+                              color: mcqAnswers[idx] === mcq.correctAnswerIndex
+                                ? "rgba(67,160,71,1)"
+                                : "rgba(211,47,47,1)",
+                              marginBottom: mcq.explanation ? 8 : 0,
+                            }}
+                          >
+                            {mcqFeedback[idx]}
+                          </div>
                           {mcq.explanation && (
                             <div
                               style={{
-                                marginTop: 8,
-                                background: "rgba(254,193,7,0.12)",
-                                padding: isMobile ? "8px 10px" : "10px 12px",
-                                borderRadius: 10,
+                                background: "rgba(254,193,7,0.15)",
+                                padding: "10px 12px",
+                                borderRadius: 8,
                                 border: `1px dashed ${BRAND.main}`,
                                 color: BRAND.secondary,
+                                fontSize: 14,
+                                lineHeight: 1.4,
                               }}
                             >
-                              <strong>Explanation: </strong>
+                              <strong>💡 Explanation: </strong>
                               {mcq.explanation}
                             </div>
                           )}
@@ -513,31 +713,70 @@ const CourseDetailsPage = () => {
                   ))}
                 </div>
               ) : (
-                <div style={{ color: BRAND.subtle }}>No MCQs available</div>
+                <div
+                  style={{
+                    textAlign: "center",
+                    padding: "40px 20px",
+                    color: BRAND.subtle,
+                    background: "linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.01) 100%)",
+                    borderRadius: 12,
+                    border: `1px dashed ${BRAND.line}`,
+                  }}
+                >
+                  <div style={{ fontSize: "48px", marginBottom: 16, opacity: 0.5 }}>❓</div>
+                  <div style={{ fontSize: 16, fontWeight: 600 }}>No practice questions available</div>
+                  <div style={{ fontSize: 14, marginTop: 4 }}>
+                    MCQs will appear here when available
+                  </div>
+                </div>
               ))}
 
             {/* Case Study */}
             {tab === "case" &&
               (subtopic?.caseStudy ? (
-                <a
-                  href={subtopic.caseStudy}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <div style={{ width: "100%" }}>
+                  {/* Case Study Viewer - Direct Display */}
+                  <div
+                    style={{
+                      width: "100%",
+                      height: isMobile ? "500px" : "700px",
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      border: `1px solid ${BRAND.line}`,
+                      boxShadow: cardShadow,
+                      background: "#f8f9fa",
+                    }}
+                  >
+                    <iframe
+                      src={subtopic.caseStudy}
+                      title="Case Study"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        border: "none",
+                        borderRadius: 12,
+                      }}
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div
                   style={{
-                    color: BRAND.card,
-                    background: BRAND.secondary,
-                    padding: isMobile ? "8px 12px" : "10px 14px",
+                    textAlign: "center",
+                    padding: "40px 20px",
+                    color: BRAND.subtle,
+                    background: "linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.01) 100%)",
                     borderRadius: 12,
-                    fontWeight: 800,
-                    display: "inline-block",
-                    boxShadow: cardShadow,
-                    border: `1px solid ${BRAND.secondary}`,
+                    border: `1px dashed ${BRAND.line}`,
                   }}
                 >
-                  View Case Study
-                </a>
-              ) : (
-                <div style={{ color: BRAND.subtle }}>No Case Study available</div>
+                  <div style={{ fontSize: "48px", marginBottom: 16, opacity: 0.5 }}>📊</div>
+                  <div style={{ fontSize: 16, fontWeight: 600 }}>No case study available</div>
+                  <div style={{ fontSize: 14, marginTop: 4 }}>
+                    Case study materials will appear here when available
+                  </div>
+                </div>
               ))}
           </div>
 
@@ -692,6 +931,9 @@ function NavSidebar({
   glow: string;
   compact?: boolean;
 }) {
+  // Fix: Safely get chapters array
+  const chapters = Array.isArray(curriculum?.chapters) ? curriculum.chapters : [];
+
   return (
     <aside
       style={{
@@ -740,7 +982,7 @@ function NavSidebar({
       </div>
 
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {(curriculum?.chapters ?? []).map((ch: any, ci: number) => {
+        {chapters.map((ch: any, ci: number) => {
           const isChapterOpen = openChapters[ci] ?? false;
           const isActiveChapter = selected.chapter === ci;
           return (
@@ -771,7 +1013,7 @@ function NavSidebar({
                   }}
                 />
                 <div style={{ fontWeight: 700, color: BRAND.secondary, fontSize: 15.5 }}>
-                  {ch.title || `Chapter ${ci + 1}`}
+                  {ch.chapter || `Chapter ${ci + 1}`}
                 </div>
                 <button
                   aria-label={isChapterOpen ? "Collapse chapter" : "Expand chapter"}
@@ -797,7 +1039,7 @@ function NavSidebar({
               {/* Topics */}
               {isChapterOpen && (
                 <ul style={{ listStyle: "none", paddingLeft: 8, marginTop: 6 }}>
-                  {ch.topics?.map((tp: any, ti: number) => {
+                  {(ch.topics || []).map((tp: any, ti: number) => {
                     const key = `${ci}-${ti}`;
                     const isTopicOpen = openTopics[key] ?? false;
                     const isActiveTopic = isActiveChapter && selected.topic === ti;
@@ -860,7 +1102,7 @@ function NavSidebar({
                         {/* Subtopics */}
                         {isTopicOpen && (
                           <ul style={{ listStyle: "none", paddingLeft: 14, marginTop: 2 }}>
-                            {tp.subtopics?.map((sub: any, si: number) => {
+                            {(tp.subtopics || []).map((sub: any, si: number) => {
                               const isActiveSub = isActiveTopic && selected.subtopic === si;
                               return (
                                 <li
@@ -943,6 +1185,9 @@ function UpcomingLessons({
   cardShadow: string;
   glow: string;
 }) {
+  // Fix: Safely get chapters array
+  const chapters = Array.isArray(curriculum?.chapters) ? curriculum.chapters : [];
+
   return (
     <aside
       style={{
@@ -990,7 +1235,7 @@ function UpcomingLessons({
       </div>
 
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {curriculum.chapters?.map((ch: any, ci: number) => (
+        {chapters.map((ch: any, ci: number) => (
           <li key={ci} style={{ marginBottom: 12 }}>
             <div
               style={{
@@ -1002,10 +1247,10 @@ function UpcomingLessons({
                 paddingLeft: 10,
               }}
             >
-              Chapter {ci + 1}: {ch.title}
+              Chapter {ci + 1}: {ch.chapter}
             </div>
             <ul style={{ listStyle: "none", paddingLeft: 12 }}>
-              {ch.topics?.map((tp: any, ti: number) => (
+              {(ch.topics || []).map((tp: any, ti: number) => (
                 <li key={ti} style={{ marginBottom: 6 }}>
                   <div
                     style={{
@@ -1018,7 +1263,7 @@ function UpcomingLessons({
                     Topic {ti + 1}: {tp.topic}
                   </div>
                   <ul style={{ listStyle: "none", paddingLeft: 10 }}>
-                    {tp.subtopics?.map((sub: any, si: number) => {
+                    {(tp.subtopics || []).map((sub: any, si: number) => {
                       const isNext =
                         ci === selected.chapter &&
                         ti === selected.topic &&

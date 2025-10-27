@@ -8,7 +8,7 @@ import avatar_2 from "@/assets/img/courses/details_instructors02.jpg"
 const DashboardBanner = ({ style }: any) => {
    return (
       <div className="dashboard__top-wrap">
-         <div className="dashboard__top-bg" style={{ backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.jpg)` }}></div>
+         <div className="dashboard__top-bg" style={{ backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)` }}></div>
          <div className="dashboard__instructor-info">
             <div className="dashboard__instructor-info-left">
                <div className="thumb">

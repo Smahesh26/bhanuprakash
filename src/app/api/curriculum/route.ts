@@ -1,5 +1,7 @@
-import { NextResponse } from "next/server";
-import prisma from "../../../../lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
   try {
@@ -49,12 +51,17 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
+    console.log("Fetching all curriculums");
+
     const curriculums = await prisma.curriculum.findMany({
       orderBy: { createdAt: "desc" },
     });
+
+    console.log(`Found ${curriculums.length} curriculums`);
+
     return NextResponse.json(curriculums);
-  } catch (err) {
-    console.error("Curriculum fetch error:", err);
+  } catch (error) {
+    console.error("GET curriculum error:", error);
     return NextResponse.json(
       { error: "Failed to fetch curriculums" },
       { status: 500 }

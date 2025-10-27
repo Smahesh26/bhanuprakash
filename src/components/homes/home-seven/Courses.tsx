@@ -33,7 +33,7 @@ export default function LatestVideosHome() {
           style={{
             fontSize: "2rem",
             fontWeight: 800,
-            color: "#230908",
+            color: "#fff",
             textShadow: "0 2px 12px #f9a11655",
             marginBottom: "2rem",
             letterSpacing: "0.02em",

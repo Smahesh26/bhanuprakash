@@ -63,7 +63,7 @@ const InstructorSettingProfile = ({ style, goToNextTab }: any) => {
       ) : (
         <div
           className="instructor__cover-bg"
-          style={{ backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.jpg)` }}
+          style={{ backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)` }}
         >
           <div className="instructor__cover-info">
             <div className="instructor__cover-info-left">
