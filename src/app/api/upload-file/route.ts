@@ -28,6 +28,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log("✅ Cloudinary config:", {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "SET" : "MISSING",
+      api_key: process.env.CLOUDINARY_API_KEY ? "SET" : "MISSING",
+      api_secret: process.env.CLOUDINARY_API_SECRET ? "SET" : "MISSING",
+    });
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
@@ -49,24 +55,15 @@ export async function POST(request: NextRequest) {
 
     console.log("📤 Starting Cloudinary upload...");
 
-    // Upload to Cloudinary with public access and proper resource type
+    // Upload to Cloudinary - simple configuration
     const uploadResponse = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
           resource_type: "auto", // Automatically detect file type
           folder: "curriculum-files", // Organize files in a folder
-          public_id: `${Date.now()}_${file.name.replace(
-            /[^a-zA-Z0-9.-]/g,
-            "_"
-          )}`, // Safe filename
-          use_filename: false, // Don't use original filename to avoid conflicts
-          unique_filename: true, // Ensure unique filename
-          overwrite: false, // Don't overwrite existing files
-          // Remove access restrictions for PDFs
-          type: "upload", // Default upload type
-          // Remove flags that might restrict access
-          quality: "auto", // Automatically adjust quality
-          fetch_format: "auto", // Automatically determine format
+          public_id: `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`, // Safe filename
+          use_filename: true,
+          unique_filename: false,
         },
         (error, result) => {
           if (error) {
@@ -78,7 +75,6 @@ export async function POST(request: NextRequest) {
               public_id: result?.public_id,
               format: result?.format,
               bytes: result?.bytes,
-              resource_type: result?.resource_type,
             });
             resolve(result);
           }
@@ -94,7 +90,6 @@ export async function POST(request: NextRequest) {
       public_id: result.public_id,
       format: result.format,
       bytes: result.bytes,
-      resource_type: result.resource_type,
       message: "File uploaded successfully",
     });
   } catch (error) {
