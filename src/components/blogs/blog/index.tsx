@@ -11,7 +11,7 @@ const Blog = () => {
             <BreadcrumbOne title="Latest Blogs" sub_title="Blogs" />
             <BlogArea style_1={false} />
          </main>
-         <FooterTwo />
+         {/* <FooterTwo /> */}
       </>
    )
 }

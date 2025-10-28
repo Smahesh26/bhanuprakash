@@ -11,7 +11,7 @@ const Contact = () => {
             <BreadcrumbOne title="Contact With Us" sub_title="Contact" />
             <ContactArea />
          </main>
-         <FooterTwo />
+         {/* <FooterTwo /> */}
       </>
    )
 }

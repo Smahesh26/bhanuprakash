@@ -23,7 +23,7 @@ const AboutUs = () => {
             <Features />
             {/* <Testimonial /> */}
          </main>
-         <FooterTwo />
+         {/* <FooterTwo /> */}
       </>
    )
 }
