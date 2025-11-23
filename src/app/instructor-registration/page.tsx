@@ -54,16 +54,6 @@ export default function InstructorRegistration() {
                 <p>
                   Fill in your details to create an instructor account.
                 </p>
-                <button
-                  type="button"
-                  onClick={handleGoogleLogin}
-                  className="flex items-center justify-center gap-3 px-6 py-3 w-full border border-gray-300 rounded-md hover:bg-gray-100 transition mb-4"
-                >
-                  <Image src={googleIcon} alt="Google" width={20} height={20} />
-                  <span className="text-sm font-medium text-gray-800">
-                    Continue with Google
-                  </span>
-                </button>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label fw-semibold" htmlFor="name">Name</label>

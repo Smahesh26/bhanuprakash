@@ -4,7 +4,7 @@ import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import About from "./About"
 import BrandOne from "@/components/common/brands/BrandOne"
 import Feature from "@/components/homes/home-two/Feature"
-import Newsletter from "@/components/homes/home-two/Newsletter"
+import Newsletter from "@/components/homes/home-one/Newsletter"
 import Features from "@/components/homes/home-one/Features"
 import Testimonial from "./Testimonial"
 import Faq from "@/components/homes/home-six/Faq"
@@ -20,7 +20,7 @@ const AboutUs = () => {
             {/* <BrandOne /> */}
             <Feature style={true} />
             <Newsletter />
-            <Features />
+            {/* <Features /> */}
             {/* <Testimonial /> */}
          </main>
          {/* <FooterTwo /> */}

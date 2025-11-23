@@ -13,7 +13,7 @@ export default function RegistrationPage() {
         <BreadcrumbOne title="Student SignUp" sub_title="SignUp" />
         <RegistrationArea />
       </main>
-      <FooterTwo />
+      {/* <FooterTwo /> */}
     </>
   );
 }

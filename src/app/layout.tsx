@@ -1,4 +1,5 @@
 "use client";
+import "../styles/main.css";
 import "../styles/index.scss";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { ToastContainer } from "react-toastify";

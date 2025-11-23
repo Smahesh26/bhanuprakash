@@ -1220,7 +1220,7 @@
 	top: 0;
 	width: 100%;
 	z-index: 99;
-	background:#230908;
+	background:#fff;
 	-webkit-animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
 	animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
 	-webkit-box-shadow: 0 10px 15px rgba(25, 25, 25, 0.1);
@@ -1310,7 +1310,7 @@
 }
 
 header, .header, .site-header {
-  background: #230908 !important;
+  background: #fff !important;
   color: #fff !important;
   // Make sure button styles are not overridden here
   .tgmenu__navbar-wrap ul li a {

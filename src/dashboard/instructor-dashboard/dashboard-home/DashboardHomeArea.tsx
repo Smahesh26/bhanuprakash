@@ -11,16 +11,16 @@ import bg_img from "@/assets/img/bg/dashboard_bg.jpg"
 
 const DashboardHomeArea = () => {
    return (
-      <section className="dashboard__area section-pb-120">
+      <section className="dashboard__area section-pb-120" style={{paddingTop: "60px", paddingBottom: "48px"}}>
          <div className="dashboard__bg"><Image src={bg_img} alt=""/></div>
-         <div className="container">
+         <div className="container" style={{paddingTop: "32px"}}>
             <DashboardBanner />
-            <div className="dashboard__inner-wrap">
+            <div className="dashboard__inner-wrap" style={{marginTop: "32px"}}>
                <div className="row">
                   <DashboardSidebar />
                   <div className="col-lg-9">
-                     <div className="dashboard__count-wrap">
-                        <div className="dashboard__content-title">
+                     <div className="dashboard__count-wrap" style={{marginTop: "24px"}}>
+                        <div className="dashboard__content-title" style={{marginBottom: "24px"}}>
                            <h4 className="title">Dashboard</h4>
                         </div>
                         <div className="row">

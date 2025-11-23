@@ -12,8 +12,7 @@ const TotalCart = dynamic(() => import("@/components/common/TotalCart"), { ssr: 
 const TotalWishlist = dynamic(() => import("@/components/common/TotalWishlist"), { ssr: false });
 const CustomSelect = dynamic(() => import("@/ui/CustomSelect"), { ssr: false });
 
-import logo from "@/assets/img/logo/logo.svg"
-
+import logo from "@/assets/img/logo/MSS Logo-V1-02.svg"
 const HeaderSeven = () => {
 
    const [selectedOption, setSelectedOption] = React.useState(null);
@@ -81,3 +80,6 @@ const HeaderSeven = () => {
 }
 
 export default HeaderSeven
+
+// Do NOT edit layout.css directly.
+// Put all your custom overrides in main.css with high specificity and !important.

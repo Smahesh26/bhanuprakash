@@ -15,7 +15,10 @@ const NavMenu = () => {
    const isAnyChildActive = (hrefs: string[] = []) => hrefs.some((href) => pathname === href);
 
    return (
-      <ul className="navigation">
+      <ul className="navigation" style={{ 
+         fontWeight: '600',
+         color: '#000'
+      }}>
          {menu_data.map((menu) => {
             // Collect all links from sub_menus, mega_menus, and home_sub_menu for the parent menu
             const subMenuLinks = menu.sub_menus?.map((sub_m) => sub_m.link).filter(Boolean) || [];
@@ -31,7 +34,15 @@ const NavMenu = () => {
 
             return (
                <li key={menu.id} className={`menu-item ${isAnyChildActive(allLinks) ? "active" : ""}`}>
-                  <Link href={menu.link}>{menu.title}</Link>
+                  <Link 
+                     href={menu.link} 
+                     style={{ 
+                        color: '#000', 
+                        fontWeight: '600' 
+                     }}
+                  >
+                     {menu.title}
+                  </Link>
                   {/* <ul className={`sub-menu ${menu.menu_class}`}>
                      {menu.home_sub_menu ? (
                         <>

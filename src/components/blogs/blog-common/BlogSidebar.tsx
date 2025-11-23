@@ -16,7 +16,7 @@ const BlogSidebar = ({ style_1 }: any) => {
                </div>
             </div>
             <Categories />
-            <LatestPost />
+            {/* <LatestPost /> */}
             <Tags />
          </aside>
       </div>

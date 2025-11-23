@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import googleIcon from "@/assets/img/icons/google.svg";
 import OtpModalWrapper from "@/components/modals/OtpModalWrapper";
 import RegistrationForm, { FormData } from "@/components/forms/RegistrationForm";
 import { toast } from "react-toastify";
 
-export default function RegistrationArea() {
+function RegistrationContent() {
   const { data: session, status, update } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [otpSent, setOtpSent] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [emailForOtp, setEmailForOtp] = useState("");
   const [registrationData, setRegistrationData] = useState<FormData | null>(null);
   const [otpSentSuccess, setOtpSentSuccess] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const isVerified = (session?.user as any)?.isVerified;
 
@@ -28,23 +27,12 @@ export default function RegistrationArea() {
     }
   }, [status, isVerified, router]);
 
-  const handleGoogleLogin = async () => {
-    const result = await signIn("google", {
-      redirect: false,
-      role: "student", // Pass role for student registration
-    });
-
-    if (!result?.error) {
-      const updated = await update(); // Refresh session
-      const email = (updated?.user as any)?.email;
-
-      if (email && !otpSent) {
-        await sendOtp(email);
-      }
-    } else {
-      toast.error("Google sign-in failed");
-    }
-  };
+  useEffect(() => {
+    const planFromUrl = searchParams?.get('plan');
+    const planFromStorage = typeof window !== 'undefined' ? localStorage.getItem('selectedPlan') : null;
+    
+    setSelectedPlan(planFromUrl || planFromStorage);
+  }, [searchParams]);
 
   const sendOtp = async (email: string) => {
     const res = await fetch("/api/send-otp", {
@@ -54,10 +42,9 @@ export default function RegistrationArea() {
     });
 
     if (res.ok) {
-      setOtpSentSuccess(true); // Show success alert
+      setOtpSentSuccess(true);
       toast.success("OTP sent to your email!");
       setEmailForOtp(email);
-      setOtpSent(true);
       setShowOtpModal(true);
     } else {
       setOtpSentSuccess(false);
@@ -71,7 +58,6 @@ export default function RegistrationArea() {
     await sendOtp(data.email);
   };
 
-  // Called when OTP is verified successfully
   const handleOtpVerifySuccess = async () => {
     if (!registrationData) return;
 
@@ -82,9 +68,16 @@ export default function RegistrationArea() {
     });
 
     if (res.ok) {
+      const data = await res.json();
       toast.success("Registration successful!");
       await update();
-      router.replace("/courses"); // Redirect to courses after OTP verification
+      
+      // ✅ Redirect based on subscription status
+      if (data.hasPendingSubscription) {
+        router.replace("/student-dashboard/purchase");
+      } else {
+        router.replace("/courses");
+      }
     } else {
       const data = await res.json();
       toast.error(data.error || "Registration failed");
@@ -99,9 +92,25 @@ export default function RegistrationArea() {
             <div className="col-xl-6 col-lg-8">
               <div className="singUp-wrap">
                 <h2 className="title">Create Your Account</h2>
+                
+                {selectedPlan && (
+                  <div 
+                    className="alert mb-3" 
+                    style={{
+                      background: 'linear-gradient(135deg, #0d447a 0%, #094a8f 100%)',
+                      color: '#fff',
+                      borderRadius: '8px',
+                      padding: '12px 20px',
+                      textAlign: 'center',
+                      fontWeight: '600'
+                    }}
+                  >
+                    Selected Plan: <strong style={{ textTransform: 'uppercase' }}>{selectedPlan}</strong> 🎯
+                  </div>
+                )}
+                
                 <p>Register below to get started.</p>
 
-                {/* Success alert for OTP sent */}
                 {otpSentSuccess && (
                   <div style={{
                     background: "#d4edda",
@@ -114,21 +123,6 @@ export default function RegistrationArea() {
                     OTP sent successfully!
                   </div>
                 )}
-
-                <div className="account__social mb-4">
-                  <button
-                    type="button"
-                    onClick={handleGoogleLogin}
-                    className="flex items-center justify-center gap-3 px-6 py-3 w-full border border-gray-300 rounded-md hover:bg-gray-100 transition"
-                  >
-                    <Image src={googleIcon} alt="Google" width={20} height={20} />
-                    <span className="text-sm font-medium text-gray-800">
-                      Continue with Google
-                    </span>
-                  </button>
-                </div>
-
-                <div className="account__divider"><span>or</span></div>
 
                 <RegistrationForm onOtpSent={handleOtpSentFromForm} />
 
@@ -143,7 +137,6 @@ export default function RegistrationArea() {
         </div>
       </section>
 
-      {/* OTP Modal */}
       {showOtpModal && emailForOtp && (
         <OtpModalWrapper
           email={emailForOtp}
@@ -152,5 +145,13 @@ export default function RegistrationArea() {
         />
       )}
     </>
+  );
+}
+
+export default function RegistrationArea() {
+  return (
+    <Suspense fallback={<div className="text-center py-20">Loading...</div>}>
+      <RegistrationContent />
+    </Suspense>
   );
 }

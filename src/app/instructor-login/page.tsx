@@ -2,9 +2,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
-import Image from "next/image";
-import googleIcon from "@/assets/img/icons/google.svg";
-import { signIn } from "next-auth/react";
 
 export default function InstructorLogin() {
   const router = useRouter();
@@ -27,10 +24,6 @@ export default function InstructorLogin() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/instructor-dashboard" });
-  };
-
   return (
     <>
       <HeaderSeven />
@@ -43,16 +36,6 @@ export default function InstructorLogin() {
                 <p>
                   Enter your email and password to access your dashboard.
                 </p>
-                <button
-                  type="button"
-                  onClick={handleGoogleLogin}
-                  className="flex items-center justify-center gap-3 px-6 py-3 w-full border border-gray-300 rounded-md hover:bg-gray-100 transition mb-4"
-                >
-                  <Image src={googleIcon} alt="Google" width={20} height={20} />
-                  <span className="text-sm font-medium text-gray-800">
-                    Continue with Google
-                  </span>
-                </button>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label fw-semibold" htmlFor="email">Email</label>

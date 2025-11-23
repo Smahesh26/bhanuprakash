@@ -5,21 +5,20 @@ import prisma from "../../../../lib/prisma"; // adjust path if needed
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
     const {
-      fname,
-      lname,
+      fullName,
       email,
+      password,
+      countryCode,
       phone,
       country,
       state,
-      city,
       university,
-      password,
+      selectedPlan,
     } = body;
 
     // 1. Validate
-    if (!fname || !lname || !email || !phone || !country || !state || !city || !university || !password) {
+    if (!fullName || !email || !phone || !country || !state || !university || !password) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -33,22 +32,26 @@ export async function POST(req: Request) {
     // 3. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Save user in DB
+    // 4. Save user in DB with subscription fields
     const user = await prisma.user.create({
       data: {
-        fname,
-        lname,
+        name: fullName,
         email,
-        phone,
+        password: hashedPassword,
+        phone: `${countryCode}${phone}`,
         country,
         state,
-        city,
         university,
-        password: hashedPassword,
+        isVerified: true, // Set after OTP verification
+        // ✅ NEW: Use Prisma schema subscription fields
+        subscriptionPlan: selectedPlan || 'none',
+        subscriptionStatus: 'PENDING',
+        paymentStatus: 'PENDING',
+        hasActiveSubscription: false
       },
     });
 
-    return NextResponse.json({ message: "User registered successfully", user });
+    return NextResponse.json({ success: true, message: "User registered successfully" });
   } catch (error: any) {
     console.error("Registration Error:", error.message || error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

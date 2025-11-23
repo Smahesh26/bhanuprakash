@@ -10,7 +10,7 @@ import { useRef } from 'react';
 interface FormData {
    user_name: string;
    user_email: string;
-   web: string;
+   phone: string;
    message: string;
 }
 
@@ -18,7 +18,7 @@ const schema = yup
    .object({
       user_name: yup.string().required().label("Name"),
       user_email: yup.string().required().email().label("Email"),
-      web: yup.string().required().label("Website"),
+      phone: yup.string().required().label("Phone"),
       message: yup.string().required().label("Message"),
    })
    .required();
@@ -66,8 +66,13 @@ const ContactForm = () => {
             </div>
             <div className="col-md-4">
                <div className="form-grp">
-                  <input {...register("web")} type="url" placeholder="Website *" required />
-                  <p className="form_error">{errors.web?.message}</p>
+                  <input
+                     {...register("phone")}
+                     type="tel"
+                     placeholder="Phone Number with Country Code *"
+                     required
+                  />
+                  <p className="form_error">{errors.phone?.message}</p>
                </div>
             </div>
          </div>

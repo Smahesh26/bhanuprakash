@@ -14,7 +14,6 @@ const InstructorUploadCourse = () => {
     instructors: "",
     price: "",
     videoUrl: "",
-    explanation: "", // <-- Add this line
   });
   const [file, setFile] = useState<File | null>(null);
   const [courses, setCourses] = useState<any[]>([]);
@@ -104,7 +103,6 @@ const InstructorUploadCourse = () => {
           instructors: "",
           price: "",
           videoUrl: "",
-          explanation: "",
         });
         setFile(null);
         fetchCourses();
@@ -304,16 +302,6 @@ const InstructorUploadCourse = () => {
                     required={!editId}
                   />
                 </div>
-                <div className="col-md-12">
-                  <textarea
-                    name="explanation"
-                    className="form-control"
-                    placeholder="Explanation (for MCQs or course details)"
-                    value={editId ? editForm.explanation : form.explanation}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
                 <div className="col-12">
                   <button
                     type="submit"
@@ -356,7 +344,6 @@ const InstructorUploadCourse = () => {
                       <th>Category</th>
                       <th>Instructors</th>
                       <th>Price</th>
-                      <th>Explanation</th>
                       <th>Actions</th>
                     </tr>
                   </thead>

@@ -36,25 +36,26 @@ const count_data: DataType[] = [
 
 const Counter = () => {
    return (
-      <section className="fact__area mb-5">
+      <section className="fact__area mb-5 mt-5">
          <div className="container">
             <div
                className="fact__inner-wrap"
                style={{
-                  background: "#230908",
+                  background: "#0d447a",
                   borderRadius: "24px",
                   padding: "48px 0",
+                  boxShadow: "0 10px 40px rgba(13, 68, 122, 0.2)",
                }}
             >
                <div className="row">
                   {count_data.map((item) => (
                      <div key={item.id} className="col-lg-3 col-6">
                         <div className="fact__item">
-                           <h2 className="count" style={{color: "#FFD600" }}>
+                           <h2 className="count" style={{color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.2)" }}>
                               <Count number={item.count} />
                               {item.count_text}
                            </h2>
-                           <p style={{ color: "#fff", fontWeight: 500 }}>{item.text}</p>
+                           <p style={{ color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>{item.text}</p>
                         </div>
                      </div>
                   ))}

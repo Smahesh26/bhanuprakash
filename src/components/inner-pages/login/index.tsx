@@ -11,7 +11,7 @@ const Login = () => {
             <BreadcrumbOne title="Student Login" sub_title="Login" />
             <LoginArea />
          </main>
-         <FooterTwo />
+         {/* <FooterTwo /> */}
       </>
    )
 }

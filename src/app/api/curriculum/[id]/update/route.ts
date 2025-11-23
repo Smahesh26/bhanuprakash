@@ -3,19 +3,22 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// PUT - Update curriculum
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params; // Fix: await params before using
+    const { id } = await params;
     const body = await request.json();
     const { subject, chapters } = body;
 
-    console.log("Updating curriculum:", id, {
-      subject,
-      chaptersCount: chapters?.length,
-    });
+    if (!subject || !chapters) {
+      return NextResponse.json(
+        { error: "Subject and chapters are required" },
+        { status: 400 }
+      );
+    }
 
     // Ensure MCQs have explanation field
     const chaptersWithExplanation = chapters.map((chapter: any) => ({
@@ -41,18 +44,13 @@ export async function PUT(
       data: {
         subject,
         chapters: JSON.stringify(chaptersWithExplanation),
+        updatedAt: new Date(),
       },
     });
 
-    console.log("Curriculum updated successfully");
-
-    return NextResponse.json({
-      id: curriculum.id,
-      subject: curriculum.subject,
-      message: "Curriculum updated successfully",
-    });
+    return NextResponse.json(curriculum);
   } catch (error) {
-    console.error("PUT curriculum error:", error);
+    console.error("Error updating curriculum:", error);
     return NextResponse.json(
       { error: "Failed to update curriculum" },
       { status: 500 }

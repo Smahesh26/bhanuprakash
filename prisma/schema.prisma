@@ -75,13 +75,13 @@ model Subtopic {
   mcqs         MCQ[] // MCQs under subtopic
 }
 
-// ✅ MCQ Model
+// ✅ MCQ Model - Already perfect for Excel uploads!
 model MCQ {
   id           String  @id @default(cuid())
   question     String
-  options      Json // Example: ["Option A", "Option B", "Option C", "Option D"]
-  correctIndex Int // Index 0-3
-  explanation  String? // <-- Add this line
+  options      Json // Perfect for ["Option A", "Option B", "Option C", "Option D"]
+  correctIndex Int // Perfect for 0-3 index from Excel CorrectAnswer column
+  explanation  String? // Perfect for Excel Explanation column
   topicId      String?
   subtopicId   String?
 
@@ -130,6 +130,16 @@ model User {
   createdAt     DateTime     @default(now())
   isVerified    Boolean      @default(false)
   isNewUser     Boolean      @default(true)
+  
+  // ✅ NEW: Subscription fields
+  subscriptionPlan     String?           @default("none") // "basic", "standard", "premium", "none"
+  subscriptionStatus   SubscriptionStatus @default(NONE)
+  subscriptionStart    DateTime?
+  subscriptionEnd      DateTime?
+  paymentStatus        PaymentStatus     @default(PENDING)
+  paymentId            String?
+  hasActiveSubscription Boolean          @default(false)
+  
   accounts      Account[]
   paidAccesses  PaidAccess[]
   resetTokens   ResetToken[]
@@ -196,6 +206,23 @@ enum PdfAccessType {
   DOWNLOAD
   PAID
 }
+
+// ✅ NEW: Subscription enums
+enum SubscriptionStatus {
+  NONE
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
 model Admin {
   id          String   @id @default(cuid())
   email       String   @unique
@@ -221,11 +248,13 @@ model Admin {
 }
 
 model Curriculum {
-  id        String   @id @default(cuid())
-  subject   String
-  chapters  String   // JSON string
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  subject        String
+  introVideoUrl  String?
+  mcqs           Json?    // ✅ Changed from String? to Json? for better structure
+  chapters       Json     // ✅ Changed from String to Json for better structure
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Banner {
@@ -260,4 +289,24 @@ model Blog {
   date      DateTime @default(now())
   tags      String[]
   image     String
+}
+model Category {
+  id        Int      @id @default(autoincrement())
+  icon      String
+  title     String
+  total     String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
+}
+model HomepageCourse {
+  id        String   @id @default(cuid())
+  title     String
+  thumb     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("homepage_courses")
 }

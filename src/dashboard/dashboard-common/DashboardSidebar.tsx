@@ -50,6 +50,12 @@ const sidebar_data: DataType[] = [
             icon: "skillgro-group",
             title: "Add New Course",
           },
+          {
+            id: 9,
+            link: "/manage-homepage-courses",
+            icon: "skillgro-home",
+            title: "Homepage Courses",
+          },
             {
             id: 4,
             link: "/instructor-student", // new route

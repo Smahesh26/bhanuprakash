@@ -6,6 +6,7 @@ function removeLayoutLinks() {
 		try {
 			const href = (link.getAttribute('href') || link.href || '').toLowerCase();
 			if (href.includes('layout.css')) {
+				// This removes any stylesheet link for layout.css from the DOM
 				if (link.parentNode) link.parentNode.removeChild(link);
 				else link.disabled = true;
 			}
@@ -62,3 +63,5 @@ export default function MyApp({ Component, pageProps }) {
 		</>
 	);
 }
+
+// Your logic already removes layout.css and loads only main.css

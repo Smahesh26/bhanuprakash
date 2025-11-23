@@ -1,78 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function POST(req: Request) {
+// GET - Fetch all curriculums
+export async function GET() {
   try {
-    const body = await req.json();
-    const { subject, chapters } = body;
-
-    // Add validation
-    if (!subject || !chapters) {
-      return NextResponse.json(
-        { error: "Subject and chapters are required" },
-        { status: 400 }
-      );
-    }
-
-    // Ensure MCQs have explanation field
-    const chaptersWithExplanation = chapters.map((chapter: any) => ({
-      ...chapter,
-      topics: chapter.topics.map((topic: any) => ({
-        ...topic,
-        mcqs: (topic.mcqs || []).map((mcq: any) => ({
-          ...mcq,
-          explanation: mcq.explanation ?? "", // default to empty string if not present
-        })),
-        subtopics: (topic.subtopics || []).map((sub: any) => ({
-          ...sub,
-          mcqs: (sub.mcqs || []).map((mcq: any) => ({
-            ...mcq,
-            explanation: mcq.explanation ?? "",
-          })),
-        })),
-      })),
-    }));
-
-    const created = await prisma.curriculum.create({
-      data: { subject, chapters: chaptersWithExplanation },
+    const curriculums = await prisma.curriculum.findMany({
+      orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json(created, { status: 201 });
-  } catch (err) {
-    console.error("Curriculum creation error:", err);
+    return NextResponse.json(curriculums, { status: 200 });
+  } catch (error) {
+    console.error("❌ Error fetching curriculums:", error);
     return NextResponse.json(
-      { error: "Failed to create curriculum" },
+      { error: "Failed to fetch curriculums" },
       { status: 500 }
     );
   }
 }
 
-export async function GET() {
+// POST - Create new curriculum
+export async function POST(req: NextRequest) {
   try {
-    console.log("Fetching all curriculums");
+    const body = await req.json();
+    console.log("📥 Received curriculum data:", JSON.stringify(body, null, 2));
 
-    const curriculums = await prisma.curriculum.findMany({
-      select: {
-        id: true,
-        subject: true,
-        chapters: true,
-        createdAt: true, // Keep createdAt for ordering
-        // Remove updatedAt to avoid the error
-      },
-      orderBy: {
-        createdAt: "desc",
+    const { subject, introVideoUrl, mcqs, chapters } = body;
+
+    // Validation
+    if (!subject || !subject.trim()) {
+      return NextResponse.json(
+        { error: "Subject is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!chapters || !Array.isArray(chapters) || chapters.length === 0) {
+      return NextResponse.json(
+        { error: "At least one chapter is required" },
+        { status: 400 }
+      );
+    }
+
+    // Create curriculum with JSON fields (no need to stringify)
+    const curriculum = await prisma.curriculum.create({
+      data: {
+        subject: subject.trim(),
+        introVideoUrl: introVideoUrl || null,
+        mcqs: (mcqs || []) as Prisma.InputJsonValue, // ✅ Cast to Prisma JSON type
+        chapters: chapters as Prisma.InputJsonValue, // ✅ Cast to Prisma JSON type
       },
     });
 
-    console.log(`Found ${curriculums.length} curriculums`);
-
-    return NextResponse.json(curriculums);
-  } catch (error) {
-    console.error("GET curriculum error:", error);
+    console.log("✅ Curriculum created successfully:", curriculum.id);
+    return NextResponse.json(curriculum, { status: 201 });
+  } catch (error: any) {
+    console.error("❌ Error creating curriculum:", error);
     return NextResponse.json(
-      { error: "Failed to fetch curriculums" },
+      { error: error.message || "Failed to create curriculum" },
       { status: 500 }
     );
   }

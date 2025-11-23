@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const categories_data: string[] = ["Art & Design", "Business", "Data Science", "Development", "Finance", "Health & Fitness", "Lifestyle"];
+const categories_data: string[] = ["Anatomy", "Physiology", "Oncology", "Pathology", "Medicine", "Nursing", "Pharmacology"];
 
 const Categories = () => {
    return (

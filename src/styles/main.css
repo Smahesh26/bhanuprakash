@@ -176,10 +176,9 @@ header .btn,
 .tgmenu__action .btn,
 .tg-header__area [class*="btn"],
 .tgmenu__action [class*="btn"] {
-  background: #fec107 !important;
-  color: #230908 !important;
-  /* changed shadow from white to brown so the button matches brand */
-  box-shadow: 4px 6px 0px 0px #230908 !important;
+  background: #0d447a !important;
+  color: #fff !important;
+  /* box-shadow: 4px 6px 0px 0px #5dba47 !important; */
   border: none !important;
 }
 
@@ -189,16 +188,16 @@ header .btn:hover, header .btn:focus-visible,
 .tgmenu__action > ul li.header-btn .btn:hover, .tgmenu__action > ul li.header-btn .btn:focus-visible,
 .tg-header__top-btn .btn:hover, .tg-header__top-btn .btn:focus-visible,
 .tgmenu__action .btn:hover, .tgmenu__action .btn:focus-visible {
-  background: #230908 !important;
+  background: #5dba47 !important;
   color: #fff !important;
-  box-shadow: 0 0 0 0 #fff !important;
+  box-shadow: 0 0 0 0 #5dba47 !important;
 }
 
 /* === Sticky menu: menu items brown, button yellow with brown shadow === */
 .sticky-menu .tgmenu__navbar-wrap > ul > li > a,
 .tg-header__area.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
 header.sticky-menu .tgmenu__navbar-wrap > ul > li > a {
-  color: #230908 !important;
+  color: #fff !important;
 }
 
 /* --- Sticky header button and icon override --- */
@@ -208,10 +207,11 @@ header.sticky-menu .tgmenu__action > ul li.header-btn .btn,
 .sticky-menu .btn,
 .tg-header__area.sticky-menu .btn,
 header.sticky-menu .btn {
-  background: #fec107 !important;
-  color: #230908 !important;
-  box-shadow: 4px 6px 0px 0px #230908 !important;
+  background: #0d447a !important;
+  color: #fff !important;
+  /* box-shadow: 4px 6px 0px 0px #5dba47 !important; */
   border: none !important;
+  border-radius:10px !important
 }
 
 /* ===== High-specificity nav & sticky overrides to beat other styles (layout.css etc.) =====
@@ -224,7 +224,8 @@ html body .site-header .tgmenu__navbar-wrap ul li a,
 html body header.sticky-menu .tgmenu__navbar-wrap ul li a,
 html body .tg-header__area.sticky-menu .tgmenu__navbar-wrap ul li a,
 html body .sticky-menu .tgmenu__navbar-wrap ul li a {
-  color: #230908 !important; /* brand brown; change to #fff if you prefer white on dark headers */
+  color: #000 !important;
+  font-weight: 600 !important;
 }
 
 /* Force sticky header background/box-shadow to remain transparent (or same as default header) */
@@ -236,6 +237,30 @@ html body .sticky-menu {
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
   border-radius: 0 !important;
+}
+
+/* === Additional override for navigation menu styling === */
+.tgmenu__navbar-wrap ul li a,
+.navigation li a,
+.tgmenu__main-menu li a {
+  color: #000 !important;
+  font-weight: 600 !important;
+}
+
+/* Override any hover states to maintain black color */
+.tgmenu__navbar-wrap ul li a:hover,
+.navigation li a:hover,
+.tgmenu__main-menu li a:hover {
+  color: #000 !important;
+  font-weight: 600 !important;
+}
+
+/* Ensure active menu items also use black color */
+.tgmenu__navbar-wrap > ul > li.active a,
+.tgmenu__navbar-wrap > ul > li:highlighted a,
+.navigation li.active a {
+  color: #000 !important;
+  font-weight: 600 !important;
 }
 
 /* Catch inline background styles set by JS and override them for header and sticky state */
@@ -256,7 +281,7 @@ header [style*="background"],
 header.sticky-menu [style*="background"],
 .tg-header__area.sticky-menu [style*="background"] {
   background: #fec107 !important;
-  color: #230908 !important;
+  color: #fff !important;
   box-shadow: 4px 6px 0px 0px #230908 !important;
   -webkit-box-shadow: 4px 6px 0px 0px #230908 !important;
   border: none !important;
@@ -272,9 +297,9 @@ header.sticky-menu .tgmenu__action > ul li.header-btn .btn:focus-visible,
 .sticky-menu .btn:hover, .sticky-menu .btn:focus-visible,
 .tg-header__area.sticky-menu .btn:hover, .tg-header__area.sticky-menu .btn:focus-visible,
 header.sticky-menu .btn:hover, header.sticky-menu .btn:focus-visible {
-  background: #230908 !important;
+  background: #5dba47 !important;
   color: #fff !important;
-  box-shadow: 0 0 0 0 #230908 !important;
+  box-shadow: 0 0 0 0 #5dba47 !important;
 }
 
 /* --- Sticky header icons (FontAwesome, SVG, i) --- */
@@ -287,16 +312,16 @@ header.sticky-menu .btn:hover, header.sticky-menu .btn:focus-visible {
 header.sticky-menu .tgmenu__action > ul li a i,
 header.sticky-menu .tgmenu__action > ul li a svg,
 header.sticky-menu .tgmenu__action > ul li a .fa {
-  color: #230908 !important;
-  fill: #230908 !important;
-  stroke: #230908 !important;
+  color: #fff !important;
+  fill: #fff !important;
+  stroke: #fff !important;
 }
 
 /* --- Sticky header menu items --- */
 header.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
 .tg-header__area.sticky-menu .tgmenu__navbar-wrap > ul > li > a,
 .sticky-menu .tgmenu__navbar-wrap > ul > li > a {
-  color: #230908 !important;
+  color: #fff !important;
 }
 
 /* --- Inline style override for sticky header buttons --- */
@@ -524,9 +549,9 @@ textarea {
 .btn {
   user-select: none;
   -moz-user-select: none;
-  background: #fec107 none repeat scroll 0 0;
+  background: #5dba47 none repeat scroll 0 0 !important;
   border: medium none;
-  color: #230908;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
@@ -549,15 +574,15 @@ textarea {
   -moz-border-radius: 50px;
   -o-border-radius: 50px;
   -ms-border-radius: 50px;
-  border-radius: 50px;
+  border-radius: 10px !important;
   white-space: nowrap;
-  box-shadow: 4px 6px 0px 0px #230908; /* changed from #fff to brand brown */
+  box-shadow: none !important;
   overflow: hidden;
 }
 .btn:hover, .btn:focus-visible {
-  background: #230908;
+  background: #5dba47;
   color: #fff;
-  box-shadow: 0 0 0 0 #230908; /* changed from #fff */
+  box-shadow: 0 0 0 0 #5dba47;
 }
 .btn .text {
   display: block;
@@ -600,17 +625,17 @@ textarea {
   stroke: var(--tg-theme-secondary);
 }
 .btn-two {
-  background: var(--tg-theme-secondary);
-  border: 2px solid var(--tg-common-color-black-3);
+  background: #5dba47;
+  border: none !important;
   -webkit-box-shadow: 4px 4px 0px 0px #3D3D3D;
   -moz-box-shadow: 4px 4px 0px 0px #3D3D3D;
   -ms-box-shadow: 4px 4px 0px 0px #3D3D3D;
   -o-box-shadow: 4px 4px 0px 0px #3D3D3D;
   box-shadow: 4px 4px 0px 0px #3D3D3D;
-  color: var(--tg-common-color-black-3);
+  color: #fff !important;
 }
 .btn-two svg {
-  color: var(--tg-common-color-black-3) !important;
+  color: #fff !important;
 }
 .btn-two:hover, .btn-two:focus-visible {
   background: var(--tg-theme-primary);
@@ -941,10 +966,10 @@ textarea {
 }
 .breadcrumb__content .breadcrumb > * {
   font-size: 16px;
-  color: var(--tg-theme-primary);
+  color:#fff;
 }
 .breadcrumb__content .breadcrumb > * a {
-  color: var(--tg-common-color-dark);
+  color: #fff;
 }
 .breadcrumb__content .breadcrumb .breadcrumb-separator {
   line-height: 1;
@@ -1090,7 +1115,7 @@ textarea {
   color: var(--tg-common-color-white);
   text-align: center;
   cursor: pointer;
-  background: var(--tg-theme-primary);
+  background: #5dba47 !important;
   transition: 1s ease;
   border: none;
 }
@@ -1146,17 +1171,14 @@ textarea {
 .section__title .sub-title {
   display: inline-block;
   line-height: 1.62;
-  background:  #230908;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -o-border-radius: 30px;
-  -ms-border-radius: 30px;
+  background: #0d447a !important;
   border-radius: 30px;
   padding: 3px 16px;
   font-weight: var(--tg-fw-medium);
-  color: #fff;
+  color: #fff !important;
   margin: 0 0 14px;
 }
+
 .section__title .title {
   font-size: 36px;
   line-height: 1.33;
@@ -2861,7 +2883,7 @@ textarea {
   top: 0;
   width: 100%;
   z-index: 99;
-  background: #230908;
+  background: #fff;
   -webkit-animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
   animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
   -webkit-box-shadow: 0 10px 15px rgba(25, 25, 25, 0.1);
@@ -6296,7 +6318,7 @@ textarea {
   align-items: center;
   justify-content: center;
   flex: 0 0 30px;
-  background: var(--tg-theme-secondary);
+  background: #0d447a !important;
   border: 1px solid #282568;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -6309,7 +6331,7 @@ textarea {
   -ms-transition: all 0.3s ease-out 0s;
   -o-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s;
-  color: var(--tg-heading-color);
+  color: #fff !important;
 }
 .about__info-list-item p {
   font-family: var(--tg-heading-font-family);
@@ -13281,7 +13303,7 @@ textarea {
   }
 }
 .fact__inner-wrap {
-  background: #f9a116 !important;
+  background: #0d447a;
   padding: 94px 70px 64px;
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
@@ -15388,7 +15410,7 @@ textarea {
   animation-play-state: paused;
 }
 .faq__language-wrap {
-  background: var(--tg-theme-primary);
+  background: #5dba47 !important;
   position: absolute;
   left: 21%;
   bottom: 7%;
@@ -15605,8 +15627,8 @@ textarea {
 }
 .faq__wrap-two .accordion-item .accordion-button:not(.collapsed) {
   box-shadow: none;
-  color: var(--tg-heading-color);
-  background-color: var(--tg-theme-secondary);
+  color: #FFFFFF !important;
+  background-color: #5dba47 !important;
 }
 .faq__wrap-two .accordion-item .accordion-button:not(.collapsed)::after {
   transform: rotate(-90deg);
@@ -16915,7 +16937,7 @@ textarea {
   gap: 5px;
 }
 .blog-widget .shop-cat-list .list-wrap li a i {
-  color: var(--tg-theme-primary);
+  color: #0d447a !important;
   font-size: 20px;
   line-height: 0;
 }
@@ -16934,9 +16956,9 @@ textarea {
 }
 .blog-widget .tagcloud a {
   font-size: 16px;
-  color: var(--tg-theme-primary);
+  color: #fff !important;
   display: block;
-  background: var(--tg-common-color-white);
+  background: #0d447a !important;
   padding: 10px 15px;
   line-height: 1;
   -webkit-border-radius: 3px;
@@ -16946,8 +16968,8 @@ textarea {
   border-radius: 3px;
 }
 .blog-widget .tagcloud a:hover {
-  background: var(--tg-theme-primary);
-  color: var(--tg-common-color-white);
+  background: #fff !important;
+  color: #0d447a !important;
 }
 .blog__shape img {
   position: absolute;
@@ -17674,7 +17696,7 @@ blockquote > p {
     21. Newsletter
 ===============================*/
 .newsletter__area {
-  background: var(--tg-theme-primary);
+  background:#0d447a;
   position: relative;
   padding: 35px 0 0;
   z-index: 1;
@@ -17686,7 +17708,7 @@ blockquote > p {
   }
 }
 .newsletter__area-two {
-  background: var(--tg-common-color-gray-10);
+  background: #0d447a
 }
 .newsletter__inner-wrap {
   background: var(--tg-theme-primary);
@@ -19198,10 +19220,10 @@ blockquote > p {
   font-size: 18px;
 }
 .dashboard__sidebar-menu .list-wrap li a:hover {
-  color: #230908;
+  color: #5dba47 !important;
 }
 .dashboard__sidebar-menu .list-wrap li.active a {
-  color: #230908;
+  color: #0d447a !important;
 }
 .dashboard__content-wrap {
   background: var(--tg-common-color-white);
@@ -20119,17 +20141,17 @@ blockquote > p {
     24. Footer
 ===============================*/
 .footer__area {
-  background: #282568 !important;
+  background: #0d447a !important;
 }
 .footer__area-two {
   margin-top: -160px;
-  background: #282568;
+  background: #0d447a !important;
 }
 .footer__area-two .footer__top {
   padding: 230px 0 60px;
 }
 .footer__area-three {
-  background: #282568 ;
+  background: #0d447a !important ;
 }
 .footer__area-five {
   padding-top: 100px;
@@ -20286,7 +20308,7 @@ blockquote > p {
   margin-bottom: 25px;
 }
 .tg-header__area.sticky-menu .btn.arrow-btn {
-  background: #230908 !important;
+  background: #fff !important;
   color: #FFF !important;
   border-radius: 20px;
   font-weight: 700;
