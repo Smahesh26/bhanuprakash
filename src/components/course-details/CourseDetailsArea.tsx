@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -29,7 +29,8 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
     lightBg: '#f1f5f9'
   };
 
-  const fetchCourseDetails = async () => {
+  // Fix: Wrap fetchCourseDetails in useCallback to avoid useEffect dependency warning
+  const fetchCourseDetails = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -68,7 +69,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [courseTitle]);
 
   const checkUserRegistration = () => {
     setIsRegistered(false);

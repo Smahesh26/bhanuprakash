@@ -100,7 +100,7 @@ const CourseDetailsPage = () => {
     Array.isArray(curriculum?.chapters)
       ? (curriculum!.chapters as Chapter[])
       : []
-  ), [curriculum?.chapters]);
+  ), [curriculum]);
 
   const chapter = useMemo(
     () => chapters?.[selected.chapter] ?? {},
