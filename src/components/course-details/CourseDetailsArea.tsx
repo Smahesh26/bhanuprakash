@@ -29,12 +29,6 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
     lightBg: '#f1f5f9'
   };
 
-  useEffect(() => {
-    console.log('🔄 CourseDetailsArea mounted with courseTitle:', courseTitle);
-    fetchCourseDetails();
-    checkUserRegistration();
-  }, [courseTitle]);
-
   const fetchCourseDetails = async () => {
     try {
       setLoading(true);
@@ -79,6 +73,12 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
   const checkUserRegistration = () => {
     setIsRegistered(false);
   };
+
+  useEffect(() => {
+    console.log('🔄 CourseDetailsArea mounted with courseTitle:', courseTitle);
+    fetchCourseDetails();
+    checkUserRegistration();
+  }, [courseTitle, fetchCourseDetails]);
 
   const handleRestrictedContent = (type: string, title: string) => {
     setSelectedContent({ type, title });
@@ -186,7 +186,8 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
         <div className="text-center">
           <i className="fas fa-search fa-3x mb-3" style={{ color: brandColors.primary }}></i>
           <h3 style={{ color: brandColors.primary }}>Course Not Found</h3>
-          <p style={{ color: brandColors.gray }}>The course "{courseTitle}" could not be found in our database.</p>
+          {/* Escape double quotes */}
+          <p style={{ color: brandColors.gray }}>The course &quot;{courseTitle}&quot; could not be found in our database.</p>
           <button 
             className="btn btn-primary"
             onClick={() => router.push('/courses')}
@@ -545,7 +546,8 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
               ) : (
                 <div className="alert alert-warning">
                   <h5>No Curriculum Data Available</h5>
-                  <p>This course doesn't have detailed curriculum information yet.</p>
+                  {/* Escape single quote */}
+                  <p>This course doesn&apos;t have detailed curriculum information yet.</p>
                 </div>
               )}
             </div>
