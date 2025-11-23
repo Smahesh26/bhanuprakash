@@ -96,9 +96,11 @@ const CourseDetailsPage = () => {
   };
 
   // Safely get chapters array
-  const chapters: Chapter[] = Array.isArray(curriculum?.chapters)
-    ? (curriculum!.chapters as Chapter[])
-    : [];
+  const chapters: Chapter[] = useMemo(() => (
+    Array.isArray(curriculum?.chapters)
+      ? (curriculum!.chapters as Chapter[])
+      : []
+  ), [curriculum?.chapters]);
 
   const chapter = useMemo(
     () => chapters?.[selected.chapter] ?? {},
@@ -777,7 +779,9 @@ const CourseDetailsPage = () => {
                   <div style={{ textAlign: "center", padding: "60px 20px", background: BRAND.bg, borderRadius: "12px", border: `2px dashed ${BRAND.line}` }}>
                     <div style={{ fontSize: "48px", marginBottom: "16px", opacity: 0.6 }}>📚</div>
                     <h4 style={{ color: BRAND.primary, marginBottom: "8px" }}>No Learning Materials Available</h4>
-                    <p style={{ color: BRAND.subtle, fontSize: "15px" }}>Select a topic from the sidebar to view materials</p>
+                    <p style={{ color: BRAND.subtle, fontSize: "15px" }}>
+                      Select a topic from the sidebar to view materials
+                    </p>
                   </div>
                 )}
               </div>

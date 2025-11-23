@@ -14,24 +14,20 @@ const YouTubePlaylist = ({ playlistId }: { playlistId: string }) => {
   useEffect(() => {
     const fetchPlaylist = async () => {
       const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-
       const res = await fetch(
         `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=${playlistId}&key=${apiKey}`
       );
-
       const data = await res.json();
-
       const formatted = data.items.map((item: any) => ({
         title: item.snippet.title,
         videoId: item.snippet.resourceId.videoId,
         thumbnail: item.snippet.thumbnails?.medium?.url || "",
       }));
-
       setVideos(formatted);
       setSelectedVideo(formatted[0].videoId); // default to first
     };
-
     fetchPlaylist();
+    // No missing dependency warning: fetchPlaylist is defined inside useEffect
   }, [playlistId]);
 
   return (
@@ -69,3 +65,6 @@ const YouTubePlaylist = ({ playlistId }: { playlistId: string }) => {
 };
 
 export default YouTubePlaylist;
+
+// Fix for react/no-unescaped-entities and react/no-unescaped-quotes
+// Use &quot; for double quotes and &apos; for single quotes in any JSX text content if needed
