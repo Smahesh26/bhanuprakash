@@ -12,6 +12,7 @@ const YouTubePlaylist = ({ playlistId }: { playlistId: string }) => {
   const [selectedVideo, setSelectedVideo] = useState<string>("");
 
   useEffect(() => {
+    // No missing dependency warning: fetchPlaylist is defined inside useEffect
     const fetchPlaylist = async () => {
       const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
       const res = await fetch(
@@ -27,7 +28,6 @@ const YouTubePlaylist = ({ playlistId }: { playlistId: string }) => {
       setSelectedVideo(formatted[0].videoId); // default to first
     };
     fetchPlaylist();
-    // No missing dependency warning: fetchPlaylist is defined inside useEffect
   }, [playlistId]);
 
   return (
@@ -42,7 +42,8 @@ const YouTubePlaylist = ({ playlistId }: { playlistId: string }) => {
               onClick={() => setSelectedVideo(video.videoId)}
               style={{ cursor: "pointer" }}
             >
-              {video.title}
+              {/* Escape double quotes */}
+              {video.title.replace(/"/g, '&quot;').replace(/'/g, '&apos;')}
             </li>
           ))}
         </ul>
@@ -67,4 +68,5 @@ const YouTubePlaylist = ({ playlistId }: { playlistId: string }) => {
 export default YouTubePlaylist;
 
 // Fix for react/no-unescaped-entities and react/no-unescaped-quotes
-// Use &quot; for double quotes and &apos; for single quotes in any JSX text content if needed
+// If you have any JSX text content with single or double quotes elsewhere, escape them:
+// Example: Use &quot; for " and &apos; for ' in JSX text nodes

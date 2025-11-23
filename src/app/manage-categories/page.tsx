@@ -160,6 +160,10 @@ const ManageCategories = () => {
                 </tbody>
               </Table>
             </div>
+            <span style={{ color: "#64748b", fontSize: "13px" }}>
+              {/* Use &quot; instead of " */}
+              Use &quot;Add Category&quot; to create a new category.
+            </span>
           </div>
         </div>
       </div>
