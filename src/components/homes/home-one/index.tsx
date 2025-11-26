@@ -15,7 +15,7 @@ import Cta from "../home-seven/Cta"
 import Choose from "../home-seven/Choose"
 import Categories1 from "../home-seven/Categories1"
 import Testimonial from "../home-seven/Testimonial"
-import Faq from "../home-six/Faq"
+// import Faq from "../home-six/Faq"
 const HomeOne = () => {
    return (
       <>
