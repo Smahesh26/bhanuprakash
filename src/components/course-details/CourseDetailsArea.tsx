@@ -607,7 +607,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                 <div className="p-4 rounded-3 shadow-sm" style={{ backgroundColor: brandColors.white }}>
                   <h6 className="fw-bold mb-3 d-flex align-items-center" style={{ color: brandColors.primary }}>
                     <i className="fas fa-star me-2" style={{ color: brandColors.accent }}></i>
-                    What's Included
+                    What is Included
                   </h6>
                   <div className="list-unstyled">
                     <div className="d-flex align-items-center mb-3 pb-2 border-bottom">

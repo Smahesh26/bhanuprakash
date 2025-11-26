@@ -1,7 +1,7 @@
 "use client";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
-import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
+// import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -219,7 +219,7 @@ const InstructorUploadCourse = () => {
           pointerEvents: "none",
         }}
       >
-        <Image src={bg_img} alt="bg" fill style={{ objectFit: "cover", opacity: 0.13 }} />
+        {/* <Image src={bg_img} alt="bg" fill style={{ objectFit: "cover", opacity: 0.13 }} /> */}
       </div>
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="dashboard__inner-wrap row">

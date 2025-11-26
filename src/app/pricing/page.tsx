@@ -1,4 +1,3 @@
-import FooterOne from "@/layouts/footers/FooterOne";
 import HeaderOne from "@/layouts/headers/HeaderOne";
 import PricingArea from "@/components/inner-pages/pricing/PricingArea";
 import FooterTwo from "@/layouts/footers/FooterTwo";

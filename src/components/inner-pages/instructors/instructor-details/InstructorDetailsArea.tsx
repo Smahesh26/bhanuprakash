@@ -4,7 +4,7 @@ import Link from "next/link"
 import InstructorSlider from "./InstructorSlider"
 import InstructorForm from "@/forms/InstructorForm"
 
-import instructor_details_img from "@/assets/img/instructor/instructor_details_thumb.png"
+// import instructor_details_img from "@/assets/img/instructor/instructor_details_thumb.png"
 
 interface DataType {
   id: number;
@@ -44,7 +44,7 @@ const InstructorDetailsArea = () => {
             <div className="instructor__details-wrap">
               <div className="instructor__details-info">
                 <div className="instructor__details-thumb">
-                  <Image src={instructor_details_img} alt="img" />
+                  {/* <Image src={instructor_details_img} alt="img" /> */}
                 </div>
                 <div className="instructor__details-content">
                   <h2 className="title">Robert Fox</h2>

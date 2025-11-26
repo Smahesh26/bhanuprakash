@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
-
 interface YoutubeVideo {
   videoId: string;
   title: string;

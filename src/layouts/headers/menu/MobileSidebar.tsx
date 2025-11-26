@@ -2,7 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import MobileMenu from "./MobileMenu"
 
-import logo from "@/assets/img/logo/logo.svg"
+// Use the original logo file
+import logo from "@/assets/img/logo/MSS Logo-V1-02.svg"
 
 const MobileSidebar = ({ isActive, setIsActive }: any) => {
 

@@ -5,7 +5,7 @@ import instructor_reviewe_data from "@/data/dashboard-data/InstructorReviewData"
 import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image"
-import bg_img from "@/assets/img/bg/dashboard_bg.jpg"
+// import bg_img from "@/assets/img/bg/dashboard_bg.jpg"
 
 const tab_title: string[] = ["Received", "Given",];
 
@@ -21,7 +21,9 @@ const InstructorReviewArea = () => {
 
   return (
     <section className="dashboard__area section-pb-120">
-         <div className="dashboard__bg"><Image src={bg_img} alt=""/></div>
+         <div className="dashboard__bg">
+          {/* <Image src={bg_img} alt=""/> */}
+          </div>
       <div className="container">
         <DashboardBanner />
         <div className="dashboard__inner-wrap">

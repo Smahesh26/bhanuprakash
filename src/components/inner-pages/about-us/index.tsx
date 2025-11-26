@@ -3,11 +3,11 @@ import FooterTwo from "@/layouts/footers/FooterTwo"
 import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne"
 import About from "./About"
 import BrandOne from "@/components/common/brands/BrandOne"
-import Feature from "@/components/homes/home-two/Feature"
+// import Feature from "@/components/homes/home-two/Feature"
 import Newsletter from "@/components/homes/home-one/Newsletter"
 import Features from "@/components/homes/home-one/Features"
 import Testimonial from "./Testimonial"
-import Faq from "@/components/homes/home-six/Faq"
+// import Faq from "@/components/homes/home-six/Faq"
 
 const AboutUs = () => {
    return (
@@ -16,9 +16,9 @@ const AboutUs = () => {
          <main className="main-area fix">
             <BreadcrumbOne title="Who We Are" sub_title="About Us" />
             <About />
-            <Faq/>
+            {/* <Faq/> */}
             {/* <BrandOne /> */}
-            <Feature style={true} />
+            {/* <Feature style={true} /> */}
             <Newsletter />
             {/* <Features /> */}
             {/* <Testimonial /> */}

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
-import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
+// import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
 
 const InstructorStudents = () => {
   const [students, setStudents] = useState([]);
@@ -50,7 +50,9 @@ const InstructorStudents = () => {
 
   return (
     <section className="dashboard__area section-pb-120" style={{ background: 'linear-gradient(120deg,#f7f8fa 0%,#e3e6ed 100%)', minHeight: '100vh' }}>
-      <div className="dashboard__bg"><Image src={bg_img} alt="bg" style={{ opacity: 0.08, objectFit: 'cover' }} /></div>
+      <div className="dashboard__bg">
+        {/* <Image src={bg_img} alt="bg" style={{ opacity: 0.08, objectFit: 'cover' }} /> */}
+        </div>
       <div className="container">
         <div className="dashboard__inner-wrap row">
           <DashboardSidebar />

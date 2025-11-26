@@ -1045,7 +1045,7 @@ const CourseDetailsPage = () => {
                               Premium Case Studies
                             </h4>
                             <p style={{ color: BRAND.subtle, fontSize: "15px", marginBottom: "8px" }}>
-                              You've viewed <strong>2 of {activeCaseStudyMcqs.length}</strong> case study questions.
+                              You have viewed <strong>2 of {activeCaseStudyMcqs.length}</strong> case study questions.
                             </p>
                             <p style={{ color: BRAND.subtle, fontSize: "15px", marginBottom: "24px" }}>
                               Sign in or upgrade to access all {activeCaseStudyMcqs.length} clinical case studies.

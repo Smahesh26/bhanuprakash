@@ -1,7 +1,7 @@
 import { StaticImageData } from "next/image";
 
-import testi_avatar1 from "@/assets/img/instructor/h2_instructor01.png"
-import testi_avatar2 from "@/assets/img/instructor/h2_instructor02.png"
+// import testi_avatar1 from "@/assets/img/instructor/h2_instructor01.png"
+// import testi_avatar2 from "@/assets/img/instructor/h2_instructor02.png"
 import testi_avatar3 from "@/assets/img/instructor/h2_instructor03.png"
 import testi_avatar4 from "@/assets/img/instructor/h2_instructor04.png"
 import testi_avatar5 from "@/assets/img/instructor/h2_instructor05.png"
@@ -20,24 +20,24 @@ interface DataType {
 }[];
 
 const testimonial_data: DataType[] = [
-   {
-      id: 1,
-      page: "home_2",
-      avatar: testi_avatar1,
-      rating: "(4.8 Ratings)",
-      title: "Olivia Mia",
-      designation: "Web Design",
-      desc: "SkillGro The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
-   },
-   {
-      id: 2,
-      page: "home_2",
-      avatar: testi_avatar2,
-      rating: "(4.8 Ratings)",
-      title: "William Hope",
-      designation: "Digital Marketing",
-      desc: "SkillGro The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
-   },
+   // {
+   //    id: 1,
+   //    page: "home_2",
+   //    avatar: testi_avatar1,
+   //    rating: "(4.8 Ratings)",
+   //    title: "Olivia Mia",
+   //    designation: "Web Design",
+   //    desc: "SkillGro The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+   // },
+   // {
+   //    id: 2,
+   //    page: "home_2",
+   //    avatar: testi_avatar2,
+   //    rating: "(4.8 Ratings)",
+   //    title: "William Hope",
+   //    designation: "Digital Marketing",
+   //    desc: "SkillGro The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+   // },
    {
       id: 3,
       page: "home_2",

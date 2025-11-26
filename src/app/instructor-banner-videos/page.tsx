@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
-import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
+// import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
 
 interface Banner {
   id?: number;                 // Prisma: Int
@@ -140,7 +140,7 @@ const BannerVideos = () => {
   return (
     <section className="dashboard__area section-pb-120">
       <div className="dashboard__bg">
-        <Image src={bg_img} alt="bg" />
+        {/* <Image src={bg_img} alt="bg" /> */}
       </div>
       <div className="container">
         <div className="dashboard__inner-wrap row">
