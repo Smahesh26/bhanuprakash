@@ -1,17 +1,17 @@
-import HeaderSeven from "@/layouts/headers/HeaderSeven"
-import FooterTwo from "@/layouts/footers/FooterTwo"
-import ErrorArea from "./ErrorArea"
+import HeaderSeven from "@/layouts/headers/HeaderSeven";
+import FooterTwo from "@/layouts/footers/FooterTwo";
+import ErrorArea from "./ErrorArea";
+
 const NotFound = () => {
-   return (
-      <>
-         <HeaderSeven />
-         <main className="main-area fix">
-            <ErrorArea />
-         </main>
-         <FooterTwo />
-      </>
-   )
-}
+  return (
+    <>
+      <HeaderSeven />
+      <main className="main-area fix">
+        <ErrorArea />
+      </main>
+      <FooterTwo />
+    </>
+  );
+};
 
-export default NotFound
-
+export default NotFound;
