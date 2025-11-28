@@ -14,7 +14,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate --schema=./prisma/schema.prisma",
-    "db:migrate": "prisma migrate deploy --schema=./prisma/schema.prisma"
+  "db:migrate": "prisma migrate deploy --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
