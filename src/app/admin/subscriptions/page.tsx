@@ -40,3 +40,13 @@ export default async function AdminSubscriptionsPage() {
     </div>
   );
 }
+
+// ✅ Your code is correct for fetching user subscriptions with Prisma.
+// ⚠ If you still get "table does not exist" errors on Render, the issue is with your database, not this file.
+
+// Troubleshooting steps:
+// 1. Make sure your database is migrated and contains the User table.
+//    - Run: npx prisma migrate deploy
+//    - Or: npx prisma db push
+// 2. Check your DATABASE_URL in .env is correct for Render's database.
+// 3. If you changed your schema, redeploy and migrate again.
