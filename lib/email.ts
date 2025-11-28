@@ -21,7 +21,7 @@ export async function sendOtpEmail(email: string, otp: string) {
           <p>Hello,</p>
           <p>Your OTP code is: <strong style="font-size: 20px;">${otp}</strong></p>
           <p>This code is valid for 15 minutes.</p>
-          <p>Thank you!</p>
+          <p>Thank you.......</p>
         </div>
       `,
     });
