@@ -155,6 +155,8 @@ const ManageHomepageCourses = () => {
       <div className="dashboard__bg">
         {/* <Image src={bg_img} alt="bg" /> */}
       </div>
+      <br /> <br /><br />
+      <br />
       <div className="container">
         <div className="dashboard__inner-wrap row">
           <DashboardSidebar />
