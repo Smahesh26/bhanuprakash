@@ -49,3 +49,9 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// ✅ This API route is correct for creating and fetching homepage courses using Prisma.
+// ⚠ If you get a 500 error:
+//   - Make sure the "homepage_courses" table exists in your database.
+//   - Ensure your Prisma schema matches your database structure.
+//   - Check for database connection issues or missing fields.
