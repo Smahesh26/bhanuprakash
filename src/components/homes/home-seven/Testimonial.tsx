@@ -63,12 +63,14 @@ const Testimonial = () => {
 								<div className="col-md-8">
 									<div className="testimonial__content-three testimonial__content-four">
 										<div className="section__title mb-2">
-											<span className="sub-title" style={{ fontWeight: 600, fontSize: 20 }}>{t.studentName}</span>
-											<h2 className="title bold" style={{ fontSize: 22, marginBottom: 16 }}>{t.text}</h2>
+											<span className="sub-title" style={{ fontWeight: 500, fontSize: 20 }}>{t.studentName}</span>
+											<h2 className="title" style={{ fontSize: 16, marginBottom: 16, fontWeight: 400 }}>{t.text}</h2>
 										</div>
-										<div style={{ fontWeight: 500, fontSize: 18, marginBottom: 8 }}>
-											Rating: <span style={{ color: "#ffc107" }}>{typeof t.rating === "number" ? "★".repeat(Math.round(t.rating)) : t.rating}</span>
-										</div>
+										{t.rating && (
+											<div style={{ fontWeight: 600, fontSize: 18, marginBottom: 12, color: "#5dba47" }}>
+												Rating: <span style={{ color: "#ffc107" }}>{typeof t.rating === "number" ? "★".repeat(Math.round(t.rating)) : t.rating}</span>
+											</div>
+										)}
 										{t.youtubeUrl && (
 											<a href={t.youtubeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-danger mb-2">
 												Watch Testimonial Video
