@@ -232,8 +232,8 @@ html body .sticky-menu .tgmenu__navbar-wrap ul li a {
 html body header.sticky-menu,
 html body .tg-header__area.sticky-menu,
 html body .sticky-menu {
-  background: transparent !important;
-  background-color: transparent !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
   border-radius: 0 !important;
@@ -269,9 +269,11 @@ html body .tg-header__area[style*="background"],
 html body header.sticky-menu[style*="background"],
 html body .tg-header__area.sticky-menu[style*="background"],
 html body .sticky-menu[style*="background"] {
-  background: transparent !important;
-  background-color: transparent !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
   box-shadow: none !important;
+
+  
 }
 
 /* Inline-style override for buttons in header (ensure brown shadow everywhere) */

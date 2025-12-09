@@ -55,10 +55,16 @@ const FooterTwo = ({ style }: any) => {
                            Our Company
                         </h4>
                         <div className="footer__link">
-                           <ul className="list-wrap">
-                              <li><Link href="/contact" className="footer-link">Contact Us</Link></li>
-                              <li><Link href="" className="footer-link">Blog</Link></li>
-                              <li><Link href="" className="footer-link">Instructor</Link></li>
+                           <ul className="list-wrap" style={{ paddingLeft: 0 }}>
+                              <li style={{ width: "100%" }}>
+                                 <Link href="/contact" className="footer-link" style={{ display: "block", width: "100%" }}>Contact Us</Link>
+                              </li>
+                              <li style={{ width: "100%" }}>
+                                 <Link href="" className="footer-link" style={{ display: "block", width: "100%" }}>Blog</Link>
+                              </li>
+                              <li style={{ width: "100%" }}>
+                                 <Link href="" className="footer-link" style={{ display: "block", width: "100%" }}>Instructor</Link>
+                              </li>
                            </ul>
                         </div>
                      </div>
