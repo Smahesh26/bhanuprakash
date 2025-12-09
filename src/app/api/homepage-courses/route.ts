@@ -1,21 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
     const courses = await prisma.homepageCourse.findMany({
       orderBy: {
-      createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
-    
+
     return NextResponse.json(courses);
   } catch (error) {
-    console.error('Error fetching homepage courses:', error);
+    console.error("Error fetching homepage courses:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch courses' },
+      { error: "Failed to fetch courses" },
       { status: 500 }
     );
   }
@@ -28,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     if (!title || !thumb) {
       return NextResponse.json(
-        { error: 'Title and thumbnail are required' },
+        { error: "Title and thumbnail are required" },
         { status: 400 }
       );
     }
@@ -42,16 +40,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(course, { status: 201 });
   } catch (error) {
-    console.error('Error creating course:', error);
+    console.error("Error creating course:", error);
     return NextResponse.json(
-      { error: 'Failed to create course' },
+      { error: "Failed to create course" },
       { status: 500 }
     );
   }
 }
-
-// ✅ This API route is correct for creating and fetching homepage courses using Prisma.
-// ⚠ If you get a 500 error:
-//   - Make sure the "homepage_courses" table exists in your database.
-//   - Ensure your Prisma schema matches your database structure.
-//   - Check for database connection issues or missing fields.

@@ -8,7 +8,10 @@ const Course = () => {
       <>
          <HeaderSeven />
          <main className="main-area fix">
-            <BreadcrumbOne title="All Courses" sub_title="Courses" />
+            <BreadcrumbOne 
+               title={<span style={{ color: "#fff" }}>All Courses</span>} 
+               sub_title="Courses" 
+            />
             <CourseArea />
          </main>
       </>

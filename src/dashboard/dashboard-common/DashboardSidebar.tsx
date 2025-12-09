@@ -26,48 +26,48 @@ const sidebar_data: DataType[] = [
             icon: "fas fa-home",
             title: "Dashboard",
          },
-          {
+         {
             id: 6,
             link: "/instructor-banner-videos",
             icon: "skillgro-video-tutorial",
             title: "Add Banner Videos",
-          },
-           {
-            id: 3,
-            link: "/instructor-latest-videos",
-            icon: "skillgro-video-tutorial",
-            title: "Manage Latest Videos",
          },
-           {
-  id: 7,
-  link: "/instructor-upload-course",
-  icon: "skillgro-video-tutorial",
-  title: "Upload Main Course",
-},
-          {
+         {
+            id: 7,
+            link: "/instructor-upload-course",
+            icon: "skillgro-video-tutorial",
+            title: "Upload Main Course",
+         },
+         {
             id: 5,
             link: "/instructor-course-pages", // new route
             icon: "skillgro-group",
             title: "Add New Course",
-          },
-          {
+         },
+         {
             id: 9,
             link: "/manage-homepage-courses",
             icon: "skillgro-home",
             title: "Homepage Courses",
-          },
-            {
+         },
+         {
+            id: 10,
+            link: "/instructor-testimonials",
+            icon: "skillgro-group",
+            title: "Testimonials",
+         },
+         {
             id: 4,
             link: "/instructor-student", // new route
             icon: "skillgro-group",
             title: "Students",
-          },
-          {
+         },
+         {
             id: 8,
             link: "/instructor-blogs", // new route
             icon: "skillgro-group",
             title: "Blogs",
-          },
+         },
          {
             id: 2,
             link: "/instructor-profile",

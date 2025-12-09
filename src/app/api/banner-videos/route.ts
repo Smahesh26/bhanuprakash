@@ -1,19 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// GET: Fetch all banners
+// GET: Fetch all banners from the Banner table
 export async function GET() {
   try {
-    console.log("Fetching banner videos");
-    console.log("DATABASE_URL:", process.env.DATABASE_URL); // Add this debug line
-    
     const banners = await prisma.banner.findMany({
       orderBy: { createdAt: "desc" },
     });
-    console.log(`Found ${banners.length} banner videos`);
     return NextResponse.json(banners);
   } catch (error) {
-    console.error("Error fetching banner videos:", error);
     return NextResponse.json(
       { error: "Failed to fetch banners" },
       { status: 500 }

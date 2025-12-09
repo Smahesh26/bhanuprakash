@@ -966,10 +966,10 @@ textarea {
 }
 .breadcrumb__content .breadcrumb > * {
   font-size: 16px;
-  color:#fff;
+  color:#fff !important;
 }
 .breadcrumb__content .breadcrumb > * a {
-  color: #fff;
+  color: #fff !important;
 }
 .breadcrumb__content .breadcrumb .breadcrumb-separator {
   line-height: 1;

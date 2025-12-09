@@ -26,12 +26,16 @@ export default async function AdminSubscriptionsPage() {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
-            <tr key={user.email}>
-              <td>{user.email}</td>
-              <td>{user.subscriptionPlan}</td>
-              <td>{user.subscriptionStatus}</td>
-              <td>{user.subscriptionEnd ? new Date(user.subscriptionEnd).toLocaleDateString() : "-"}</td>
+          {users.map((user, idx) => (
+            <tr key={user.email ?? idx}>
+              <td>{user.email ?? "-"}</td>
+              <td>{user.subscriptionPlan ?? "-"}</td>
+              <td>{user.subscriptionStatus ?? "-"}</td>
+              <td>
+                {user.subscriptionEnd
+                  ? new Date(user.subscriptionEnd).toLocaleDateString()
+                  : "-"}
+              </td>
               <td>{user.hasActiveSubscription ? "Yes" : "No"}</td>
             </tr>
           ))}

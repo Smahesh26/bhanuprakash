@@ -172,7 +172,7 @@ const Choose = () => {
                            href="/login" 
                            className="btn-brand arrow-btn btn-four"
                            style={{
-                              background: "linear-gradient(135deg, #0d447a 0%, #094a8f 100%)",
+                              background: "linear-gradient(135deg, rgb(93, 186, 71) 0%, rgb(74, 156, 56) 100%)",
                               color: "#fff",
                               borderRadius: "12px",
                               padding: "14px 28px",

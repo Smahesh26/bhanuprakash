@@ -25,7 +25,7 @@ const categories_data: DataType[] = [
 const Categories = () => {
   return (
     <section
-      className="categories-area-three fix section-pt-140 section-pb-110 categories__bg mb-50"
+      className="categories-area-three fix section-pt-140 section-pb-140 categories__bg mb-50"
       style={{ 
         backgroundImage: `linear-gradient(135deg, rgba(13,68,122,0.95) 0%, rgba(93,186,71,0.90) 100%), url(/assets/img/bg/categories_bg.jpg)`,
         backgroundSize: 'cover',

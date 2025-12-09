@@ -48,7 +48,7 @@ const Cta = () => {
           <h2
             className="title"
             style={{
-              color: "#fff",
+              color: "#5dba47",
               fontSize: "2rem",
               margin: 0,
               fontWeight: 500,

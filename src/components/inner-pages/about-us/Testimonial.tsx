@@ -77,70 +77,89 @@ const setting = {
    },
 }
 
-const Testimonial = () => {
+const Testimonial = ({ testimonials = [] }: { testimonials?: any[] }) => {
+   const data = testimonials.length ? testimonials : testi_data;
+   const [current, setCurrent] = useState(0);
 
-   const [isLoop, setIsLoop] = useState(false);
-   useEffect(() => {
-      setIsLoop(true);
-   }, []);
+   const item = data[current];
 
    return (
-      <section className="testimonial__area section-py-120">
+      <section className="testimonial__area section-py-120" style={{ background: "#eaf3e2" }}>
          <div className="container">
             <div className="row justify-content-center">
-               <div className="col-xl-5">
-                  <div className="section__title text-center mb-50">
-                     <span className="sub-title">Our Testimonials</span>
-                     <h2 className="title">What Students Think and Say About SkillGrow</h2>
-                     <p>when known printer took a galley of type scrambl edmake</p>
+               <div className="col-xl-8">
+                  <div className="section__title text-center mb-40">
+                     <h2 className="title" style={{ fontWeight: 700, fontSize: 32 }}>Our Student Testimonial</h2>
                   </div>
-               </div>
-            </div>
-            
-            <div className="row">
-               <div className="col-12">
-                  <div className="testimonial__item-wrap">
-                     <Swiper
-                        {...setting}
-                        modules={[Navigation]}
-                        loop={isLoop} className="swiper-container testimonial-swiper-active">
-                        {testi_data.map((item) => (
-                           <SwiperSlide key={item.id} className="swiper-slide">
-                              <div className="testimonial__item">
-                                 <div className="testimonial__item-top">
-                                    <div className="testimonial__author">
-                                       <div className="testimonial__author-thumb">
-                                          <Image src={item.avatar_thumb} alt="img" />
-                                       </div>
-                                       <div className="testimonial__author-content">
-                                          <div className="rating">
-                                             <i className="fas fa-star"></i>
-                                             <i className="fas fa-star"></i>
-                                             <i className="fas fa-star"></i>
-                                             <i className="fas fa-star"></i>
-                                             <i className="fas fa-star"></i>
-                                          </div>
-                                          <h2 className="title">{item.avatar_name}</h2>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div className="testimonial__content">
-                                    <p>{item.desc}</p>
-                                 </div>
-                              </div>
-                           </SwiperSlide>
-                        ))}
-                     </Swiper>
-                     <div className="testimonial__nav">
-                        <button className="testimonial-button-prev"><i className="flaticon-arrow-right"></i></button>
-                        <button className="testimonial-button-next"><i className="flaticon-arrow-right"></i></button>
+                  <div className="row align-items-center" style={{
+                     background: "#fff",
+                     borderRadius: 16,
+                     boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+                     maxWidth: 800,
+                     margin: "0 auto",
+                     padding: 32
+                  }}>
+                     <div className="col-md-4 text-center mb-4 mb-md-0">
+                        <Image
+                           src={item.avatar_thumb || item.image}
+                           alt={item.avatar_name || item.studentName}
+                           width={140}
+                           height={140}
+                           style={{ borderRadius: "50%", objectFit: "cover", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}
+                        />
+                     </div>
+                     <div className="col-md-8">
+                        <div style={{ fontSize: 18, color: "#222", marginBottom: 20, minHeight: 80 }}>
+                           <span style={{ fontSize: 32, color: "#7bb661", fontWeight: 700, marginRight: 8 }}>&ldquo;</span>
+                           {item.desc || item.text}
+                           <span style={{ fontSize: 32, color: "#7bb661", fontWeight: 700, marginLeft: 8 }}>&rdquo;</span>
+                        </div>
+                        <div style={{ fontWeight: 600, fontSize: 20, marginBottom: 4 }}>
+                           {item.avatar_name || item.studentName}
+                        </div>
+                        {item.rating && (
+                           <div style={{ marginBottom: 4 }}>
+                              <span style={{ color: "#ffc107", fontWeight: 500 }}>
+                                 {typeof item.rating === "number"
+                                    ? "★".repeat(Math.round(item.rating))
+                                    : item.rating}
+                              </span>
+                           </div>
+                        )}
+                        {item.youtubeUrl && (
+                           <a
+                              href={item.youtubeUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn btn-sm btn-success"
+                              style={{ marginBottom: 8 }}
+                           >
+                              Watch on YouTube
+                           </a>
+                        )}
+                        <div className="d-flex justify-content-between mt-4">
+                           <button
+                              className="btn btn-outline-secondary"
+                              disabled={current === 0}
+                              onClick={() => setCurrent(c => Math.max(0, c - 1))}
+                           >
+                              Prev
+                           </button>
+                           <button
+                              className="btn btn-outline-secondary"
+                              disabled={current === data.length - 1}
+                              onClick={() => setCurrent(c => Math.min(data.length - 1, c + 1))}
+                           >
+                              Next
+                           </button>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
       </section>
-   )
+   );
 }
 
 export default Testimonial
