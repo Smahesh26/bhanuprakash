@@ -22,7 +22,7 @@ const FooterTwo = ({ style }: any) => {
                         <div className="logo mb-35" style={{ textAlign: "left" }}>
                            <Link href="/">
                               <Image
-                                 src="/assets/img/logo/MSS Logo-V1-021.svg"
+                                 src="/assets/img/logo/mssfooter.png"
                                  alt="Logo"
                                  width={120}
                                  height={100}

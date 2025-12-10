@@ -12,7 +12,7 @@ const TotalCart = dynamic(() => import("@/components/common/TotalCart"), { ssr: 
 const TotalWishlist = dynamic(() => import("@/components/common/TotalWishlist"), { ssr: false });
 const CustomSelect = dynamic(() => import("@/ui/CustomSelect"), { ssr: false });
 
-import logo from "@/assets/img/logo/MSS Logo-V1-02.svg"
+import logo from "@/assets/img/logo/MSS Logo-V1-02.png"
 const HeaderSeven = () => {
 
    const [selectedOption, setSelectedOption] = React.useState(null);

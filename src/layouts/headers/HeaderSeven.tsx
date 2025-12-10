@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import MobileSidebar from "./menu/MobileSidebar";
 import { useRouter } from "next/navigation";
 
-import logo from "@/assets/img/logo/MSS Logo-V1-02.svg";
+import logo from "@/assets/img/logo/MSS Logo-V1-02.png";
 
 const HeaderSeven = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");

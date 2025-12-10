@@ -19,8 +19,8 @@ export default function Preloader() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(120deg, #0d447a 0%, #5dba47 100%);
-          transition: background 0.4s;
+          background: #fff;
+          transition: background 0.6s cubic-bezier(.4,2,.3,1);
         }
         .preloader-content {
           display: flex;
@@ -36,14 +36,15 @@ export default function Preloader() {
         .preloader-spinner {
           width: 70px;
           height: 70px;
-          border: 7px solid #fff;
+          border: 7px solid #eaeaea;
           border-top: 7px solid #5dba47;
           border-right: 7px solid #0d447a;
           border-bottom: 7px solid #5dba47;
           border-radius: 50%;
           animation: spin 1.1s linear infinite, float 2.2s ease-in-out infinite alternate;
           margin-bottom: 36px;
-          box-shadow: 0 4px 24px rgba(13,68,122,0.18);
+          box-shadow: 0 4px 24px rgba(13,68,122,0.08);
+          background: transparent;
         }
         @keyframes spin {
           to { transform: rotate(360deg); }
@@ -55,15 +56,16 @@ export default function Preloader() {
         .preloader-title {
           font-size: 2.4rem;
           font-weight: 700;
-          color: #fff;
+          color: #0d447a;
           letter-spacing: 1px;
           text-align: center;
-          text-shadow: 0 2px 18px #0d447a, 0 0px 2px #5dba47;
+          text-shadow: 0 2px 18px #eaeaea, 0 0px 2px #5dba47;
           animation: glowText 2.2s ease-in-out infinite alternate;
+          transition: color 0.6s cubic-bezier(.4,2,.3,1);
         }
         @keyframes glowText {
-          0% { text-shadow: 0 2px 18px #0d447a, 0 0px 2px #5dba47; }
-          100% { text-shadow: 0 4px 32px #5dba47, 0 0px 8px #0d447a; }
+          0% { text-shadow: 0 2px 18px #eaeaea, 0 0px 2px #5dba47; }
+          100% { text-shadow: 0 4px 32px #5dba47, 0 0px 8px #eaeaea; }
         }
         .preloader-accent {
           color: #5dba47;

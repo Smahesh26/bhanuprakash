@@ -60,6 +60,8 @@ const Cta = () => {
               maxWidth: "90vw",
               boxSizing: "border-box",
               textAlign: "left",
+              position: "relative",
+              zIndex: 2,
             }}
           >
             Finding Your Right Courses
@@ -179,6 +181,12 @@ const Cta = () => {
           .title {
             text-align: center !important;
             margin: 0 auto !important;
+            background: rgba(13, 68, 122, 0.85) !important;
+            position: static !important;
+            z-index: 2 !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            padding: 20px 8px !important;
           }
           .hero-cta {
             margin-left: 0 !important;
@@ -195,17 +203,22 @@ const Cta = () => {
             gap: 18px;
           }
           .title {
-            font-size: 1.2rem;
-            padding: 8px 10px;
-            background: rgba(13, 68, 122, 0.85);
-            max-width: 95vw;
+            font-size: 1.1rem !important;
+            padding: 10px 4px !important;
+            background: rgba(13, 68, 122, 0.95) !important;
+            max-width: 100vw !important;
             text-align: center !important;
             margin: 0 auto !important;
+            position: static !important;
+            z-index: 2 !important;
+            width: 100% !important;
+            margin-top: 60px !important; /* move text down */
           }
           .hero-cta {
             font-size: 1rem;
             padding: 10px 18px;
-            margin: 0 auto;
+            margin: 32px auto 0 auto !important; /* move button further down */
+            display: block;
           }
         }
       `}</style>

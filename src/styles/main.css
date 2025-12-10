@@ -1610,7 +1610,7 @@ textarea {
   font-size: 30px;
   cursor: pointer;
   line-height: 1;
-  color: var(--tg-theme-primary);
+  color: #0d447a !important;
   display: none;
 }
 @media (max-width: 1199.98px) {
@@ -2920,7 +2920,7 @@ textarea {
   }
 }
 .mobile-login-btn a {
-  margin-right: 20px;
+  margin-right: 5px !important;
   width: 40px;
   height: 40px;
   display: flex;
@@ -2930,6 +2930,8 @@ textarea {
   border-radius: 50%;
   line-height: 0;
   color: var(--tg-body-color);
+    margin-left: 5px !important;
+
 }
 .mobile-login-btn a:hover {
   background: var(--tg-theme-primary);
