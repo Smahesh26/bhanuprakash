@@ -7,14 +7,17 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import BtnArrow from "@/svg/BtnArrow";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 interface FormData {
+  role: 'student' | 'instructor' | 'course_uploader';
   email: string;
   password: string;
 }
 
 // ✅ Validation schema
 const schema = yup.object({
+  role: yup.string().oneOf(['student', 'instructor', 'course_uploader']).required("Role is required"),
   email: yup.string().required("Email is required").email("Invalid email"),
   password: yup.string().required("Password is required"),
 });
@@ -27,26 +30,31 @@ const LoginForm = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
+    watch
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    defaultValues: { role: 'student' },
   });
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+        role: data.role,
       });
-
-      const result = await res.json();
-
-      if (res.ok) {
+      if (res?.ok) {
         toast.success("Login successful!", { position: "top-center" });
         reset();
-        setTimeout(() => router.push("/courses"), 1500);
+        // Redirect based on role
+        let redirectPath = "/courses";
+        if (data.role === "student") redirectPath = "/student-dashboard";
+        else if (data.role === "instructor") redirectPath = "/instructor-dashboard";
+        else if (data.role === "course_uploader") redirectPath = "/instructor-uploader-dashboard";
+        setTimeout(() => router.push(redirectPath), 1500);
       } else {
-        toast.error(result.error || "Invalid credentials");
+        toast.error(res?.error || "Invalid credentials");
       }
     } catch (err) {
       console.error("Login Error:", err);
@@ -54,8 +62,37 @@ const LoginForm = () => {
     }
   };
 
+  // Watch role for conditional fields
+  const role = watch('role');
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="account__form">
+      <div className="form-grp">
+        <label htmlFor="role">Role</label>
+        <select
+          id="role"
+          {...register("role")}
+          style={{
+            width: '100%',
+            padding: '14px 20px',
+            fontSize: '16px',
+            color: 'var(--tg-heading-color)',
+            border: '1px solid #E1E1E1',
+            background: 'var(--tg-common-color-white)',
+            borderRadius: '5px',
+            lineHeight: '1',
+            transition: 'all 0.3s ease-out 0s',
+            cursor: 'pointer'
+          }}
+        >
+          <option value="student">Student</option>
+          <option value="instructor">Instructor</option>
+          <option value="course_uploader">Course Uploader</option>
+        </select>
+        <p className="form_error">{errors.role?.message}</p>
+      </div>
+
+
       <div className="form-grp">
         <label htmlFor="email">Email</label>
         <input

@@ -4,6 +4,7 @@ import Image from "next/image";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 const InstructorUploadCourse = () => {
   const [form, setForm] = useState({
@@ -21,6 +22,7 @@ const InstructorUploadCourse = () => {
   const [editId, setEditId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<any>(null);
   const [editFile, setEditFile] = useState<File | null>(null);
+  const { data: session } = useSession();
 
   // Fetch all courses
   const fetchCourses = async () => {
@@ -28,8 +30,26 @@ const InstructorUploadCourse = () => {
     try {
       const res = await fetch("/api/courses");
       const data = await res.json();
+      // Debug: log what you get
+      console.log("Fetched courses:", data);
+      console.log("Session user:", session?.user);
+
       if (res.ok) {
-        setCourses(data || []);
+        if (session?.user?.role === "course_uploader") {
+          // Try to match by instructorId if present, else fallback to instructors name (case-insensitive)
+          setCourses(
+            Array.isArray(data)
+              ? data.filter((course: any) =>
+                      (course.instructorId && course.instructorId === session?.user?.id) ||
+                      (course.instructors &&
+                        session?.user?.name &&
+                        course.instructors.trim().toLowerCase() === session?.user?.name.trim().toLowerCase())
+                    )
+              : []
+          );
+        } else {
+          setCourses(data || []);
+        }
       } else {
         toast.error(data.error || "Failed to fetch courses");
       }
@@ -40,8 +60,9 @@ const InstructorUploadCourse = () => {
   };
 
   React.useEffect(() => {
-    fetchCourses();
-  }, []);
+    if (session) fetchCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (editId) {
@@ -207,6 +228,34 @@ const InstructorUploadCourse = () => {
 
   return (
     <section className="dashboard__area section-pb-120" style={{ position: "relative" }}>
+      {/* Banner image at the top, same as previous file */}
+      <div
+        className="dashboard__top-wrap mt-120"
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "48px",
+          marginTop: "48px",
+        }}
+      >
+        <div
+          className="dashboard__top-bg"
+          style={{
+            backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)`,
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            width: "100%",
+            maxWidth: "1400px",
+            height: "260px",
+            borderRadius: "18px",
+            boxShadow: "0 4px 24px rgba(13,68,122,0.08)",
+            marginTop: "65px",
+          }}
+        ></div>
+      </div>
       {/* BG image covers the whole dashboard area */}
       <div
         className="dashboard__bg"

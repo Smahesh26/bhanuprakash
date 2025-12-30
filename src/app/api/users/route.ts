@@ -3,6 +3,9 @@ import prisma from "../../../../lib/prisma";
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
+      where: {
+        role: "student",
+      },
       select: {
         id: true,
         fname: true,

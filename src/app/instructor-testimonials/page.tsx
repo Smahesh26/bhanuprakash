@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button, Form, Modal, Card } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 
+
 interface TestimonialType {
   id?: string;
   studentName: string;
@@ -162,6 +163,34 @@ const InstructorTestimonials = () => {
 
   return (
     <section className="dashboard__area section-pb-120">
+      {/* Banner image at the top, styled like other dashboard pages */}
+      <div
+        className="dashboard__top-wrap mt-120"
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "48px",
+          marginTop: "48px",
+        }}
+      >
+        <div
+          className="dashboard__top-bg"
+          style={{
+            backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)`,
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            width: "100%",
+            maxWidth: "1400px",
+            height: "260px",
+            borderRadius: "18px",
+            boxShadow: "0 4px 24px rgba(13,68,122,0.08)",
+            marginTop: "60px",
+          }}
+        ></div>
+      </div>
       <div className="container">
         <div className="dashboard__inner-wrap row">
           <DashboardSidebar />

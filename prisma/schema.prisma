@@ -115,8 +115,15 @@ model LegacyChapter {
   @@map("legacychapter")
 }
 
+enum Role {
+  student
+  instructor
+  course_uploader
+}
+
 model User {
   id                    String             @id @default(cuid())
+  role                  Role               @default(student)
   name                  String?
   email                 String?            @unique
   emailVerified         DateTime?
@@ -143,6 +150,9 @@ model User {
   paidAccesses          PaidAccess[]
   resetTokens           ResetToken[]
   sessions              Session[]
+
+  curriculums Curriculum[]
+  courses     Course[]     @relation("UserCourses")
 
   @@map("user")
 }
@@ -240,6 +250,11 @@ model Curriculum {
   mcqs          Json?
   updatedAt     DateTime @updatedAt
 
+  courseId     String
+  instructorId String
+  course       Course @relation(fields: [courseId], references: [id])
+  instructor   User   @relation(fields: [instructorId], references: [id])
+
   @@map("curriculum")
 }
 
@@ -259,6 +274,7 @@ model Banner {
 model Course {
   id          String   @id @default(cuid())
   title       String
+  slug        String   @unique
   category    String
   description String?
   thumb       String?
@@ -267,6 +283,11 @@ model Course {
   videoUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+
+  instructorId String
+  instructor   User   @relation("UserCourses", fields: [instructorId], references: [id])
+
+  curriculums Curriculum[]
 
   @@map("course")
 }
@@ -306,7 +327,7 @@ model HomepageCourse {
 }
 
 model Testimonial {
-  id         String   @id @default(cuid())
+  id          String   @id @default(cuid())
   studentName String
   text        String
   rating      Int
@@ -337,4 +358,16 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+}
+
+model StripeConfig {
+  id              String    @id @default(cuid())
+  publishableKey  String
+  secretKey       String    // Encrypted
+  webhookSecret   String?   // Encrypted
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("stripe_config")
 }

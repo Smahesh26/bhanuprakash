@@ -1,28 +1,50 @@
+
 import { NextResponse } from "next/server";
-import { sendOtpEmail } from "../../../../lib/email";
 import prisma from "../../../../lib/prisma";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const { email, password, role } = await req.json();
 
-    if (!email) {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    if (!email || !password || !role) {
+      return NextResponse.json({ error: "Email, password, and role are required" }, { status: 400 });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+    // Find user by email only
+    const user = await prisma.user.findUnique({ where: { email } });
 
-    // Store OTP in DB
-    await prisma.oTP.create({
-      data: { email, code: otp, expiresAt },
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 401 });
+    }
+
+    // Check password
+    const valid = user.password && await bcrypt.compare(password, user.password);
+    if (!valid) {
+      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
+    }
+
+    // Check role
+    if (user.role !== role) {
+      return NextResponse.json({ error: `Role mismatch. You are registered as '${user.role}'.` }, { status: 401 });
+    }
+
+    // Create JWT token
+    const token = jwt.sign(
+      { id: user.id, role: user.role, email: user.email },
+      process.env.JWT_SECRET || "secret-key",
+      { expiresIn: "7d" }
+    );
+
+    // Return token and user info
+    return NextResponse.json({
+      message: "Login successful",
+      token,
+      user: { id: user.id, role: user.role }
     });
-
-    await sendOtpEmail(email, otp);
-
-    return NextResponse.json({ message: "OTP sent successfully" });
   } catch (error: any) {
-    console.error("OTP Error:", error.message || error);
-    return NextResponse.json({ error: "Failed to send OTP" }, { status: 500 });
+    console.error("Login Error:", error.message || error);
+    return NextResponse.json({ error: "Login failed" }, { status: 500 });
   }
 }

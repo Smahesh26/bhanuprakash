@@ -53,34 +53,35 @@ const InstructorSettingProfile = ({ style, goToNextTab }: any) => {
                 <i className="fas fa-camera"></i>
               </button>
             </div>
-            <div className="instructor__cover-info-right">
+            {/* <div className="instructor__cover-info-right">
               <Link href="#" className="btn btn-two arrow-btn">
                 Edit Cover Photo
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : (
-        <div
-          className="instructor__cover-bg"
-          style={{ backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)` }}
-        >
-          <div className="instructor__cover-info">
-            <div className="instructor__cover-info-left">
-              <div className="thumb">
-                <Image src={thumb} alt="img" />
-              </div>
-              <button title="Upload Photo">
-                <i className="fas fa-camera"></i>
-              </button>
-            </div>
-            <div className="instructor__cover-info-right">
-              <Link href="#" className="btn btn-two arrow-btn">
-                Edit Cover Photo
-              </Link>
-            </div>
-          </div>
-        </div>
+        // <div
+        //   className="instructor__cover-bg"
+        //   style={{ backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)` }}
+        // >
+        //   <div className="instructor__cover-info">
+        //     <div className="instructor__cover-info-left">
+        //       <div className="thumb">
+        //         <Image src={thumb} alt="img" />
+        //       </div>
+        //       <button title="Upload Photo">
+        //         <i className="fas fa-camera"></i>
+        //       </button>
+        //     </div>
+        //     <div className="instructor__cover-info-right">
+        //       <Link href="#" className="btn btn-two arrow-btn">
+        //         Edit Cover Photo
+        //       </Link>
+        //     </div>
+        //   </div>
+        // </div>
+        <div></div>
       )}
 
       <div className="instructor__profile-form-wrap">

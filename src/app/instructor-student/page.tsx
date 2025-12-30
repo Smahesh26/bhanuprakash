@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
+import AuthGuard from "@/components/common/AuthGuard";
 
 const InstructorStudents = () => {
   const [students, setStudents] = useState([]);
@@ -15,7 +16,9 @@ const InstructorStudents = () => {
       try {
         const res = await fetch("/api/users");
         const data = await res.json();
-        setStudents(data);
+        // Filter to only show students (additional safety check)
+        const studentsOnly = data.filter((user: any) => user.role === 'student' || !user.role);
+        setStudents(studentsOnly);
       } catch (err) {
         console.error("Failed to fetch students", err);
       }
@@ -50,6 +53,34 @@ const InstructorStudents = () => {
 
   return (
     <section className="dashboard__area section-pb-120" style={{ background: 'linear-gradient(120deg,#f7f8fa 0%,#e3e6ed 100%)', minHeight: '100vh' }}>
+      {/* Banner image at the top, styled like other dashboard pages */}
+      <div
+        className="dashboard__top-wrap mt-120"
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "48px",
+          marginTop: "48px",
+        }}
+      >
+        <div
+          className="dashboard__top-bg"
+          style={{
+            backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)`,
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            width: "100%",
+            maxWidth: "1400px",
+            height: "260px",
+            borderRadius: "18px",
+            boxShadow: "0 4px 24px rgba(13,68,122,0.08)",
+            marginTop: "60px",
+          }}
+        ></div>
+      </div>
       <div className="dashboard__bg">
         {/* <Image src={bg_img} alt="bg" style={{ opacity: 0.08, objectFit: 'cover' }} /> */}
         </div>
@@ -111,4 +142,10 @@ const InstructorStudents = () => {
   );
 };
 
-export default InstructorStudents;
+export default function Page() {
+  return (
+    <AuthGuard>
+      <InstructorStudents />
+    </AuthGuard>
+  );
+}

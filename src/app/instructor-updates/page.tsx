@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
 
+
 interface LatestVideo {
   id: string;
   title: string;

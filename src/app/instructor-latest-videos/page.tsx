@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
 import React from "react";
+import AuthGuard from "@/components/common/AuthGuard";
 
 const AddLatestVideo = () => {
   const [form, setForm] = useState({
@@ -376,4 +377,10 @@ const AddLatestVideo = () => {
   );
 };
 
-export default AddLatestVideo;
+export default function Page() {
+  return (
+    <AuthGuard>
+      <AddLatestVideo />
+    </AuthGuard>
+  );
+}

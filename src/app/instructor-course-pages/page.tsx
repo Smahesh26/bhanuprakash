@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { Button, Form } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
@@ -56,9 +57,12 @@ interface Curriculum {
 
 const UploadContent = () => {
   // ========================================================================
+
   // STATE MANAGEMENT
   // ========================================================================
-
+  const { data: session } = useSession();
+  const [courseId, setCourseId] = useState<string>("");
+  const [courses, setCourses] = useState<{ id: string; title: string }[]>([]);
   const [curriculum, setCurriculum] = useState<Curriculum[]>([
     {
       subject: "",
@@ -76,13 +80,27 @@ const UploadContent = () => {
       }],
     },
   ]);
-
   const [allCurriculums, setAllCurriculums] = useState<Curriculum[]>([]);
   const [editCurriculum, setEditCurriculum] = useState<Curriculum | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [loadingCurriculums, setLoadingCurriculums] = useState(false);
+
+  // Fetch courses for the logged-in user (automatically filtered by role and ID on server)
+  useEffect(() => {
+    const fetchCourses = async () => {
+      if (!session?.user?.id) return;
+      try {
+        const res = await fetch('/api/courses');
+        const data = await res.json();
+        setCourses(Array.isArray(data) ? data : []);
+      } catch (e) {
+        setCourses([]);
+      }
+    };
+    fetchCourses();
+  }, [session?.user?.id]);
 
   // ========================================================================
   // EFFECTS & API CALLS
@@ -255,11 +273,28 @@ const UploadContent = () => {
         })
       );
 
-      const payload = { 
-        subject: src.subject || "", 
+
+      // Debug logs for courseId and instructorId
+      console.log("Selected courseId:", courseId);
+      console.log("Session user id (instructorId):", session?.user?.id);
+      if (!courseId) {
+        setErrorMessage("Please select a course before submitting.");
+        setSaving(false);
+        return;
+      }
+      if (!session?.user?.id) {
+        setErrorMessage("You must be logged in to submit a curriculum.");
+        setSaving(false);
+        return;
+      }
+
+      const payload = {
+        subject: src.subject || "",
         introVideoUrl: src.introVideoUrl || "",
         mcqs: (src.mcqs && src.mcqs.length > 0) ? src.mcqs : [],
-        chapters 
+        chapters,
+        courseId,
+        instructorId: session?.user?.id,
       };
 
       console.log("📦 Final payload:", JSON.stringify(payload, null, 2));
@@ -979,8 +1014,33 @@ const UploadContent = () => {
 
   return (
     <section className="dashboard__area section-pb-120">
-      <div className="dashboard__bg">
-        {/* <Image src={bg_img} alt="bg" /> */}
+      {/* Banner image at the top, styled like other pages */}
+      <div
+        className="dashboard__top-wrap mt-120"
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "48px",
+          marginTop: "48px",
+        }}
+      >
+        <div
+          className="dashboard__top-bg"
+          style={{
+            backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)`,
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            width: "100%",
+            maxWidth: "1400px",
+            height: "260px",
+            borderRadius: "18px",
+            boxShadow: "0 4px 24px rgba(13,68,122,0.08)",
+            marginTop: "60px",
+          }}
+        ></div>
       </div>
       
       <div className="container">
@@ -989,7 +1049,22 @@ const UploadContent = () => {
           
           <div className="col-lg-9">
             <h4 className="title">Upload Curriculum</h4>
-            
+
+            {/* Course Selection Dropdown */}
+            <Form.Group className="mb-4">
+              <Form.Label>Select Course</Form.Label>
+              <Form.Select
+                value={courseId}
+                onChange={e => setCourseId(e.target.value)}
+                required
+              >
+                <option value="">-- Select a Course --</option>
+                {courses.map((course) => (
+                  <option key={course.id} value={course.id}>{course.title}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
             <Form className="p-4 bg-white shadow-sm border rounded" onSubmit={handleSubmit}>
               {/* Smart MCQ Upload Section */}
               <div className="mb-4 p-3 bg-success bg-opacity-10 rounded border-start border-5 border-success">
@@ -1033,7 +1108,7 @@ const UploadContent = () => {
               <div className="mb-4 p-3 bg-info bg-opacity-10 rounded border-start border-5 border-info">
                 <h6 className="mb-2" style={{ color: '#0d447a' }}>
                   <i className="fas fa-stethoscope me-2"></i>
-                  📊 Case Study MCQ Upload
+                  📊 Case Study Upload
                 </h6>
                 <p className="small text-muted mb-3">
                   Upload clinical case study questions in Excel format.

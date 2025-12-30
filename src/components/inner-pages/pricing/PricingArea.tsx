@@ -1,62 +1,105 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useState } from "react";
 
 const PricingArea = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const [loading, setLoading] = useState<string | null>(null);
 
   const plans = [
     {
-      id: "basic",
-      name: "Basic Plan",
-      price: "₹2,999",
+      id: "monthly",
+      name: "Monthly Plan",
+      price: "$29",
+      priceId: "price_monthly", // Replace with your actual Stripe Price ID
       duration: "/month",
       features: [
         "Access to all video lectures",
-        "View-only PDF materials",
-        "Basic MCQ practice",
+        "Download PDF materials",
+        "Advanced MCQ with explanations",
+        "Case study practice",
         "Email support",
         "Mobile app access"
       ],
       popular: false
     },
     {
-      id: "standard",
-      name: "Standard Plan",
-      price: "₹4,999",
-      duration: "/month",
+      id: "quarterly",
+      name: "Quarterly Plan",
+      price: "$79",
+      priceId: "price_quarterly", // Replace with your actual Stripe Price ID
+      duration: "/3 months",
       features: [
-        "Everything in Basic",
-        "Download PDF materials",
-        "Advanced MCQ with explanations",
-        "Case study practice",
+        "Everything in Monthly",
+        "Save $8 per month",
         "Priority email support",
-        "Progress tracking"
+        "Progress tracking",
+        "Download access for all PDFs",
+        "Case study materials"
       ],
       popular: true
     },
     {
-      id: "premium",
-      name: "Premium Plan",
-      price: "₹7,999",
-      duration: "/month",
+      id: "yearly",
+      name: "Yearly Plan",
+      price: "$299",
+      priceId: "price_yearly", // Replace with your actual Stripe Price ID
+      duration: "/year",
       features: [
-        "Everything in Standard",
+        "Everything in Quarterly",
+        "Best value - Save $49",
         "1-on-1 doubt clearing sessions",
         "Mock exams & assessments",
         "Personalized study plan",
         "Certificate of completion",
-        "24/7 priority support",
-        "Lifetime access to materials"
+        "24/7 priority support"
       ],
       popular: false
     }
   ];
 
-  const handleBuyNow = (planId: string) => {
-    localStorage.setItem("selectedPlan", planId);
-    router.push(`/registration?plan=${planId}`);
+  const handleBuyNow = async (plan: typeof plans[0]) => {
+    // Check if user is logged in
+    if (!session) {
+      localStorage.setItem("selectedPlan", plan.id);
+      router.push("/login?redirect=/pricing");
+      return;
+    }
+
+    setLoading(plan.id);
+
+    try {
+      // Create Stripe checkout session
+      const res = await fetch("/api/stripe/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          priceId: plan.priceId,
+          plan: plan.id,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        alert(data.error);
+        setLoading(null);
+        return;
+      }
+
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("Failed to create checkout session. Please try again.");
+      setLoading(null);
+    }
   };
 
   return (
@@ -148,7 +191,8 @@ const PricingArea = () => {
                 </ul>
 
                 <button
-                  onClick={() => handleBuyNow(plan.id)}
+                  onClick={() => handleBuyNow(plan)}
+                  disabled={loading === plan.id}
                   className="btn w-100"
                   style={{
                     background: plan.popular 
@@ -159,26 +203,32 @@ const PricingArea = () => {
                     padding: '12px',
                     borderRadius: '8px',
                     fontWeight: '600',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    cursor: loading === plan.id ? 'wait' : 'pointer',
+                    opacity: loading === plan.id ? 0.7 : 1
                   }}
                   onMouseEnter={(e) => {
-                    if (plan.popular) {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #5dba47 0%, #4a9c38 100%)';
-                    } else {
-                      e.currentTarget.style.background = '#0d447a';
-                      e.currentTarget.style.color = '#fff';
+                    if (loading !== plan.id) {
+                      if (plan.popular) {
+                        e.currentTarget.style.background = 'linear-gradient(135deg, #5dba47 0%, #4a9c38 100%)';
+                      } else {
+                        e.currentTarget.style.background = '#0d447a';
+                        e.currentTarget.style.color = '#fff';
+                      }
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (plan.popular) {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #0d447a 0%, #094a8f 100%)';
-                    } else {
-                      e.currentTarget.style.background = '#f8f9fa';
-                      e.currentTarget.style.color = '#0d447a';
+                    if (loading !== plan.id) {
+                      if (plan.popular) {
+                        e.currentTarget.style.background = 'linear-gradient(135deg, #0d447a 0%, #094a8f 100%)';
+                      } else {
+                        e.currentTarget.style.background = '#f8f9fa';
+                        e.currentTarget.style.color = '#0d447a';
+                      }
                     }
                   }}
                 >
-                  Buy Now
+                  {loading === plan.id ? 'Processing...' : session ? 'Subscribe Now' : 'Buy Now'}
                 </button>
               </div>
             </div>

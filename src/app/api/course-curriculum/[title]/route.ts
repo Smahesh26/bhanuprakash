@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// GET - Fetch curriculum by course title
+// GET - Fetch curriculum by course ID or slug
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ title: string }> }
@@ -10,19 +10,46 @@ export async function GET(
     const { title } = await params;
 
     if (!title) {
-      return NextResponse.json({ error: "Title is required" }, { status: 400 });
+      return NextResponse.json({ error: "Course ID or slug is required" }, { status: 400 });
     }
 
-    const decodedTitle = decodeURIComponent(title);
+    const identifier = decodeURIComponent(title);
 
-    const curriculum = await prisma.curriculum.findFirst({
+    // First, try to find the course by slug or ID
+    const course = await prisma.course.findFirst({
       where: {
-        subject: {
-          contains: decodedTitle,
-          mode: 'insensitive'
-        }
+        OR: [
+          { slug: identifier },
+          { id: identifier }
+        ]
       }
     });
+
+    if (!course) {
+      return NextResponse.json(
+        { error: "Course not found" },
+        { status: 404 }
+      );
+    }
+
+    // Now find curriculum by courseId
+    let curriculum = await prisma.curriculum.findFirst({
+      where: {
+        courseId: course.id
+      }
+    });
+
+    // If not found by courseId, fallback to subject name search for backward compatibility
+    if (!curriculum) {
+      curriculum = await prisma.curriculum.findFirst({
+        where: {
+          subject: {
+            contains: identifier,
+            mode: 'insensitive'
+          }
+        }
+      });
+    }
 
     if (!curriculum) {
       return NextResponse.json(
@@ -50,7 +77,10 @@ export async function GET(
       introVideoUrl: (curriculum as any).introVideoUrl || null,
     };
 
-    console.log("📊 Fetched curriculum by title:", {
+    console.log("📊 Fetched curriculum:", {
+      courseId: curriculum.courseId,
+      courseSlug: course.slug,
+      instructorId: curriculum.instructorId,
       subject: parsedCurriculum.subject,
       introVideoUrl: parsedCurriculum.introVideoUrl || "No intro video",
       mcqsCount: parsedCurriculum.mcqs ? parsedCurriculum.mcqs.length : 0,

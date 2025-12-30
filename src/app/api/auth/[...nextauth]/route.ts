@@ -1,73 +1,58 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text", placeholder: "email@example.com" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+        const user = await prisma.user.findUnique({ where: { email: credentials.email } });
+        if (!user || !user.password) return null;
+        const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isValid) return null;
+        // Return user object with required fields for session/jwt
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          isNewUser: user.isNewUser,
+          isVerified: user.isVerified,
+        };
+      },
     }),
   ],
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/instructor-login",
+    signIn: "/login",
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      const role =
-        (account as any)?.role ||
-        (profile as any)?.role ||
-        (user as any)?.role ||
-        "student";
-
-      if (role === "admin") {
-        let admin = await prisma.admin.findUnique({
-          where: { email: user.email ?? "" },
-        });
-        if (!admin) {
-          admin = await prisma.admin.create({
-            data: {
-              email: user.email ?? "",
-              name: user.name ?? "",
-              displayName: user.name ?? "",
-              userName: user.email?.split("@")[0] ?? "",
-              password: "",
-            },
-          });
-        }
-      } else {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: user.email ?? "" },
-        });
-        if (!dbUser) {
-          await prisma.user.create({
-            data: {
-              email: user.email ?? "",
-              name: user.name ?? "",
-              password: "",
-            },
-          });
-        }
-      }
-      return true;
-    },
+    // No custom signIn logic needed for credentials
     async session({ session, token }) {
       if (token && session.user) {
+        session.user.id = token.id as string;
         session.user.role = token.role as string;
+        session.user.isNewUser = token.isNewUser as boolean;
+        session.user.isVerified = token.isVerified as boolean;
       }
       return session;
     },
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.role =
-          (account as any)?.role ||
-          (profile as any)?.role ||
-          (user as any)?.role ||
-          "student";
+        token.id = user.id;
+        token.role = user.role;
+        token.isNewUser = user.isNewUser;
+        token.isVerified = user.isVerified;
       }
       return token;
     },

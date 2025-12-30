@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
-
 export default function InstructorLogin() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -79,7 +78,7 @@ export default function InstructorLogin() {
                 </form>
                 <div className="account__switch mt-4 text-center">
                   <p>
-                    Don&apos;t have an account? <a href="/instructor-registration">Register</a>
+                    Don&apos;t have an account? <a href="/login">Register</a>
                   </p>
                 </div>
               </div>

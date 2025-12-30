@@ -5,7 +5,7 @@ import InstructorSettingArea from './InstructorSettingArea'
 const InstructorSetting = () => {
    return (
       <>
-         <HeaderSeven />
+         {/* <HeaderSeven /> */}
          <main className="main-area fix">
             <InstructorSettingArea />
          </main>

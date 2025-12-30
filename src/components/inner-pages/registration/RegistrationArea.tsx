@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import OtpModalWrapper from "@/components/modals/OtpModalWrapper";
@@ -23,9 +23,16 @@ function RegistrationContent() {
 
   useEffect(() => {
     if (status === "authenticated" && isVerified) {
-      router.replace("/student-dashboard");
+      const user = session?.user as any;
+      if (user?.role === 'course_uploader') {
+        router.replace("/instructor-uploader-dashboard");
+      } else if (user?.role === 'instructor') {
+        router.replace("/instructor-dashboard");
+      } else {
+        router.replace("/student-dashboard");
+      }
     }
-  }, [status, isVerified, router]);
+  }, [status, isVerified, session, router]);
 
   useEffect(() => {
     const planFromUrl = searchParams?.get('plan');
@@ -59,27 +66,64 @@ function RegistrationContent() {
   };
 
   const handleOtpVerifySuccess = async () => {
-    if (!registrationData) return;
+    if (!registrationData) {
+      toast.error("Registration data missing. Please try again.");
+      return;
+    }
+
+    // Validate required fields before sending to API
+    const requiredFields = [
+      'role', 'fullName', 'email', 'countryCode', 'phone', 'country', 'state', 'password', 'confirmPassword'
+    ];
+    for (const field of requiredFields) {
+      if (!registrationData[field as keyof typeof registrationData]) {
+        toast.error(`Missing required field: ${field}`);
+        return;
+      }
+    }
+
+    // Attach selectedPlan if present
+    const payload = { ...registrationData, selectedPlan };
 
     const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(registrationData),
+      body: JSON.stringify(payload),
     });
 
     if (res.ok) {
       const data = await res.json();
-      toast.success("Registration successful!");
-      await update();
-      
-      // ✅ Redirect based on subscription status
-      if (data.hasPendingSubscription) {
-        router.replace("/student-dashboard/purchase");
+      toast.success("Registration successful! Logging you in...");
+      // Automatically sign in the user
+      const signInRes = await signIn("credentials", {
+        redirect: false,
+        email: registrationData.email,
+        password: registrationData.password,
+        role: data.user?.role || registrationData.role,
+      });
+      if (signInRes && signInRes.ok) {
+        await update();
+        // Redirect based on backend user role
+        const userRole = data.user?.role || registrationData.role;
+        if (userRole === 'course_uploader') {
+          router.replace("/instructor-uploader-dashboard");
+        } else if (userRole === 'instructor') {
+          router.replace("/instructor-dashboard");
+        } else if (data.hasPendingSubscription) {
+          router.replace("/student-dashboard/purchase");
+        } else {
+          router.replace("/student-dashboard");
+        }
       } else {
-        router.replace("/courses");
+        toast.error("Auto-login failed. Please log in manually.");
       }
     } else {
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
       toast.error(data.error || "Registration failed");
     }
   };
@@ -93,21 +137,6 @@ function RegistrationContent() {
               <div className="singUp-wrap">
                 <h2 className="title">Create Your Account</h2>
                 
-                {selectedPlan && (
-                  <div 
-                    className="alert mb-3" 
-                    style={{
-                      background: 'linear-gradient(135deg, #0d447a 0%, #094a8f 100%)',
-                      color: '#fff',
-                      borderRadius: '8px',
-                      padding: '12px 20px',
-                      textAlign: 'center',
-                      fontWeight: '600'
-                    }}
-                  >
-                    Selected Plan: <strong style={{ textTransform: 'uppercase' }}>{selectedPlan}</strong> 🎯
-                  </div>
-                )}
                 
                 <p>Register below to get started.</p>
 

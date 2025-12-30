@@ -18,49 +18,37 @@ interface DataType {
 const sidebar_data: DataType[] = [
    {
       id: 1,
-      title: "Welcome, Emily Hannah",
+      title: "Welcome, Student",
       sidebar_details: [
          {
             id: 1,
             link: "/student-dashboard",
-            icon: "fas fa-home",
+            icon: "skillgro-dashboard",
             title: "Dashboard",
          },
          {
             id: 2,
-            link: "/student-profile",
-            icon: "skillgro-avatar",
-            title: "My Profile",
+            link: "/student-dashboard/subscription",
+            icon: "skillgro-subscription",
+            title: "Active Subscriptions",
          },
          {
             id: 3,
-            link: "/student-enrolled-courses",
+            link: "/student-dashboard/materials",
             icon: "skillgro-book",
-            title: "Enrolled Courses",
+            title: "Materials",
          },
          {
             id: 4,
-            link: "/student-wishlist",
-            icon: "skillgro-label",
-            title: "Wishlist",
+            link: "/student-profile",
+            icon: "skillgro-avatar",
+            title: "Profile",
          },
          {
             id: 5,
-            link: "/student-review",
-            icon: "skillgro-book-2",
-            title: "Reviews",
-         },
-         {
-            id: 6,
-            link: "/student-attempts",
-            icon: "skillgro-question",
-            title: "My Quiz Attempts",
-         },
-         {
-            id: 7,
-            link: "/student-history",
-            icon: "skillgro-satchel",
-            title: "Order History",
+            link: "/student-setting",
+            icon: "skillgro-gear",
+            title: "Settings",
          },
       ],
    },
@@ -71,12 +59,6 @@ const sidebar_data: DataType[] = [
       sidebar_details: [
          {
             id: 1,
-            link: "/student-setting",
-            icon: "skillgro-settings",
-            title: "Settings",
-         },
-         {
-            id: 2,
             link: "/",
             icon: "skillgro-logout",
             title: "Logout",

@@ -4,16 +4,18 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export interface FormData {
+  role: 'student' | 'instructor' | 'course_uploader';
   fullName: string;
   email: string;
   countryCode: string;
   phone: string;
   country: string;
   state: string;
-  university: string;
+  university?: string;
+  expertise?: string;
+  organization?: string;
   password: string;
   confirmPassword: string;
-  selectedPlan?: string; // ✅ Add this
 }
 
 interface RegistrationFormProps {
@@ -22,6 +24,7 @@ interface RegistrationFormProps {
 
 export default function RegistrationForm({ onOtpSent }: RegistrationFormProps) {
   const [formData, setFormData] = useState<FormData>({
+    role: 'student',
     fullName: "",
     email: "",
     countryCode: "",
@@ -29,20 +32,15 @@ export default function RegistrationForm({ onOtpSent }: RegistrationFormProps) {
     country: "",
     state: "",
     university: "",
+    expertise: "",
+    organization: "",
     password: "",
     confirmPassword: "",
-    selectedPlan: undefined,
   });
 
-  // ✅ Get selected plan from localStorage on mount
-  useEffect(() => {
-    const plan = typeof window !== "undefined" ? localStorage.getItem("selectedPlan") : null;
-    if (plan) {
-      setFormData((prev) => ({ ...prev, selectedPlan: plan }));
-    }
-  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -72,139 +70,199 @@ export default function RegistrationForm({ onOtpSent }: RegistrationFormProps) {
       return;
     }
 
-    // ✅ Get selected plan from localStorage
-    const selectedPlan = typeof window !== "undefined" ? localStorage.getItem("selectedPlan") : null;
+        // Organization validation for course uploaders
+        if (formData.role === "course_uploader" && !(formData.organization?.trim())) {
+      toast.error("Organization is required for course uploaders!");
+      return;
+    }
 
-    // Pass plan to parent component
-    onOtpSent({
-      ...formData,
-      selectedPlan: selectedPlan || "basic", // default to basic if no plan selected
-    });
+    onOtpSent(formData);
   };
 
   return (
     <form onSubmit={handleSubmit} className="account__form">
-      <div className="form-grp">
-        <label htmlFor="fullName">Full Name *</label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          placeholder="Enter your full name"
-          value={formData.fullName}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-grp">
-        <label htmlFor="email">Email *</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Enter your email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="row">
-        <div className="col-md-4">
           <div className="form-grp">
-            <label htmlFor="countryCode">Country Code *</label>
+            <label htmlFor="role">Role *</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '14px 20px',
+                fontSize: '16px',
+                color: 'var(--tg-heading-color)',
+                border: '1px solid #E1E1E1',
+                background: 'var(--tg-common-color-white)',
+                borderRadius: '5px',
+                lineHeight: '1',
+                transition: 'all 0.3s ease-out 0s',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
+              <option value="course_uploader">Course Uploader</option>
+            </select>
+          </div>
+
+          <div className="form-grp">
+            <label htmlFor="fullName">Full Name *</label>
             <input
               type="text"
-              id="countryCode"
-              name="countryCode"
-              placeholder="+91"
-              value={formData.countryCode}
+              id="fullName"
+              name="fullName"
+              placeholder="Enter your full name"
+              value={formData.fullName}
               onChange={handleChange}
               required
             />
           </div>
-        </div>
-        <div className="col-md-8">
+
           <div className="form-grp">
-            <label htmlFor="phone">Mobile Number *</label>
+            <label htmlFor="email">Email *</label>
             <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="1234567890"
-              value={formData.phone}
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
-        </div>
-      </div>
 
-      <div className="form-grp">
-        <label htmlFor="country">Country *</label>
-        <input
-          type="text"
-          id="country"
-          name="country"
-          placeholder="Enter your country"
-          value={formData.country}
-          onChange={handleChange}
-          required
-        />
-      </div>
+          <div className="row">
+            <div className="col-md-4">
+              <div className="form-grp">
+                <label htmlFor="countryCode">Country Code *</label>
+                <input
+                  type="text"
+                  id="countryCode"
+                  name="countryCode"
+                  placeholder="+91"
+                  value={formData.countryCode}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="col-md-8">
+              <div className="form-grp">
+                <label htmlFor="phone">Mobile Number *</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="1234567890"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
 
-      <div className="form-grp">
-        <label htmlFor="state">State *</label>
-        <input
-          type="text"
-          id="state"
-          name="state"
-          placeholder="Enter your state"
-          value={formData.state}
-          onChange={handleChange}
-          required
-        />
-      </div>
+          <div className="form-grp">
+            <label htmlFor="country">Country *</label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              placeholder="Enter your country"
+              value={formData.country}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-      <div className="form-grp">
-        <label htmlFor="university">University *</label>
-        <input
-          type="text"
-          id="university"
-          name="university"
-          placeholder="Enter your university name"
-          value={formData.university}
-          onChange={handleChange}
-          required
-        />
-      </div>
+          <div className="form-grp">
+            <label htmlFor="state">State *</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              placeholder="Enter your state"
+              value={formData.state}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-      <div className="form-grp">
-        <label htmlFor="password">Password *</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter password (min 6 characters)"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-      </div>
+          {/* University for student and instructor */}
+          {(formData.role === 'student' || formData.role === 'instructor') && (
+            <div className="form-grp">
+              <label htmlFor="university">University{formData.role === 'student' ? ' *' : ''}</label>
+              <input
+                type="text"
+                id="university"
+                name="university"
+                placeholder="Enter your university name"
+                value={formData.university}
+                onChange={handleChange}
+                required={formData.role === 'student'}
+              />
+            </div>
+          )}
 
-      <div className="form-grp">
-        <label htmlFor="confirmPassword">Confirm Password *</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          placeholder="Confirm your password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
-      </div>
+          {/* Expertise for instructor only */}
+          {formData.role === 'instructor' && (
+            <div className="form-grp">
+              <label htmlFor="expertise">Area of Expertise *</label>
+              <input
+                type="text"
+                id="expertise"
+                name="expertise"
+                placeholder="e.g. Mathematics, Physics, etc."
+                value={formData.expertise}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          )}
+
+          {/* Organization for course uploader only */}
+          {formData.role === 'course_uploader' && (
+            <div className="form-grp">
+              <label htmlFor="organization">Organization/Company *</label>
+              <input
+                type="text"
+                id="organization"
+                name="organization"
+                placeholder="Enter your organization or company name"
+                value={formData.organization}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          )}
+
+          <div className="form-grp">
+            <label htmlFor="password">Password *</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password (min 6 characters)"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-grp">
+            <label htmlFor="confirmPassword">Confirm Password *</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
       <button type="submit" className="btn btn-two arrow-btn">
         Sign Up
@@ -212,3 +270,4 @@ export default function RegistrationForm({ onOtpSent }: RegistrationFormProps) {
     </form>
   );
 }
+

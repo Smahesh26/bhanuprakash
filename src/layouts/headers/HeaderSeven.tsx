@@ -98,7 +98,7 @@ const HeaderSeven = () => {
                           />
                         </li>
                         <li>
-                          <Link href="/registration" className="btn">
+                          <Link href="/login" className="btn">
                             Register Now <span className="arrow-circle">→</span>
                           </Link>
                         </li>

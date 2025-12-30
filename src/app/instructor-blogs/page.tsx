@@ -5,6 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
+import AuthGuard from "@/components/common/AuthGuard";
 
 type BlogForm = {
   title: string;
@@ -32,7 +33,7 @@ const emptyForm: BlogForm = {
   image: "",
 };
 
-export default function InstructorBlogsPage() {
+function InstructorBlogsPage() {
   const [form, setForm] = useState<BlogForm>(emptyForm);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
@@ -103,6 +104,34 @@ export default function InstructorBlogsPage() {
 
   return (
     <section className="dashboard__area section-pb-120">
+      {/* Banner image at the top, styled like other dashboard pages */}
+      <div
+        className="dashboard__top-wrap mt-120"
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "48px",
+          marginTop: "48px",
+        }}
+      >
+        <div
+          className="dashboard__top-bg"
+          style={{
+            backgroundImage: `url(/assets/img/bg/instructor_dashboard_bg.png)`,
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            width: "100%",
+            maxWidth: "1400px",
+            height: "260px",
+            borderRadius: "18px",
+            boxShadow: "0 4px 24px rgba(13,68,122,0.08)",
+            marginTop: "60px",
+          }}
+        ></div>
+      </div>
       <div className="dashboard__bg">
         {/* <Image src={bg_img} alt="bg" /> */}
       </div>
@@ -260,5 +289,12 @@ export default function InstructorBlogsPage() {
         </div>
       </div>
     </section>
+  );
+}
+export default function Page() {
+  return (
+    <AuthGuard>
+      <InstructorBlogsPage />
+    </AuthGuard>
   );
 }

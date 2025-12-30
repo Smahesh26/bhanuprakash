@@ -15,3 +15,19 @@ interface UserSubscription {
 // Add to User interface/schema:
 // subscription?: UserSubscription;
 // hasActiveSubscription: boolean;
+
+export enum UserRole {
+  Student = 'student',
+  Instructor = 'instructor',
+  CourseUploader = 'course_uploader',
+}
+
+export interface User {
+  // ...existing fields...
+  role: UserRole;
+}
+
+export interface User {
+  // ...existing fields...
+  role: UserRole;
+}

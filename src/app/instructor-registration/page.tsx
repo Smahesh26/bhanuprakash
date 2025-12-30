@@ -5,33 +5,36 @@ import HeaderSeven from "@/layouts/headers/HeaderSeven";
 import Image from "next/image";
 import googleIcon from "@/assets/img/icons/google.svg";
 import { signIn } from "next-auth/react";
-
 export default function InstructorRegistration() {
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
     password: "",
     name: "",
+    role: "instructor", // default
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Replace with real API call
     const res = await fetch("/api/instructor-register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
     if (res.ok) {
-      setSuccess("Registration successful! Please login.");
+      setSuccess("Registration successful! Redirecting...");
       setError("");
-      setTimeout(() => router.replace("/instructor-login"), 1500);
+      if (form.role === "uploader") {
+        setTimeout(() => router.replace("/instructor-uploader-dashboard"), 1200);
+      } else {
+        setTimeout(() => router.replace("/instructor-login"), 1200);
+      }
     } else {
       setError("Registration failed. Try again.");
       setSuccess("");
@@ -55,6 +58,20 @@ export default function InstructorRegistration() {
                   Fill in your details to create an instructor account.
                 </p>
                 <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold" htmlFor="role">Registering as</label>
+                    <select
+                      id="role"
+                      name="role"
+                      className="form-control rounded-3"
+                      value={form.role}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="instructor">Instructor</option>
+                      <option value="uploader">Course Uploader</option>
+                    </select>
+                  </div>
                   <div className="mb-3">
                     <label className="form-label fw-semibold" htmlFor="name">Name</label>
                     <input

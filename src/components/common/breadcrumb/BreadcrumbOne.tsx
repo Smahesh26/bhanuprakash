@@ -19,23 +19,23 @@ const BreadcrumbOne = ({ title, sub_title, sub_title_2, style }: any) => {
                         {
                            style ? (
                               <>
-                                 <span property="itemListElement" typeof="ListItem">
+                                 <span property="itemListElement" itemType="https://schema.org/ListItem">
                                     <Link href="/">Home</Link>
                                  </span>
                                  <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
-                                 <span property="itemListElement" typeof="ListItem">
+                                 <span property="itemListElement" itemType="https://schema.org/ListItem">
                                     <Link href="/events">{sub_title}</Link>
                                  </span>
                                  <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
-                                 <span property="itemListElement" typeof="ListItem">{sub_title_2}</span>
+                                 <span property="itemListElement" itemType="https://schema.org/ListItem">{sub_title_2}</span>
                               </>
                            ) : (
                               <>
-                                 <span property="itemListElement" typeof="ListItem">
+                                 <span property="itemListElement" itemType="https://schema.org/ListItem">
                                     <Link href="/">Home</Link>
                                  </span>
                                  <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
-                                 <span property="itemListElement" typeof="ListItem">{sub_title}</span>
+                                 <span property="itemListElement" itemType="https://schema.org/ListItem">{sub_title}</span>
                               </>
                            )
                         }

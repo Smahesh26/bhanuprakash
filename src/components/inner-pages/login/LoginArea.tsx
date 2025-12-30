@@ -12,9 +12,13 @@ const LoginArea = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      const isNewUser = (session?.user as any)?.isNewUser;
-      if (isNewUser) {
+      const user = session?.user as any;
+      if (user?.isNewUser) {
         router.replace("/registration");
+      } else if (user?.role === 'course_uploader') {
+        router.replace("/instructor-uploader-dashboard");
+      } else if (user?.role === 'instructor') {
+        router.replace("/instructor-dashboard");
       } else {
         router.replace("/student-dashboard");
       }

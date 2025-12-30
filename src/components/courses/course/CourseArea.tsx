@@ -8,424 +8,324 @@ import CourseTop from './CourseTop';
 
 const CourseArea = () => {
   const [courses, setCourses] = useState<any[]>([]);
+  const [allCourses, setAllCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   // Fetch courses from API
   useEffect(() => {
-    fetch("/api/courses")
-      .then((res) => res.json())
+    fetch("/api/courses/all")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        setCourses(data || []);
+        console.log("Fetched courses:", data);
+        if (Array.isArray(data)) {
+          setCourses(data);
+          setAllCourses(data);
+        } else {
+          console.error("API returned non-array data:", data);
+          setCourses([]);
+          setAllCourses([]);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching courses:", err);
+        setError(err.message);
+        setCourses([]);
+        setAllCourses([]);
         setLoading(false);
       });
   }, []);
 
   const itemsPerPage = 12;
-  const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  const currentItems = courses.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(courses.length / itemsPerPage);
+  const currentItems = Array.isArray(courses) ? courses.slice(itemOffset, endOffset) : [];
+  const pageCount = Math.ceil((courses?.length || 0) / itemsPerPage);
   const startOffset = itemOffset + 1;
-  const totalItems = courses.length;
+  const totalItems = courses?.length || 0;
 
   const handlePageClick = (event: any) => {
-    const newOffset = (event.selected * itemsPerPage) % courses.length;
+    const newOffset = (event.selected * itemsPerPage) % (courses?.length || 1);
     setItemOffset(newOffset);
   };
 
-  const [activeTab, setActiveTab] = useState(0);
-  const handleTabClick = (index: any) => setActiveTab(index);
-
-  const [newCourse, setNewCourse] = useState({
-    title: "",
-    category: "",
-    thumb: "",
-    instructors: "",
-    rating: 0,
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewCourse({ ...newCourse, [e.target.name]: e.target.value });
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+    setItemOffset(0);
   };
 
-  const handleUpload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await fetch("/api/courses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newCourse),
-      });
-      // Refresh courses after upload
-      fetch("/api/courses")
-        .then((res) => res.json())
-        .then((data) => setCourses(data || []));
-    } catch (err) {
-      alert("Upload failed!");
-    }
-  };
+  if (loading) {
+    return (
+      <section className="all-courses-area section-py-120" style={{ backgroundColor: '#f8fafc' }}>
+        <div className="container">
+          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "400px" }}>
+            <div className="spinner-border" style={{ color: "#0d447a" }} role="status">
+              <span className="visually-hidden">Loading courses...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="all-courses-area section-py-120" style={{ backgroundColor: '#f8fafc' }}>
+        <div className="container">
+          <div className="text-center py-5">
+            <p className="text-danger">Error loading courses: {error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="all-courses-area section-py-120" style={{ backgroundColor: '#f8fafc' }}>
       <div className="container">
         <div className="row">
-          <CourseSidebar setCourses={setCourses} />
+          <CourseSidebar setCourses={setCourses} allCourses={allCourses} />
+
           <div className="col-xl-9 col-lg-8">
-            <CourseTop
-              startOffset={startOffset}
-              endOffset={Math.min(endOffset, totalItems)}
+            <CourseTop 
+              startOffset={startOffset} 
+              endOffset={Math.min(endOffset, totalItems)} 
               totalItems={totalItems}
               setCourses={setCourses}
               handleTabClick={handleTabClick}
               activeTab={activeTab}
             />
-            <div className="tab-content" id="myTabContent">
-              <div className={`tab-pane fade ${activeTab === 0 ? 'show active' : ''}`} id="grid">
-                {loading ? (
-                  <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "300px" }}>
-                    <div className="spinner-border" style={{ color: "#0d447a" }} role="status">
-                      <span className="visually-hidden">Loading courses...</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="row g-4">
-                    {currentItems.map((item: any) => (
-                      <div key={item.id} className="col-xl-4 col-lg-6 col-md-6">
-                        <div className="course-card">
-                          <Link href={`/course-details/${item.title}`} className="text-decoration-none">
-                            <div className="course-image-wrapper">
-                              <Image 
-                                src={item.thumb} 
-                                alt={item.title} 
-                                width={400} 
-                                height={250} 
-                                className="course-image"
-                              />
-                              <div className="course-overlay">
-                                <div className="course-category">
-                                  {item.category}
-                                </div>
+
+            {!courses || courses.length === 0 ? (
+              <div className="text-center py-5">
+                <p>No courses available at the moment.</p>
+              </div>
+            ) : (
+              <>
+                <div className="row courses__grid-wrap row-cols-1 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4">
+                  {currentItems.map((item: any, index: number) => (
+                    <div key={item.id || index} className="col">
+                      <Link href={`/course-details/${item.slug || item.id}`} style={{ textDecoration: 'none' }}>
+                        <div 
+                          className="courses__item" 
+                          style={{
+                            position: 'relative',
+                            borderRadius: '16px',
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                            height: '400px',
+                            cursor: 'pointer',
+                            border: '2px solid transparent'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.05)';
+                            e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2)';
+                            e.currentTarget.style.borderColor = '#667eea';
+                            e.currentTarget.style.zIndex = '10';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+                            e.currentTarget.style.borderColor = 'transparent';
+                            e.currentTarget.style.zIndex = '1';
+                          }}
+                        >
+                          {/* Background Image */}
+                          <div style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: `linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%), url(${item.thumbnail || item.thumb || '/assets/img/courses/default.jpg'})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            transition: 'transform 0.4s ease'
+                          }} />
+
+                          {/* Category Badge */}
+                          {item.category && (
+                            <div 
+                              style={{
+                                position: 'absolute',
+                                top: '16px',
+                                left: '16px',
+                                background: 'rgba(255, 255, 255, 0.95)',
+                                color: '#667eea',
+                                padding: '6px 16px',
+                                borderRadius: '20px',
+                                fontSize: '12px',
+                                fontWeight: '700',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                backdropFilter: 'blur(10px)',
+                                zIndex: 2
+                              }}
+                            >
+                              {item.category}
+                            </div>
+                          )}
+
+                          {/* Content Overlay */}
+                          <div 
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              padding: '24px',
+                              zIndex: 2,
+                              color: '#fff'
+                            }}
+                          >
+                            {/* Course Title */}
+                            <h3 
+                              style={{
+                                fontSize: '22px',
+                                fontWeight: '700',
+                                marginBottom: '12px',
+                                lineHeight: '1.3',
+                                color: '#fff',
+                                textShadow: '0 2px 8px rgba(0,0,0,0.5)'
+                              }}
+                            >
+                              {item.title || 'Untitled Course'}
+                            </h3>
+
+                            {/* Description */}
+                            {item.description && (
+                              <p 
+                                style={{
+                                  fontSize: '14px',
+                                  color: 'rgba(255,255,255,0.9)',
+                                  marginBottom: '16px',
+                                  lineHeight: '1.5',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden',
+                                  textShadow: '0 1px 4px rgba(0,0,0,0.5)'
+                                }}
+                              >
+                                {item.description}
+                              </p>
+                            )}
+
+                            {/* Instructor Info */}
+                            <div 
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                marginTop: '16px'
+                              }}
+                            >
+                              <div 
+                                style={{
+                                  width: '40px',
+                                  height: '40px',
+                                  borderRadius: '50%',
+                                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: '#fff',
+                                  fontWeight: '700',
+                                  fontSize: '16px',
+                                  border: '2px solid rgba(255,255,255,0.3)',
+                                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                                }}
+                              >
+                                {(item.instructor?.name || item.instructors || 'U').charAt(0).toUpperCase()}
+                              </div>
+                              <div>
+                                <p 
+                                  style={{
+                                    margin: 0,
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: '#fff',
+                                    textShadow: '0 1px 4px rgba(0,0,0,0.5)'
+                                  }}
+                                >
+                                  {item.instructor?.name || item.instructors || 'Unknown Instructor'}
+                                </p>
+                                <p 
+                                  style={{
+                                    margin: 0,
+                                    fontSize: '12px',
+                                    color: 'rgba(255,255,255,0.8)',
+                                    textShadow: '0 1px 4px rgba(0,0,0,0.5)'
+                                  }}
+                                >
+                                  Instructor
+                                </p>
                               </div>
                             </div>
-                            
-                            <div className="course-content">
-                              <h5 className="course-title">
-                                {item.title}
-                              </h5>
-                              
-                              <div className="course-meta">
-                                <div className="course-instructor">
-                                  <i className="fas fa-user-circle"></i>
-                                  <span>By {item.instructors}</span>
-                                </div>
-                              </div>
-                              
-                              <div className="course-footer">
-                                <div className="course-button">
-                                  <span>Learn More</span>
-                                  <i className="fas fa-arrow-right"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </Link>
+
+                            {/* Reserve Button */}
+                            <button
+                              style={{
+                                width: '100%',
+                                marginTop: '16px',
+                                padding: '12px',
+                                background: '#fff',
+                                color: '#667eea',
+                                border: 'none',
+                                borderRadius: '8px',
+                                fontSize: '14px',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = '#667eea';
+                                e.currentTarget.style.color = '#fff';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = '#fff';
+                                e.currentTarget.style.color = '#667eea';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                              }}
+                            >
+                              Get Started
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                
-                {/* Pagination */}
-                {!loading && courses.length > itemsPerPage && (
-                  <nav className="pagination-wrapper mt-5">
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+
+                {pageCount > 1 && (
+                  <nav className="pagination__wrap mt-30">
                     <ReactPaginate
                       breakLabel="..."
+                      nextLabel={<i className="flaticon-arrow-right"></i>}
                       onPageChange={handlePageClick}
                       pageRangeDisplayed={3}
                       pageCount={pageCount}
-                      className="pagination-list"
-                      activeClassName="active"
-                      previousLabel="←"
-                      nextLabel="→"
+                      previousLabel={<i className="flaticon-arrow-left"></i>}
+                      renderOnZeroPageCount={null}
+                      className="list-wrap"
                     />
                   </nav>
                 )}
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Custom Styles */}
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        .course-card {
-          background: #ffffff;
-          border-radius: 16px;
-          overflow: hidden;
-          border: 2px solid #f1f5f9;
-          transition: all 0.3s ease;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .course-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
-          background: linear-gradient(90deg, #0d447a 0%, #5dba47 100%);
-          transition: opacity 0.3s ease;
-        }
-
-        .course-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(13, 68, 122, 0.15);
-          border-color: #0d447a;
-        }
-
-        .course-image-wrapper {
-          position: relative;
-          overflow: hidden;
-          height: 200px;
-        }
-
-        .course-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-
-        .course-card:hover .course-image {
-          transform: scale(1.05);
-        }
-
-        .course-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(
-            135deg,
-            rgba(13, 68, 122, 0.85) 0%,
-            rgba(93, 186, 71, 0.75) 100%
-          );
-          display: flex;
-          align-items: flex-end;
-          padding: 20px;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .course-card:hover .course-overlay {
-          opacity: 1;
-        }
-
-        .course-category {
-          background: #ffffff;
-          color: #0d447a;
-          padding: 6px 14px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.6px;
-          font-family: 'Poppins', sans-serif;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .course-content {
-          padding: 24px;
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-
-        .course-title {
-          color: #0d447a;
-          font-family: 'Poppins', sans-serif;
-          font-size: 1.1rem;
-          font-weight: 700;
-          line-height: 1.4;
-          margin-bottom: 0;
-          text-align: left;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          min-height: 1.6rem;
-          letter-spacing: 0.3px;
-        }
-
-        .course-meta {
-          text-align: left;
-          flex-grow: 1;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          margin: 16px 0;
-        }
-
-        .course-instructor {
-          color: #64748b;
-          font-size: 13px;
-          font-weight: 500;
-          font-family: 'Poppins', sans-serif;
-          letter-spacing: 0.2px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .course-instructor i {
-          color: #5dba47;
-          font-size: 16px;
-          transition: all 0.3s ease;
-        }
-
-        .course-card:hover .course-instructor i {
-          color: #0d447a;
-          transform: scale(1.1);
-        }
-
-        .course-footer {
-          display: flex;
-          justify-content: flex-start;
-        }
-
-        .course-button {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: linear-gradient(135deg, #0d447a 0%, #5dba47 100%);
-          color: #ffffff;
-          padding: 12px 20px;
-          border-radius: 25px;
-          font-weight: 600;
-          font-size: 13px;
-          transition: all 0.3s ease;
-          font-family: 'Poppins', sans-serif;
-          letter-spacing: 0.4px;
-          border: none;
-          width: fit-content;
-          box-shadow: 0 4px 15px rgba(13, 68, 122, 0.2);
-        }
-
-        .course-card:hover .course-button {
-          background: linear-gradient(135deg, #5dba47 0%, #0d447a 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(93, 186, 71, 0.3);
-        }
-
-        .course-button i {
-          font-size: 11px;
-          transition: transform 0.3s ease;
-        }
-
-        .course-card:hover .course-button i {
-          transform: translateX(3px);
-        }
-
-        /* Pagination Styles */
-        .pagination-wrapper {
-          display: flex;
-          justify-content: center;
-          margin-top: 50px;
-        }
-
-        .pagination-list {
-          display: flex;
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          gap: 8px;
-          background: white;
-          padding: 16px;
-          border-radius: 16px;
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-          border: 2px solid #f1f5f9;
-        }
-
-        .pagination-list li a {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 44px;
-          height: 44px;
-          text-decoration: none;
-          color: #64748b;
-          background: #f8fafc;
-          border: 2px solid transparent;
-          border-radius: 12px;
-          transition: all 0.3s ease;
-          font-weight: 600;
-          font-family: 'Poppins', sans-serif;
-        }
-
-        .pagination-list li a:hover {
-          background: linear-gradient(135deg, #0d447a 0%, #5dba47 100%);
-          color: white;
-          border-color: transparent;
-          transform: translateY(-2px);
-        }
-
-        .pagination-list li.active a {
-          background: linear-gradient(135deg, #5dba47 0%, #0d447a 100%);
-          color: white;
-          border-color: transparent;
-          box-shadow: 0 4px 15px rgba(93, 186, 71, 0.3);
-        }
-
-        /* Loading Spinner */
-        .spinner-border {
-          width: 3rem;
-          height: 3rem;
-          border-width: 3px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-          .course-content {
-            padding: 20px;
-          }
-          
-          .course-title {
-            font-size: 1rem;
-          }
-          
-          .course-image-wrapper {
-            height: 180px;
-          }
-        }
-
-        @media (max-width: 576px) {
-          .course-content {
-            padding: 16px;
-          }
-
-          .course-title {
-            font-size: 0.95rem;
-          }
-
-          .pagination-list {
-            gap: 6px;
-            padding: 12px;
-          }
-
-          .pagination-list li a {
-            width: 40px;
-            height: 40px;
-          }
-        }
-      `}</style>
     </section>
   );
 };
