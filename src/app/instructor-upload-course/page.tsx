@@ -343,6 +343,12 @@ const InstructorUploadCourse = () => {
                   />
                 </div>
                 <div className="col-md-6">
+                  <div className="mb-2">
+                    <label className="form-label">Course Thumbnail Image</label>
+                    <small className="d-block text-muted mb-2">
+                      📐 Recommended Size: 400x300 pixels | Max: 5MB | Format: JPG, PNG
+                    </small>
+                  </div>
                   <input
                     type="file"
                     accept="image/*"

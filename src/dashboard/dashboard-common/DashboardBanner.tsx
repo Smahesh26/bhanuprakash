@@ -7,8 +7,7 @@ import avatar_2 from "@/assets/img/courses/details_instructors02.jpg"
 
 const DashboardBanner = ({ style }: any) => {
    return (
-      <div className="dashboard__top-wrap mt-120" style={{marginTop:"200px"}}>
-         <br />
+      <div className="dashboard__top-wrap" style={{marginTop:"0px"}}>
          <div
             className="dashboard__top-bg"
             style={{
@@ -16,7 +15,7 @@ const DashboardBanner = ({ style }: any) => {
                backgroundPosition: "center top",
                backgroundRepeat: "no-repeat",
                backgroundSize: "cover",
-               marginTop: "40px" // move banner image down
+               marginTop: "0px"
             }}
          ></div>
          <div className="dashboard__instructor-info">
