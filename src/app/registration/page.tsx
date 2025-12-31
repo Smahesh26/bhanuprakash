@@ -10,7 +10,7 @@ export default function RegistrationPage() {
     <>
       <HeaderSeven />
       <main className="main-area fix">
-        <BreadcrumbOne title="Student SignUp" sub_title="SignUp" />
+        <BreadcrumbOne title="Create Account" sub_title="SignUp" />
         <RegistrationArea />
       </main>
       <FooterTwo />

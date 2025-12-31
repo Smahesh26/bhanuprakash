@@ -39,8 +39,7 @@ const LoginArea = () => {
             <div className="singUp-wrap">
               <h2 className="title">Welcome back!</h2>
               <p>
-                Hey there! Ready to log in? Just enter your username and password
-                below and you&apos;ll be back in action in no time.
+                Log in to your account to access your dashboard and manage your courses.
               </p>
 
               <LoginForm />
