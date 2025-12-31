@@ -8,6 +8,9 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // Add this section for proper static asset handling
+  staticPageGenerationTimeout: 120,
+  
   // ✅ Let builds succeed even if there are TypeScript / ESLint errors (for now)
   typescript: {
     ignoreBuildErrors: true,
@@ -33,6 +36,12 @@ const nextConfig = {
         ...config.resolve.fallback,
         canvas: false,
         fs: false,
+      };
+
+      config.optimization.splitChunks.cacheGroups = {
+        ...config.optimization.splitChunks.cacheGroups,
+        default: false,
+        vendors: false,
       };
     }
 
