@@ -7,50 +7,12 @@ This document provides test user accounts for different roles in the Bhanuprakas
 
 ## Test User Accounts
 
-### Super Admin
-**Purpose:** Full platform access, user management, system settings  
-**Email:** `admin@example.com`  
-**Password:** `TestPass123!`  
-**Stripe Customer ID:** (Use test card below)
-
-**Permissions:**
-- Create, update, delete users
-- Manage all courses
-- View analytics
-- System settings
-- User reports
-
----
-
-### Instructor #1
-**Purpose:** Create and manage courses, upload content  
-**Email:** `instructor@example.com`  
-**Password:** `TestPass123!`  
-**Instructor ID:** `inst_001`  
-**Stripe Connected Account:** (Setup in Stripe dashboard)
-
-**Permissions:**
-- Create and publish courses
-- Upload course materials
-- Create quizzes and MCQs
-- View enrollment and revenue
-- Student management
-
----
-
-### Instructor #2 (Alternative)
-**Purpose:** Secondary instructor for testing multi-instructor scenarios  
-**Email:** `instructor2@example.com`  
-**Password:** `TestPass123!`  
-**Instructor ID:** `inst_002`
-
----
-
-### Student #1
-**Purpose:** Enroll in courses, take quizzes  
+### 1. Student Account
+**Purpose:** Enroll in courses, take quizzes, access student dashboard  
 **Email:** `student@example.com`  
 **Password:** `TestPass123!`  
-**Student ID:** `stud_001`
+**Role:** `student`  
+**Dashboard:** `/student-dashboard`
 
 **Permissions:**
 - Browse and view courses
@@ -62,11 +24,63 @@ This document provides test user accounts for different roles in the Bhanuprakas
 
 ---
 
-### Student #2 (Premium/Paid)
+### 2. Instructor Account
+**Purpose:** Create and manage courses, upload content, instructor dashboard access  
+**Email:** `instructor@example.com`  
+**Password:** `TestPass123!`  
+**Role:** `instructor`  
+**Dashboard:** `/instructor-dashboard`
+
+**Permissions:**
+- Create and publish courses
+- Upload course materials
+- Create quizzes and MCQs
+- View enrollment and revenue
+- Student management
+- Manage testimonials
+- Full admin features
+
+---
+
+### 3. Course Uploader Account
+**Purpose:** Upload courses only (restricted access)  
+**Email:** `uploader@example.com`  
+**Password:** `TestPass123!`  
+**Role:** `course_uploader`  
+**Dashboard:** `/instructor-uploader-dashboard`
+
+**Permissions:**
+- Upload main courses
+- Add new curriculum/courses
+- Limited settings access
+- No student management
+- No testimonials or admin features
+
+---
+
+### Additional Test Accounts
+
+#### Super Admin (Same as Instructor)
+**Email:** `admin@example.com`  
+**Password:** `TestPass123!`  
+**Role:** `instructor`  
+**Dashboard:** `/instructor-dashboard`
+
+---
+
+#### Instructor #2 (Alternative)
+**Purpose:** Secondary instructor for testing multi-instructor scenarios  
+**Email:** `instructor2@example.com`  
+**Password:** `TestPass123!`  
+**Role:** `instructor`
+
+---
+
+#### Student #2 (Premium/Paid)
 **Purpose:** Test paid course enrollment and subscription  
 **Email:** `student-premium@example.com`  
 **Password:** `TestPass123!`  
-**Student ID:** `stud_002`  
+**Role:** `student`  
 **Subscription Status:** Active (test subscription)
 
 ---
