@@ -14,11 +14,21 @@ if (typeof window !== "undefined") {
 
 const Wrapper = ({ children }: any) => {
   useEffect(() => {
-    import("@/utils/utils").then((mod) => mod.animationCreate());
+    import("@/utils/utils")
+      .then((mod) => mod.animationCreate())
+      .catch((err) => console.warn('Animation init failed:', err));
   }, []);
 
   useEffect(() => {
-    AOS.init();
+    try {
+      AOS.init({
+        duration: 1000,
+        once: true,
+        disable: false,
+      });
+    } catch (error) {
+      console.warn('AOS init failed:', error);
+    }
   }, []);
 
   return (
