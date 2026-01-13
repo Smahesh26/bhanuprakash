@@ -85,9 +85,9 @@ try {
               const mcqKey = `mcq-${curriculum.indexOf(subject)}-${subject.chapters.indexOf(chapter)}-${chapter.topics.indexOf(topic)}-${index}`;
               const caseStudyKey = `caseStudy-${curriculum.indexOf(subject)}-${subject.chapters.indexOf(chapter)}-${chapter.topics.indexOf(topic)}-${index}`;
 
-              const pdfFile = files[pdfKey]?.[0];
-              const mcqFile = files[mcqKey]?.[0];
-              const caseStudyFile = files[caseStudyKey]?.[0];
+              const pdfFile = (Array.isArray(files[pdfKey]) ? files[pdfKey][0] : files[pdfKey]) as any;
+              const mcqFile = (Array.isArray(files[mcqKey]) ? files[mcqKey][0] : files[mcqKey]) as any;
+              const caseStudyFile = (Array.isArray(files[caseStudyKey]) ? files[caseStudyKey][0] : files[caseStudyKey]) as any;
 
               await prisma.subtopic.create({
                 data: {

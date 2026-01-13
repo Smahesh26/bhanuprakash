@@ -39,3 +39,12 @@ declare module 'formidable' {
 
   export default function formidable(options?: FormidableOptions): IncomingForm;
 }
+
+// Augment the Files type to better support optional chaining and indexing
+declare global {
+  namespace FormidableModule {
+    interface FileArray extends Array<any> {
+      [0]?: any;
+    }
+  }
+}
