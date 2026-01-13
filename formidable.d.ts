@@ -1,5 +1,41 @@
 declare module 'formidable' {
-  import { IncomingForm, File, Fields, Files, Part } from 'formidable';
-  export default class FormidableForm extends IncomingForm {}
-  export { IncomingForm, File, Fields, Files, Part };
+  import { IncomingMessage } from 'http';
+
+  export interface File {
+    size: number;
+    filepath: string;
+    newFilename: string;
+    mimetype: string;
+    mtime: Date;
+    originalFilename: string;
+  }
+
+  export interface Fields {
+    [key: string]: string | string[];
+  }
+
+  export interface Files {
+    [key: string]: File | File[];
+  }
+
+  export interface FormidableOptions {
+    uploadDir?: string;
+    keepExtensions?: boolean;
+    multiples?: boolean;
+    maxFileSize?: number;
+    maxFields?: number;
+    maxFieldsSize?: number;
+    hashAlgorithm?: string | false;
+    encoding?: string;
+    filename?: (name: string, dec: any, file: any) => string;
+    [key: string]: any;
+  }
+
+  export class IncomingForm {
+    constructor(options?: FormidableOptions);
+    parse(req: IncomingMessage, callback: (err: any, fields: Fields, files: Files) => void): void;
+    [key: string]: any;
+  }
+
+  export default function formidable(options?: FormidableOptions): IncomingForm;
 }
