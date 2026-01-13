@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FaArrowRight, FaGraduationCap } from "@/lib/fontAwesomeIconsComplete";
 
 interface CourseType {
   id: string;
@@ -98,7 +99,7 @@ const Categories = () => {
                         </span>
                         
                         <div className="course-arrow text-primary ms-2 mt-1">
-                          <i className="fas fa-arrow-right"></i>
+                          <FaArrowRight aria-hidden />
                         </div>
                       </div>
                     </div>
@@ -109,7 +110,7 @@ const Categories = () => {
           ) : (
             <div className="col-12 text-center py-5">
               <div className="empty-state">
-                <i className="fas fa-graduation-cap text-muted mb-3" style={{ fontSize: "3rem" }}></i>
+                <FaGraduationCap className="text-muted mb-3" style={{ fontSize: "3rem" }} aria-hidden />
                 <h5 className="text-muted mb-2">No Courses Available</h5>
                 <p className="text-muted">Courses will appear here once they are added.</p>
               </div>

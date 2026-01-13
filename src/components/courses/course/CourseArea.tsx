@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import CourseSidebar from './CourseSidebar';
 import CourseTop from './CourseTop';
+import { FaArrowRight, FaArrowLeft } from '@/lib/fontAwesomeIconsComplete';
 
 const CourseArea = () => {
   const [courses, setCourses] = useState<any[]>([]);
@@ -311,11 +312,11 @@ const CourseArea = () => {
                   <nav className="pagination__wrap mt-30">
                     <ReactPaginate
                       breakLabel="..."
-                      nextLabel={<i className="flaticon-arrow-right"></i>}
+                      nextLabel={<FaArrowRight />}
                       onPageChange={handlePageClick}
                       pageRangeDisplayed={3}
                       pageCount={pageCount}
-                      previousLabel={<i className="flaticon-arrow-left"></i>}
+                      previousLabel={<FaArrowLeft />}
                       renderOnZeroPageCount={null}
                       className="list-wrap"
                     />

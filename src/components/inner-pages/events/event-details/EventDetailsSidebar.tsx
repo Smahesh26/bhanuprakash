@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import BtnArrow from "@/svg/BtnArrow"
 import InjectableSvg from "@/hooks/InjectableSvg"
+import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp, FaYoutube } from "@/lib/fontAwesomeIconsComplete"
 
 import event_details_img1 from "@/assets/img/icons/calendar.svg"
 import event_details_img2 from "@/assets/img/icons/course_icon02.svg"
@@ -63,11 +64,11 @@ const EventDetailsSidebar = () => {
                <div className="courses__details-social">
                   <h5 className="title">Share this course:</h5>
                   <ul className="list-wrap">
-                     <li><Link href="#"><i className="fab fa-facebook-f"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-twitter"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-whatsapp"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-instagram"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-youtube"></i></Link></li>
+                     <li><Link href="#"><FaFacebookF aria-hidden /></Link></li>
+                     <li><Link href="#"><FaTwitter aria-hidden /></Link></li>
+                     <li><Link href="#"><FaWhatsapp aria-hidden /></Link></li>
+                     <li><Link href="#"><FaInstagram aria-hidden /></Link></li>
+                     <li><Link href="#"><FaYoutube aria-hidden /></Link></li>
                   </ul>
                </div>
                <div className="courses__details-enroll">

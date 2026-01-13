@@ -4,6 +4,7 @@ import BlogAuthor from "./BlogAuthor";
 import BlogPostComment from "./BlogPostComment";
 import BlogForm from "@/forms/BlogForm";
 import BlogSidebar from "../blog-common/BlogSidebar";
+import { FaFacebookF, FaLinkedinIn, FaPinterestP, FaTwitter, FaCalendarAlt, FaUser } from "@/lib/fontAwesomeIconsComplete";
 
 type Blog = {
   id: number;
@@ -34,11 +35,11 @@ const BlogDetailsArea = ({ blog }: { blog: Blog }) => {
                 <div className="blog__post-meta">
                   <ul className="list-wrap">
                     <li>
-                      <i className="flaticon-calendar"></i>{" "}
+                      <FaCalendarAlt />{" "}
                       {blog.date ? new Date(blog.date).toLocaleDateString() : ""}
                     </li>
                     <li>
-                      <i className="flaticon-user-1"></i> by {blog.author}
+                      <FaUser /> by {blog.author}
                     </li>
                   </ul>
                 </div>
@@ -60,10 +61,10 @@ const BlogDetailsArea = ({ blog }: { blog: Blog }) => {
                       <div className="tg-post-social justify-content-start justify-content-md-end">
                         <h5 className="social-title">Share :</h5>
                         <ul className="list-wrap p-0 mb-0">
-                          <li><Link href="#"><i className="fab fa-facebook-f"></i></Link></li>
-                          <li><Link href="#"><i className="fab fa-twitter"></i></Link></li>
-                          <li><Link href="#"><i className="fab fa-linkedin-in"></i></Link></li>
-                          <li><Link href="#"><i className="fab fa-pinterest-p"></i></Link></li>
+                          <li><Link href="#"><FaFacebookF aria-hidden /></Link></li>
+                          <li><Link href="#"><FaTwitter aria-hidden /></Link></li>
+                          <li><Link href="#"><FaLinkedinIn aria-hidden /></Link></li>
+                          <li><Link href="#"><FaPinterestP aria-hidden /></Link></li>
                         </ul>
                       </div>
                     </div>

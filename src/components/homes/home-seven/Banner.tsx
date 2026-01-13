@@ -355,9 +355,8 @@ const BannerSlider: React.FC = () => {
             font-weight: 600;
             font-size: 20px;
             text-decoration: none;
-            transition: all 0.3s ease;
             width: fit-content;
-            box-shadow: 0 4px 15px rgba(93, 186, 71, 0.3);
+            box-shadow: 0 8px 24px rgba(93, 186, 71, 0.4);
             border: none;
             position: relative;
             overflow: hidden;
@@ -370,7 +369,6 @@ const BannerSlider: React.FC = () => {
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
             z-index: 1;
           }
 
@@ -383,14 +381,15 @@ const BannerSlider: React.FC = () => {
             position: relative;
             z-index: 2;
             font-size: 14px;
-            transition: transform 0.3s ease;
-            background: rgba(255,255,255,0.2);
-            width: 24px;
-            height: 24px;
+            background: rgba(255,255,255,0.35);
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
           }
 
           .btn-glow {
@@ -399,17 +398,6 @@ const BannerSlider: React.FC = () => {
 
           .hero-cta:hover .btn-shine {
             left: 100%;
-          }
-
-          .hero-cta:hover .btn-arrow {
-            transform: translateX(3px);
-            background: rgba(255,255,255,0.3);
-          }
-
-          .hero-cta:hover {
-            background: #4a9c38;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(93, 186, 71, 0.4);
           }
 
           .hero-right {

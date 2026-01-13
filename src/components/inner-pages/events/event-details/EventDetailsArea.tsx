@@ -1,6 +1,7 @@
 import Image from "next/image"
 import EventDetailsSidebar from "./EventDetailsSidebar"
 import Link from "next/link"
+import { FaStar, FaMapMarkerAlt, FaGraduationCap, FaAngleRight } from "@/lib/fontAwesomeIconsComplete"
 
 import event_details_img1 from "@/assets/img/events/event_details_img.jpg";
 import event_details_img2 from "@/assets/img/courses/course_author001.png";
@@ -21,7 +22,7 @@ const EventDetailsArea = () => {
                   <div className="event__details-content">
                     <div className="event__details-content-top">
                       <Link href="/courses" className="tag">Development</Link>
-                      <span className="avg-rating"><i className="fas fa-star"></i>(4.8 Reviews)</span>
+                      <span className="avg-rating"><FaStar aria-hidden />(4.8 Reviews)</span>
                     </div>
                     <h2 className="title">How To Become idiculously Self-Aware In 20 Minutes</h2>
                     <div className="event__meta">
@@ -31,8 +32,8 @@ const EventDetailsArea = () => {
                           By
                           <Link href="/instructor-details">David Millar</Link>
                         </li>
-                        <li className="location"><i className="flaticon-placeholder"></i>LocationWashington DC, MI 2726</li>
-                        <li><i className="flaticon-mortarboard"></i>2,250 Students</li>
+                        <li className="location"><FaMapMarkerAlt />LocationWashington DC, MI 2726</li>
+                        <li><FaGraduationCap />2,250 Students</li>
                       </ul>
                     </div>
                     <div className="event__details-overview">
@@ -52,19 +53,19 @@ const EventDetailsArea = () => {
                             <h4 className="title">Four major elements that we offer <br /> for this event</h4>
                             <ul className="about__info-list list-wrap">
                               <li className="about__info-list-item">
-                                <i className="flaticon-angle-right"></i>
+                                <FaAngleRight />
                                 <p className="content">Work with color & Gradients & Grids</p>
                               </li>
                               <li className="about__info-list-item">
-                                <i className="flaticon-angle-right"></i>
+                                <FaAngleRight />
                                 <p className="content">All the useful shortcuts</p>
                               </li>
                               <li className="about__info-list-item">
-                                <i className="flaticon-angle-right"></i>
+                                <FaAngleRight />
                                 <p className="content">Be able to create Flyers, Brochures, Advertisements</p>
                               </li>
                               <li className="about__info-list-item">
-                                <i className="flaticon-angle-right"></i>
+                                <FaAngleRight />
                                 <p className="content">How to work with Images & Text</p>
                               </li>
                             </ul>

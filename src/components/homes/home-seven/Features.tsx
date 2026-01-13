@@ -1,40 +1,40 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeartPulse, faStethoscope, faFileMedical, faUserMd, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
+import { IconType } from "react-icons";
+import { FaFileMedical, FaUserMd, FaHeartbeat, FaStethoscope, FaGraduationCap } from "@/lib/fontAwesomeIconsComplete";
 
-const feature_data = [
+const feature_data: { id: number; icon: IconType; title: string; tag: string }[] = [
    {
       id: 1,
-      icon: faFileMedical, // FMGE icon
+      icon: FaFileMedical, // FMGE icon
       title: "FMGE",
       tag: "Foreign Medical Graduate Exam.",
    },
    {
       id: 2,
-      icon: faUserMd, // NEETPG icon
+      icon: FaUserMd, // NEETPG icon
       title: "NEETPG",
       tag: "National Eligibility Test for Post Graduation.",
    },
    {
       id: 3,
-      icon: faHeartPulse, // ECG icon
+      icon: FaHeartbeat, // ECG icon
       title: "ECG",
       tag: "Electrocardiography courses.",
    },
    {
       id: 4,
-      icon: faStethoscope, // USMLE icon
+      icon: FaStethoscope, // USMLE icon
       title: "USMLE",
       tag: "United States Medical Licensing Exam.",
    },
    {
       id: 5,
-      icon: faGraduationCap, // Nursing icon
+      icon: FaGraduationCap, // Nursing icon
       title: "Nursing",
       tag: "Nursing certification and exams.",
    },
    {
       id: 6,
-      icon: faStethoscope, // PLAB icon (same as USMLE for medical exam)
+      icon: FaStethoscope, // PLAB icon (same as USMLE for medical exam)
       title: "PLAB",
       tag: "Professional and Linguistic Assessments Board.",
    },
@@ -50,8 +50,7 @@ const Features = () => {
                      <div key={item.id} className="col-xl-3 col-lg-4 col-md-6">
                         <div className="features__item-six">
                            <div className="features__icon-six">
-                              {/* Rendering FontAwesome icons from feature data */}
-                              <FontAwesomeIcon icon={item.icon} size="3x" />
+                              <item.icon aria-hidden style={{ fontSize: "3rem" }} />
                            </div>
                            <div className="features__content-six">
                               <h4 className="title">{item.title}</h4>

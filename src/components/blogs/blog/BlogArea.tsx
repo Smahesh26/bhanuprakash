@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import BlogSidebar from "../blog-common/BlogSidebar";
+import { FaCalendarAlt, FaUser } from "@/lib/fontAwesomeIconsComplete";
 
 const itemsPerPage = 12;
 
@@ -61,11 +62,11 @@ const BlogArea = ({ style_1 }: any) => {
                                  <div className="blog__post-meta">
                                     <ul className="list-wrap">
                                        <li>
-                                          <i className="flaticon-calendar"></i>
+                                          <FaCalendarAlt />
                                           {item.date ? new Date(item.date).toLocaleDateString() : ""}
                                        </li>
                                        <li>
-                                          <i className="flaticon-user-1"></i>
+                                          <FaUser />
                                           by {item.author || "Admin"}
                                        </li>
                                     </ul>

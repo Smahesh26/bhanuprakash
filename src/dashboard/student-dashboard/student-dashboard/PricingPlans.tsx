@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { FaCheckCircle } from "@/lib/fontAwesomeIconsComplete";
 
 const PricingPlans = () => {
   const [loading, setLoading] = useState<string | null>(null);
@@ -148,10 +149,10 @@ const PricingPlans = () => {
                       alignItems: 'center'
                     }}
                   >
-                    <i 
-                      className="fas fa-check-circle" 
-                      style={{ 
-                        color: '#5dba47', 
+                    <FaCheckCircle
+                      aria-hidden
+                      style={{
+                        color: '#5dba47',
                         marginRight: '10px',
                         fontSize: '16px'
                       }}

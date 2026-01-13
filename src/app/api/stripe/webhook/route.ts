@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import Stripe from "stripe";
+import { decrypt } from "@/lib/crypto";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,14 +17,17 @@ export async function POST(req: NextRequest) {
       where: { isActive: true }
     });
 
-    if (!config?.secretKey || !config.webhookSecret) {
+    const secretKey = process.env.STRIPE_SECRET_KEY
+      || (config?.secretKey ? decrypt(config.secretKey) : undefined);
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+      || (config?.webhookSecret ? decrypt(config.webhookSecret) : undefined);
+
+    if (!secretKey || !webhookSecret) {
       console.error("Stripe not properly configured");
       return NextResponse.json({ error: "Stripe not configured" }, { status: 500 });
     }
 
-    const stripe = new Stripe(config.secretKey, {
-      apiVersion: "2025-12-15.clover",
-    });
+    const stripe = new Stripe(secretKey);
 
     let event: Stripe.Event;
 
@@ -31,7 +35,7 @@ export async function POST(req: NextRequest) {
       event = stripe.webhooks.constructEvent(
         body,
         sig,
-        config.webhookSecret
+        webhookSecret
       );
     } catch (err: any) {
       console.error("Webhook signature verification failed:", err.message);

@@ -4,6 +4,7 @@ import Link from "next/link"
 import VideoPopup from "@/modals/VideoPopup";
 import { useState } from "react";
 import BtnArrow from "@/svg/BtnArrow";
+import { FaAngleRight } from "@/lib/fontAwesomeIconsComplete";
 
 import about_img1 from "@/assets/img/others/about_img.png"
 import about_img2 from "@/assets/img/others/about_shape.svg"
@@ -53,15 +54,15 @@ const About = () => {
                            organize, prioritize and.In this episode of the Smashing Pod we’re talking about Web Platform Baseline.</p>
                         <ul className="about__info-list list-wrap">
                            <li className="about__info-list-item">
-                              <i className="flaticon-angle-right"></i>
+                              <FaAngleRight />
                               <p className="content">The Most World Class Instructors</p>
                            </li>
                            <li className="about__info-list-item">
-                              <i className="flaticon-angle-right"></i>
+                              <FaAngleRight />
                               <p className="content">Access Your Class anywhere</p>
                            </li>
                            <li className="about__info-list-item">
-                              <i className="flaticon-angle-right"></i>
+                              <FaAngleRight />
                               <p className="content">Flexible Course Plan</p>
                            </li>
                         </ul>

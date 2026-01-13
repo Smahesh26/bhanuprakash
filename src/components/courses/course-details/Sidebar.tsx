@@ -5,6 +5,14 @@ import Link from "next/link"
 import { useState } from "react";
 import InjectableSvg from "@/hooks/InjectableSvg";
 import BtnArrow from "@/svg/BtnArrow";
+import {
+   FaFacebookF,
+   FaInstagram,
+   FaPlay,
+   FaTwitter,
+   FaWhatsapp,
+   FaYoutube,
+} from "@/lib/fontAwesomeIconsComplete";
 
 import img_1 from "@/assets/img/courses/course_thumb02.jpg"
 import img_2 from "@/assets/img/others/payment.png"
@@ -19,7 +27,7 @@ const Sidebar = () => {
             <div className="courses__details-sidebar">
                <div className="courses__details-video">
                   <Image src={img_1} alt="img" />
-                  <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="popup-video"><i className="fas fa-play"></i></a>
+                  <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="popup-video"><FaPlay aria-hidden /></a>
                </div>
                <div className="courses__cost-wrap">
                   <span>This Course Fee:</span>
@@ -67,11 +75,11 @@ const Sidebar = () => {
                <div className="courses__details-social">
                   <h5 className="title">Share this course:</h5>
                   <ul className="list-wrap">
-                     <li><Link href="#"><i className="fab fa-facebook-f"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-twitter"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-whatsapp"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-instagram"></i></Link></li>
-                     <li><Link href="#"><i className="fab fa-youtube"></i></Link></li>
+                     <li><Link href="#"><FaFacebookF aria-hidden /></Link></li>
+                     <li><Link href="#"><FaTwitter aria-hidden /></Link></li>
+                     <li><Link href="#"><FaWhatsapp aria-hidden /></Link></li>
+                     <li><Link href="#"><FaInstagram aria-hidden /></Link></li>
+                     <li><Link href="#"><FaYoutube aria-hidden /></Link></li>
                   </ul>
                </div>
                <div className="courses__details-enroll">

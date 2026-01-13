@@ -5,6 +5,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import Image from "next/image";
 import Link from "next/link";
 import course_data from "@/data/home-data/CourseData";
+import { FaStar, FaArrowRight } from "@/lib/fontAwesomeIconsComplete";
 
 const tab_title: string[] = ["All Courses", "Design", "Business", "Development"];
 
@@ -94,7 +95,7 @@ const CourseArea = ({ style }: any) => {
                           <li className="courses__item-tag">
                             <Link href="/course">{item.tag}</Link>
                           </li>
-                          <li className="avg-rating"><i className="fas fa-star"></i> {item.review}</li>
+                          <li className="avg-rating"><FaStar aria-hidden /> {item.review}</li>
                         </ul>
                         <h5 className="title"><Link href="/course-details">{item.title}</Link></h5>
                         <p className="author">By <Link href="#">{item.author}</Link></p>
@@ -102,7 +103,7 @@ const CourseArea = ({ style }: any) => {
                           <div className="button">
                             <Link href="/course-details">
                               <span className="text">Enroll Now</span>
-                              <i className="flaticon-arrow-right"></i>
+                              <FaArrowRight />
                             </Link>
                           </div>
                           <h5 className="price">${item.price}.00</h5>
@@ -114,8 +115,8 @@ const CourseArea = ({ style }: any) => {
               </Swiper>
               {!style &&
                 <div className="courses__nav">
-                  <div className="courses-button-prev"><i className="flaticon-arrow-right"></i></div>
-                  <div className="courses-button-next"><i className="flaticon-arrow-right"></i></div>
+                  <div className="courses-button-prev"><FaArrowRight /></div>
+                  <div className="courses-button-next"><FaArrowRight /></div>
                 </div>
               }
             </div>

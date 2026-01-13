@@ -281,7 +281,7 @@ const AddLatestVideo = () => {
                       <tr key={video.id}>
                         <td>
                           {video.thumb && (
-                            <img src={video.thumb} alt="thumb" style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4 }} />
+                            <Image src={video.thumb} alt="thumb" width={60} height={40} style={{ objectFit: 'cover', borderRadius: 4 }} />
                           )}
                         </td>
                         {editId === video.id ? (

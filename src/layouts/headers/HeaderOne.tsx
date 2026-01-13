@@ -8,6 +8,7 @@ import UseSticky from "@/hooks/UseSticky"
 import MobileSidebar from "./menu/MobileSidebar"
 import InjectableSvg from "@/hooks/InjectableSvg"
 import dynamic from "next/dynamic"
+import { FaBars } from "@/lib/fontAwesomeIconsComplete"
 const TotalCart = dynamic(() => import("@/components/common/TotalCart"), { ssr: false });
 const TotalWishlist = dynamic(() => import("@/components/common/TotalWishlist"), { ssr: false });
 const CustomSelect = dynamic(() => import("@/ui/CustomSelect"), { ssr: false });
@@ -36,7 +37,7 @@ const HeaderSeven = () => {
                         <div className="tgmenu__wrap">
                            <nav className="tgmenu__nav">
                               <div className="logo">
-                                 <Link href="/"><Image src={logo} alt="Logo" /></Link>
+                                 <Link href="/"><Image src={logo} alt="Logo" width={120} height={60} /></Link>
                               </div>
                               <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                                  <NavMenu />
@@ -66,7 +67,7 @@ const HeaderSeven = () => {
                               <div className="mobile-login-btn">
                                  <Link href="/login"><InjectableSvg src="/assets/img/icons/user.svg" alt="" className="injectable" /></Link>
                               </div>
-                              <div onClick={() => setIsActive(true)} className="mobile-nav-toggler"><i className="tg-flaticon-menu-1"></i></div>
+                              <div onClick={() => setIsActive(true)} className="mobile-nav-toggler"><FaBars /></div>
                            </nav>
                         </div>
                      </div>

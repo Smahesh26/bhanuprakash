@@ -1,25 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
-
-import category_img1 from "@/assets/img/others/h7_categories_shape01.svg";
-import category_img2 from "@/assets/img/others/h7_categories_shape02.svg";
-import category_img3 from "@/assets/img/others/h7_categories_shape03.svg";
-import category_img4 from "@/assets/img/others/h7_categories_shape04.svg";
+import { IconType } from "react-icons";
+import {
+  FaArrowRight,
+  FaFileMedical,
+  FaHandHoldingHeart,
+  FaHeartbeat,
+  FaUserInjured,
+  FaUserMd,
+  FaUserNurse
+} from "@/lib/fontAwesomeIconsComplete";
 
 interface DataType {
   id: number;
-  icon: string;
+  icon: IconType;
   title: string;
   tag: string;
 }
 
 const categories_data: DataType[] = [
-  { id: 1, icon: "fa-solid fa-file-circle-check", title: "FMGE", tag: "Foreign Medical Graduate Exam." },
-  { id: 2, icon: "fa-solid fa-user-doctor", title: "NEETPG", tag: "National Eligibility Test for Post Graduation." },
-  { id: 3, icon: "fa-solid fa-heartbeat", title: "ECG", tag: "Electrocardiography courses." },
-  { id: 4, icon: "fa-solid fa-user-nurse", title: "USMLE", tag: "United States Medical Licensing Exam." },
-  { id: 5, icon: "fa-solid fa-hand-holding-heart", title: "NURSING", tag: "Nursing certification and exams." },
-  { id: 6, icon: "fa-solid fa-user-injured", title: "PLAB", tag: "Professional & Linguistic Assessments Board." },
+  { id: 1, icon: FaFileMedical, title: "FMGE", tag: "Foreign Medical Graduate Exam." },
+  { id: 2, icon: FaUserMd, title: "NEETPG", tag: "National Eligibility Test for Post Graduation." },
+  { id: 3, icon: FaHeartbeat, title: "ECG", tag: "Electrocardiography courses." },
+  { id: 4, icon: FaUserNurse, title: "USMLE", tag: "United States Medical Licensing Exam." },
+  { id: 5, icon: FaHandHoldingHeart, title: "NURSING", tag: "Nursing certification and exams." },
+  { id: 6, icon: FaUserInjured, title: "PLAB", tag: "Professional & Linguistic Assessments Board." },
 ];
 
 const Categories = () => {
@@ -65,26 +70,18 @@ const Categories = () => {
                 <div className="category-inner-card">
                   <div className="card-glow"></div>
                   <div className="icon-circle">
-                    <i className={item.icon}></i>
+                    <item.icon aria-hidden style={{ color: '#fff' }} />
                   </div>
                   <h4 className="name">{item.title}</h4>
                   <p className="courses">{item.tag}</p>
                   <div className="card-arrow">
-                    <i className="fas fa-arrow-right"></i>
+                    <FaArrowRight aria-hidden />
                   </div>
                 </div>
               </Link>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Floating shapes */}
-      <div className="categories__shape-wrap">
-        <Image src={category_img1} alt="shape" className="rotateme" />
-        <Image src={category_img2} alt="shape" data-aos="fade-down-left" data-aos-delay="400" />
-        <Image src={category_img3} alt="shape" className="alltuchtopdown" />
-        <Image src={category_img4} alt="shape" data-aos="fade-up-right" data-aos-delay="400" />
       </div>
 
       <style>{`
@@ -215,6 +212,26 @@ const Categories = () => {
           opacity: 1;
         }
 
+        .card-arrow {
+          position: relative;
+          z-index: 2;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(13, 68, 122, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: auto;
+          box-shadow: 0 2px 8px rgba(13, 68, 122, 0.15);
+        }
+
+        .card-arrow i {
+          color: #0d447a !important;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 1200px) {
           .col-lg-2 {
@@ -265,11 +282,13 @@ const Categories = () => {
             font-size: 0.92rem;
           }
           .card-arrow {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(13, 68, 122, 0.15);
           }
           .card-arrow i {
-            font-size: 9px;
+            font-size: 8px;
           }
         }
         @media (max-width: 500px) {

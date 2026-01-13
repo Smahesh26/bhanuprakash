@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import HeaderSeven from "@/layouts/headers/HeaderSeven";
 interface YoutubeVideo {
   videoId: string;
@@ -89,9 +90,11 @@ export default function LatestVideosPage() {
                         overflow: "hidden",
                       }}
                     >
-                      <img
+                      <Image
                         src={video.thumbnail}
                         alt={video.title}
+                        width={400}
+                        height={180}
                         style={{
                           width: "100%",
                           height: "180px",

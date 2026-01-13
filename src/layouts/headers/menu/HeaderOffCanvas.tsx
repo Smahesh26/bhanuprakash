@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { FaWindowClose, FaFacebookF, FaTwitter, FaGooglePlusG, FaInstagram } from "@/lib/fontAwesomeIconsComplete"
 
 import logo from "@/assets/img/logo/logo.svg"
 
@@ -8,7 +9,7 @@ const HeaderOffCanvas = ({ offcanvas, setOffcamvas }: any) => {
       <>
          <div className={`offCanvas__info ${offcanvas ? "active" : ""}`}>
             <div className="offCanvas__close-icon menu-close">
-               <button onClick={() => setOffcamvas(false)}><i className="far fa-window-close"></i></button>
+               <button onClick={() => setOffcamvas(false)}><FaWindowClose /></button>
             </div>
             <div className="offCanvas__logo mb-30">
                <Link href="/"><Image src={logo} alt="Logo" /></Link>
@@ -30,10 +31,10 @@ const HeaderOffCanvas = ({ offcanvas, setOffcamvas }: any) => {
                </div>
             </div>
             <div className="offCanvas__social-icon mt-30">
-               <Link href="#"><i className="fab fa-facebook-f"></i></Link>
-               <Link href="#"><i className="fab fa-twitter"></i></Link>
-               <Link href="#"><i className="fab fa-google-plus-g"></i></Link>
-               <Link href="#"><i className="fab fa-instagram"></i></Link>
+               <Link href="#"><FaFacebookF /></Link>
+               <Link href="#"><FaTwitter /></Link>
+               <Link href="#"><FaGooglePlusG /></Link>
+               <Link href="#"><FaInstagram /></Link>
             </div>
          </div>
          <div onClick={() => setOffcamvas(false)} className={`offCanvas__overly ${offcanvas ? "active" : ""}`}></div>

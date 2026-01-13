@@ -1,5 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
+import { IconType } from "react-icons";
+import {
+  FaAssistiveListeningSystems,
+  FaBalanceScale,
+  FaBone,
+  FaBrain,
+  FaChild,
+  FaEye,
+  FaFlask,
+  FaHeartbeat,
+  FaHospitalUser,
+  FaMedkit,
+  FaPills,
+  FaStethoscope,
+  FaSun,
+  FaUsers,
+  FaVials,
+  FaVirus,
+  FaFemale
+} from "@/lib/fontAwesomeIconsComplete";
 
 import category_img1 from "@/assets/img/others/h7_categories_shape01.svg";
 import category_img2 from "@/assets/img/others/h7_categories_shape02.svg";
@@ -9,30 +29,30 @@ import category_img4 from "@/assets/img/others/h7_categories_shape04.svg";
 // Data Structure for Medical Categories
 interface DataType {
   id: number;
-  icon: string;
+  icon: IconType;
   title: string;
   tag: string;
 }
 
 const categories_data: DataType[] = [
-  { id: 1, icon: "fa-solid fa-brain", title: "Anatomy", tag: "12 Courses" },
-  { id: 2, icon: "fa-solid fa-flask", title: "Biochemistry", tag: "8 Courses" },
-  { id: 3, icon: "fa-solid fa-heart-pulse", title: "Physiology", tag: "10 Courses" },
-  { id: 4, icon: "fa-solid fa-people-group", title: "Community Medicine", tag: "7 Courses" },
-  { id: 5, icon: "fa-solid fa-pills", title: "Pharmacology", tag: "15 Courses" },
-  { id: 6, icon: "fa-solid fa-vials", title: "Pathology", tag: "11 Courses" },
-  { id: 7, icon: "fa-solid fa-virus", title: "Microbiology", tag: "9 Courses" },
-  { id: 8, icon: "fa-solid fa-scale-balanced", title: "Forensic Medicine", tag: "5 Courses" },
-  { id: 9, icon: "fa-solid fa-hospital-user", title: "Clinical Postings", tag: "14 Courses" },
-  { id: 10, icon: "fa-solid fa-stethoscope", title: "OPD", tag: "6 Courses" },
-  { id: 11, icon: "fa-solid fa-ear-listen", title: "ENT", tag: "8 Courses" },
-  { id: 12, icon: "fa-solid fa-eye", title: "Ophthalmology", tag: "7 Courses" },
-  { id: 13, icon: "fa-solid fa-brain", title: "Psychiatry", tag: "4 Courses" },
-  { id: 14, icon: "fa-solid fa-sun", title: "Dermatology", tag: "5 Courses" },
-  { id: 15, icon: "fa-solid fa-child-reaching", title: "Pediatrics", tag: "12 Courses" },
-  { id: 16, icon: "fa-solid fa-kit-medical", title: "Anesthesiology", tag: "3 Courses" },
-  { id: 17, icon: "fa-solid fa-bone", title: "Orthopaedics", tag: "6 Courses" },
-  { id: 18, icon: "fa-solid fa-person-pregnant", title: "Obstetrics & Gynaecology", tag: "10 Courses" },
+  { id: 1, icon: FaBrain, title: "Anatomy", tag: "12 Courses" },
+  { id: 2, icon: FaFlask, title: "Biochemistry", tag: "8 Courses" },
+  { id: 3, icon: FaHeartbeat, title: "Physiology", tag: "10 Courses" },
+  { id: 4, icon: FaUsers, title: "Community Medicine", tag: "7 Courses" },
+  { id: 5, icon: FaPills, title: "Pharmacology", tag: "15 Courses" },
+  { id: 6, icon: FaVials, title: "Pathology", tag: "11 Courses" },
+  { id: 7, icon: FaVirus, title: "Microbiology", tag: "9 Courses" },
+  { id: 8, icon: FaBalanceScale, title: "Forensic Medicine", tag: "5 Courses" },
+  { id: 9, icon: FaHospitalUser, title: "Clinical Postings", tag: "14 Courses" },
+  { id: 10, icon: FaStethoscope, title: "OPD", tag: "6 Courses" },
+  { id: 11, icon: FaAssistiveListeningSystems, title: "ENT", tag: "8 Courses" },
+  { id: 12, icon: FaEye, title: "Ophthalmology", tag: "7 Courses" },
+  { id: 13, icon: FaBrain, title: "Psychiatry", tag: "4 Courses" },
+  { id: 14, icon: FaSun, title: "Dermatology", tag: "5 Courses" },
+  { id: 15, icon: FaChild, title: "Pediatrics", tag: "12 Courses" },
+  { id: 16, icon: FaMedkit, title: "Anesthesiology", tag: "3 Courses" },
+  { id: 17, icon: FaBone, title: "Orthopaedics", tag: "6 Courses" },
+  { id: 18, icon: FaFemale, title: "Obstetrics & Gynaecology", tag: "10 Courses" },
 ];
 
 const Categories = () => {
@@ -56,7 +76,7 @@ const Categories = () => {
               <div className="categories__item-three text-center">
                 <Link href="/courses" className="block p-4 border rounded-lg hover:shadow-lg transition">
                   <div className="icon text-4xl mb-3 text-blue-600">
-                    <i className={item.icon}></i>
+                    <item.icon aria-hidden />
                   </div>
                   <span className="name block font-semibold mb-1">{item.title}</span>
                   <span className="courses text-gray-500">{item.tag}</span>

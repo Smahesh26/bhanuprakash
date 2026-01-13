@@ -7,17 +7,15 @@ async function generateSlugsForExistingCourses() {
   console.log('🔄 Generating slugs for existing courses...');
 
   const courses = await prisma.course.findMany({
-    where: {
-      slug: null
-    },
     include: {
       instructor: true
     }
   });
 
-  console.log(`📊 Found ${courses.length} courses without slugs`);
+  const targets = courses.filter((c) => !c.slug || c.slug.trim() === "");
+  console.log(`📊 Found ${targets.length} courses without slugs`);
 
-  for (const course of courses) {
+  for (const course of targets) {
     const instructorName = course.instructor.name || course.instructor.role || 'instructor';
     let slug = generateCourseSlug(course.title, instructorName);
 

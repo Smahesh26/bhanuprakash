@@ -7,6 +7,7 @@ import UseSticky from "@/hooks/UseSticky";
 import { useState, useEffect } from "react";
 import MobileSidebar from "./menu/MobileSidebar";
 import { useRouter } from "next/navigation";
+import { FaBars } from "@/lib/fontAwesomeIconsComplete";
 
 import logo from "@/assets/img/logo/MSS Logo-V1-02.png";
 
@@ -68,9 +69,13 @@ const HeaderSeven = () => {
                   <nav className="tgmenu__nav">
                     <div className="logo">
                       <Link href="/">
-                        <img
-                          src={logo.src}
-                          style={{ height: "100px", display: "block" }}
+                        <Image
+                          src={logo}
+                          alt="Logo"
+                          width={120}
+                          height={60}
+                          style={{ display: "block" }}
+                          priority
                         />
                       </Link>
                     </div>
@@ -98,8 +103,9 @@ const HeaderSeven = () => {
                           />
                         </li>
                         <li>
-                          <Link href="/login" className="btn">
-                            Register Now <span className="arrow-circle">→</span>
+                          <Link href="/login" className="btn header-cta">
+                            <span className="btn-text">Register Now</span>
+                            <span className="btn-arrow">→</span>
                           </Link>
                         </li>
                       </ul>
@@ -117,7 +123,7 @@ const HeaderSeven = () => {
                       onClick={() => setIsActive(true)}
                       className="mobile-nav-toggler"
                     >
-                      <i className="tg-flaticon-menu-1"></i>
+                      <FaBars />
                     </div>
                   </nav>
                 </div>
@@ -143,6 +149,46 @@ const HeaderSeven = () => {
         .tgmenu__main-menu a:hover {
           color: #0d447a !important;
         }
+
+        .header-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          background: #5dba47 !important;
+          color: #fff !important;
+          border-radius: 10px;
+          padding: 7px 14px !important;
+          font-weight: 600;
+          font-size: 16px;
+          text-decoration: none;
+          box-shadow: 0 8px 24px rgba(93, 186, 71, 0.4);
+          border: none;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .header-cta .btn-text {
+          position: relative;
+          z-index: 2;
+          color: #fff !important;
+        }
+
+        .header-cta .btn-arrow {
+          position: relative;
+          z-index: 2;
+          font-size: 14px;
+          background: rgba(248, 248, 248, 0.2) !important;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff !important;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
       `}</style>
     </>
   );

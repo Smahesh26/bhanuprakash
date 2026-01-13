@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 
 interface DataType {
    id: number;
@@ -51,11 +52,11 @@ const DashboardReviewTable = () => {
                   <td>
                      <div className="review__wrap">
                         <div className="rating">
-                           <i className="fas fa-star"></i>
-                           <i className="fas fa-star"></i>
-                           <i className="fas fa-star"></i>
-                           <i className="fas fa-star"></i>
-                           <i className="fas fa-star"></i>
+                           <FaStar />
+                           <FaStar />
+                           <FaStar />
+                           <FaStar />
+                           <FaStar />
                         </div>
                      </div>
                   </td>

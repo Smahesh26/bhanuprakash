@@ -10,6 +10,7 @@ import { Rating } from 'react-simple-star-rating';
 import ProductTop from "./ProductTop";
 import ProductSidebar from "./ProductSidebar";
 import { addToWishlist } from "@/redux/features/wishlistSlice";
+import { FaRegEye, FaRegHeart, FaShoppingCart } from "@/lib/fontAwesomeIconsComplete";
 
 const ProductArea = () => {
 
@@ -70,9 +71,9 @@ const ProductArea = () => {
                                        {item.tag && <span className="flash-sale">{item.tag}</span>}
                                        {item.hot_product && <span className="flash-sale hot">{item.hot_product}</span>}
                                        <ul className="list-wrap shop-action">
-                                          <li><a onClick={() => handleAddToCart(item)} className="cart-btn-add" style={{ cursor: "pointer" }}><i className="fas fa-shopping-cart"></i></a></li>
-                                          <li><a onClick={() => handleAddToWishlist(item)} className="cart-btn-add" style={{ cursor: "pointer" }}><i className="far fa-heart"></i></a></li>
-                                          <li><Link href={`/shop-details/${item.id}`}><i className="far fa-eye"></i></Link></li>
+                                          <li><a onClick={() => handleAddToCart(item)} className="cart-btn-add" style={{ cursor: "pointer" }}><FaShoppingCart aria-hidden /></a></li>
+                                          <li><a onClick={() => handleAddToWishlist(item)} className="cart-btn-add" style={{ cursor: "pointer" }}><FaRegHeart aria-hidden /></a></li>
+                                          <li><Link href={`/shop-details/${item.id}`}><FaRegEye aria-hidden /></Link></li>
                                        </ul>
                                     </div>
                                     <div className="shop-content">

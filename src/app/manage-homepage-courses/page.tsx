@@ -284,10 +284,12 @@ const ManageHomepageCourses = () => {
               {formData.thumb && (
                 <div className="mt-2">
                   <small className="text-muted">Current image:</small><br/>
-                  <img 
+                  <Image 
                     src={formData.thumb} 
                     alt="Current thumbnail" 
-                    style={{ width: '150px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} 
+                    width={150}
+                    height={100}
+                    style={{ objectFit: 'cover', borderRadius: '8px' }} 
                   />
                 </div>
               )}

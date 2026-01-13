@@ -3,6 +3,17 @@ import Image from "next/image"
 import Link from "next/link"
 import InstructorSlider from "./InstructorSlider"
 import InstructorForm from "@/forms/InstructorForm"
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaPhoneAlt,
+  FaRegEnvelope,
+  FaStar,
+  FaTwitter,
+  FaWhatsapp,
+  FaYoutube,
+  FaArrowRight,
+} from "@/lib/fontAwesomeIconsComplete"
 
 // import instructor_details_img from "@/assets/img/instructor/instructor_details_thumb.png"
 
@@ -50,27 +61,27 @@ const InstructorDetailsArea = () => {
                   <h2 className="title">Robert Fox</h2>
                   <span className="designation">Expert Laravel Pro</span>
                   <ul className="list-wrap">
-                    <li className="avg-rating"><i className="fas fa-star"></i>(4.8 Reviews)</li>
-                    <li><i className="far fa-envelope"></i><Link href="mailto:info@gmail.com">info@gmail.com</Link></li>
-                    <li><i className="fas fa-phone-alt"></i><Link href="tel:0123456789">+123 9500 600</Link></li>
+                    <li className="avg-rating"><FaStar aria-hidden />(4.8 Reviews)</li>
+                    <li><FaRegEnvelope aria-hidden /><Link href="mailto:info@gmail.com">info@gmail.com</Link></li>
+                    <li><FaPhoneAlt aria-hidden /><Link href="tel:0123456789">+123 9500 600</Link></li>
                   </ul>
                   <p>Grursus mal suada faci lisis Lorem ipsum dolarorit more ametion consectetur Vesity bulum a nec odio aea the dumm ipsumm ipsum that dolocons sus suada and farit consectetur elit.</p>
                   <div className="instructor__details-social">
                     <ul className="list-wrap">
                       <li>
-                        <Link href="#"><i className="fab fa-facebook-f"></i></Link>
+                        <Link href="#"><FaFacebookF aria-hidden /></Link>
                       </li>
                       <li>
-                        <Link href="#"><i className="fab fa-twitter"></i></Link>
+                        <Link href="#"><FaTwitter aria-hidden /></Link>
                       </li>
                       <li>
-                        <Link href="#"><i className="fab fa-instagram"></i></Link>
+                        <Link href="#"><FaInstagram aria-hidden /></Link>
                       </li>
                       <li>
-                        <Link href="#"><i className="fab fa-whatsapp"></i></Link>
+                        <Link href="#"><FaWhatsapp aria-hidden /></Link>
                       </li>
                       <li>
-                        <Link href="#"><i className="fab fa-youtube"></i></Link>
+                        <Link href="#"><FaYoutube aria-hidden /></Link>
                       </li>
                     </ul>
                   </div>
@@ -109,8 +120,8 @@ const InstructorDetailsArea = () => {
                   </div>
                   <div className="col-md-4">
                     <div className="instructor__details-nav">
-                      <button className="courses-button-prev"><i className="flaticon-arrow-right"></i></button>
-                      <button className="courses-button-next"><i className="flaticon-arrow-right"></i></button>
+                      <button className="courses-button-prev"><FaArrowRight /></button>
+                      <button className="courses-button-next"><FaArrowRight /></button>
                     </div>
                   </div>
                 </div>

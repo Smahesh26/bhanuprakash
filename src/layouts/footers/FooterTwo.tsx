@@ -24,9 +24,9 @@ const FooterTwo = ({ style }: any) => {
                               <Image
                                  src="/assets/img/logo/mssfooter.png"
                                  alt="Logo"
-                                 width={120}
-                                 height={100}
-                                 style={{ height: "180px", width: "auto" }}
+                                 width={80}
+                                 height={67}
+                                 style={{ height: "100px", width: "auto" }}
                               />
                            </Link>
                         </div>
@@ -99,7 +99,7 @@ const FooterTwo = ({ style }: any) => {
                                     style={{
                                        background: "#5dba47",
                                        border: "2px solid #5dba47",
-                                       borderRadius: "25px",
+                                       borderRadius: "10px",
                                        color: "#fff",
                                        padding: "12px 24px",
                                        fontWeight: "600",

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 import img_1 from "@/assets/img/courses/review-author.png";
 
 interface DataType {
@@ -49,11 +50,11 @@ const Reviews = () => {
             <div className="course-rate__summary">
                <div className="course-rate__summary-value">4.8</div>
                <div className="course-rate__summary-stars">
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
+                           <FaStar className="fa-star" />
+                           <FaStar className="fa-star" />
+                           <FaStar className="fa-star" />
+                           <FaStar className="fa-star" />
+                           <FaStar className="fa-star" />
                </div>
                <div className="course-rate__summary-text">
                   12 Ratings
@@ -64,7 +65,7 @@ const Reviews = () => {
                   <div key={item.id} className="course-rate__details-row">
                      <div className="course-rate__details-row-star">
                         {item.rating}
-                        <i className="fas fa-star"></i>
+                        <FaStar className="fa-star" />
                      </div>
                      <div className="course-rate__details-row-value">
                         <div className="rating-gray"></div>
@@ -84,11 +85,11 @@ const Reviews = () => {
                <div className="author-name">
                   <h5 className="name">Jura Hujaor <span>2 Days ago</span></h5>
                   <div className="author-rating">
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
+                              <FaStar className="fa-star" />
+                              <FaStar className="fa-star" />
+                              <FaStar className="fa-star" />
+                              <FaStar className="fa-star" />
+                              <FaStar className="fa-star" />
                   </div>
                </div>
                <h4 className="title">The best LMS Design System</h4>

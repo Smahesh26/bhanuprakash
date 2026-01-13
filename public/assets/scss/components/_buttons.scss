@@ -15,12 +15,12 @@
     cursor: pointer;
     display: inline-block;
     font-size: 16px;
-    font-weight: var(--tg-fw-semi-bold);
-    font-family: var(--tg-heading-font-family);
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: 0;
     line-height: 1.12;
     margin-bottom: 0;
-    padding: 16px 30px;
+    padding: 12px 28px;
     text-align: center;
     text-transform: capitalize;
     touch-action: manipulation;
@@ -28,7 +28,6 @@
     vertical-align: middle;
     @include border-radius(50px);
     white-space: nowrap;
-    // box-shadow: 4px 6px 0px 0px var(--tg-common-color-blue);
     overflow: hidden;
     &:hover,
     &:focus-visible {
@@ -104,6 +103,25 @@
         box-shadow: none;
         @include border-radius(8px);
     }
+}
+
+// Ensure all button variants have consistent bold font
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-warning,
+.btn-danger,
+.btn-success,
+.btn-info,
+.btn-light,
+.btn-dark,
+.btn-two,
+.btn-three,
+.btn-four,
+button[class*="btn"] {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
 }
 
 .arrow-btn {

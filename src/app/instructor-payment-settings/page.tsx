@@ -200,10 +200,10 @@ const PaymentSettings = () => {
                       <h6 style={{ fontWeight: 700, marginBottom: 12, color: '#fff' }}>📌 How to get your Stripe API Keys:</h6>
                       <ol style={{ marginLeft: 20, fontSize: 14, lineHeight: 1.8 }}>
                         <li>Go to <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener noreferrer" style={{ color: '#f7b32b', textDecoration: 'underline' }}>Stripe Dashboard → API Keys</a></li>
-                        <li>Copy your "Publishable key" and "Secret key"</li>
+                        <li>Copy your &quot;Publishable key&quot; and &quot;Secret key&quot;</li>
                         <li>For webhooks, go to <a href="https://dashboard.stripe.com/webhooks" target="_blank" rel="noopener noreferrer" style={{ color: '#f7b32b', textDecoration: 'underline' }}>Developers → Webhooks</a></li>
                         <li>Add endpoint: <code style={{ background: '#ffffff22', padding: '2px 8px', borderRadius: 4 }}>https://yourdomain.com/api/payments/webhook</code></li>
-                        <li>Copy the "Signing secret"</li>
+                        <li>Copy the &quot;Signing secret&quot;</li>
                       </ol>
                     </div>
 

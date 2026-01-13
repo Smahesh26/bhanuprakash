@@ -5,6 +5,7 @@ import instructor_reviewe_data from "@/data/dashboard-data/InstructorReviewData"
 import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image"
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg"
 
 const tab_title: string[] = ["Received", "Given",];
@@ -72,11 +73,11 @@ const InstructorReviewArea = () => {
                                     </span>
                                     <div className="review__wrap">
                                       <div className="rating">
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
+                                        <FaStar />
+                                        <FaStar />
+                                        <FaStar />
+                                        <FaStar />
+                                        <FaStar />
                                       </div>
                                       <span>(3 Reviews)</span>
                                     </div>
@@ -107,11 +108,11 @@ const InstructorReviewArea = () => {
                                   <td>
                                     <div className="review__wrap">
                                       <div className="rating">
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
-                                        <i className="fas fa-star"></i>
+                                        <FaStar />
+                                        <FaStar />
+                                        <FaStar />
+                                        <FaStar />
+                                        <FaStar />
                                       </div>
                                       <span>(3 Reviews)</span>
                                     </div>

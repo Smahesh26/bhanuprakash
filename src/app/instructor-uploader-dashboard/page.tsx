@@ -42,7 +42,7 @@ function InstructorUploadCourse() {
   }, [session, status, router]);
 
   // Fetch courses for the logged-in user (automatically filtered by role and ID on server)
-  const fetchCourses = async () => {
+  const fetchCourses = React.useCallback(async () => {
     if (!session?.user?.id) return;
     setLoading(true);
     try {
@@ -57,11 +57,11 @@ function InstructorUploadCourse() {
       toast.error("Error fetching courses");
     }
     setLoading(false);
-  };
+  }, [session?.user?.id]);
 
   React.useEffect(() => {
     fetchCourses();
-  }, [session?.user?.id]);
+  }, [fetchCourses]);
 
   // Show loading until we verify authorization
   if (status === "loading" || !isAuthorized) {
@@ -468,10 +468,11 @@ function InstructorUploadCourse() {
                           <td>
                             <input type="file" onChange={handleFileChange} />
                             {editForm.thumb && (
-                              <img
+                              <Image
                                 src={editForm.thumb}
                                 alt="thumb"
                                 width={60}
+                                height={40}
                               />
                             )}
                           </td>
@@ -500,7 +501,7 @@ function InstructorUploadCourse() {
                           <td>{course.videoUrl}</td>
                           <td>
                             {course.thumb && (
-                              <img src={course.thumb} alt="thumb" width={60} />
+                              <Image src={course.thumb} alt="thumb" width={60} height={40} />
                             )}
                           </td>
                           <td>

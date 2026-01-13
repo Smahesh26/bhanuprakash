@@ -4,6 +4,7 @@ import DashboardBannerTwo from "@/dashboard/dashboard-common/DashboardBannerTwo"
 import DashboardSidebarTwo from "@/dashboard/dashboard-common/DashboardSidebarTwo";
 import Image from "next/image";
 import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
+import { FaCrown } from "@/lib/fontAwesomeIconsComplete";
 
 const StudentSubscriptionDashboard = () => {
   const { data: session } = useSession();
@@ -39,7 +40,7 @@ const StudentSubscriptionDashboard = () => {
                           justifyContent: 'center',
                           marginRight: 16
                         }}>
-                          <i className="fas fa-crown" style={{ fontSize: 24, color: '#fff' }}></i>
+                          <FaCrown aria-hidden style={{ fontSize: 24, color: '#fff' }} />
                         </div>
                         <div>
                           <h5 style={{ marginBottom: 4, fontWeight: 700 }}>

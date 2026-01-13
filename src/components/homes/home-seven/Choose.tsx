@@ -1,9 +1,11 @@
 "use client"
+import { FaAngleRight } from "@/lib/fontAwesomeIconsComplete"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import VideoPopup from "@/modals/VideoPopup"
 import BtnArrow from "@/svg/BtnArrow"
+import { FaPlay } from "@/lib/fontAwesomeIconsComplete"
 
 import choose_img1 from "@/assets/img/others/h7_choose_img01.jpg"
 import choose_img2 from "@/assets/img/others/h7_choose_img02.jpg"
@@ -87,7 +89,7 @@ const Choose = () => {
                                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 25px rgba(93,186,71,0.3)";
                               }}
                            >
-                              <i className="fas fa-play"></i>
+                              <FaPlay aria-hidden />
                            </a>
                         </div>
                         <Image src={choose_img4} alt="shape" className="shape shape-one tg-motion-effects4" />
@@ -147,24 +149,21 @@ const Choose = () => {
                         </p>
                         <ul className="about__info-list list-wrap" style={{ marginBottom: "2rem" }}>
                            <li className="about__info-list-item" style={{ marginBottom: "1rem" }}>
-                              <i 
-                                 className="flaticon-angle-right pointer-green"
+                              <FaAngleRight 
                                  style={{ color: "#5dba47 !important", fontSize: "1.2rem", marginRight: "0.5rem" }}
-                              ></i>
+                              />
                               <p className="content" style={{ color: "#0d447a", fontWeight: 600 }}>All subjects Video lectures</p>
                            </li>
                            <li className="about__info-list-item" style={{ marginBottom: "1rem" }}>
-                              <i 
-                                 className="flaticon-angle-right pointer-green"
+                              <FaAngleRight 
                                  style={{ color: "#5dba47 !important", fontSize: "1.2rem", marginRight: "0.5rem" }}
-                              ></i>
+                              />
                               <p className="content" style={{ color: "#0d447a", fontWeight: 600 }}>In-depth Explanation of Concepts</p>
                            </li>
                            <li className="about__info-list-item" style={{ marginBottom: "1rem" }}>
-                              <i 
-                                 className="flaticon-angle-right pointer-green"
+                              <FaAngleRight 
                                  style={{ color: "#5dba47 !important", fontSize: "1.2rem", marginRight: "0.5rem" }}
-                              ></i>
+                              />
                               <p className="content" style={{ color: "#0d447a", fontWeight: 600 }}>Lectures notes / MCQs and Cases with Premium features</p>
                            </li>
                         </ul>
@@ -186,6 +185,7 @@ const Choose = () => {
                               gap: "12px",
                               position: "relative",
                               overflow: "hidden",
+                              textDecoration: "none",
                            }}
                            onMouseEnter={(e) => {
                               const target = e.currentTarget as HTMLAnchorElement;

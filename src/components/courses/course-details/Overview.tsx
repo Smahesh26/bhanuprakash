@@ -1,3 +1,4 @@
+import { FaAngleRight } from "@/lib/fontAwesomeIconsComplete";
 
 const Overview = () => {
    return (
@@ -8,19 +9,19 @@ const Overview = () => {
          <p>Dorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.</p>
          <ul className="about__info-list list-wrap">
             <li className="about__info-list-item">
-               <i className="flaticon-angle-right"></i>
+               <FaAngleRight />
                <p className="content">Work with color & Gradients & Grids</p>
             </li>
             <li className="about__info-list-item">
-               <i className="flaticon-angle-right"></i>
+               <FaAngleRight />
                <p className="content">All the useful shortcuts</p>
             </li>
             <li className="about__info-list-item">
-               <i className="flaticon-angle-right"></i>
+               <FaAngleRight />
                <p className="content">Be able to create Flyers, Brochures, Advertisements</p>
             </li>
             <li className="about__info-list-item">
-               <i className="flaticon-angle-right"></i>
+               <FaAngleRight />
                <p className="content">How to work with Images & Text</p>
             </li>
          </ul>

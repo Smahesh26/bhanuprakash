@@ -6,6 +6,7 @@ import shape_2 from "@/assets/img/others/breadcrumb_shape02.svg";
 import shape_3 from "@/assets/img/others/breadcrumb_shape03.svg";
 import shape_4 from "@/assets/img/others/breadcrumb_shape04.svg";
 import shape_5 from "@/assets/img/others/breadcrumb_shape05.svg";
+import { FaAngleRight } from "@/lib/fontAwesomeIconsComplete";
 import about from "@/assets/img/bg/aboutus.jpg"
 
 const BreadcrumbTwo = ({ title, sub_title }: any) => {
@@ -19,11 +20,11 @@ const BreadcrumbTwo = ({ title, sub_title }: any) => {
                         <span property="itemListElement" typeof="ListItem">
                            <Link href="/">Home</Link>
                         </span>
-                        <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
+                        <span className="breadcrumb-separator"><FaAngleRight aria-hidden /></span>
                         <span property="itemListElement" typeof="ListItem">
                            <Link href="/">{sub_title}</Link>
                         </span>
-                        <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
+                        <span className="breadcrumb-separator"><FaAngleRight aria-hidden /></span>
                         <span property="itemListElement" typeof="ListItem">{title}</span>
                      </nav>
                   </div>

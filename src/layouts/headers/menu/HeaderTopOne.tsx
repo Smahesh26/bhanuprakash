@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { FaFacebookF, FaTwitter, FaWhatsapp, FaLinkedinIn, FaYoutube } from "@/lib/fontAwesomeIconsComplete"
 
 import icon_1 from "@/assets/img/icons/map_marker.svg"
 import icon_2 from "@/assets/img/icons/envelope.svg"
@@ -23,11 +24,11 @@ const HeaderTopOne = ({ style }: any) => {
                      </div>
                      <ul className="tg-header__top-social list-wrap">
                         <li>Follow Us On :</li>
-                        <li><Link href="#"><i className="fab fa-facebook-f"></i></Link></li>
-                        <li><Link href="#"><i className="fab fa-twitter"></i></Link></li>
-                        <li><Link href="#"><i className="fab fa-whatsapp"></i></Link></li>
-                        <li><Link href="#"><i className="fab fa-linkedin-in"></i></Link></li>
-                        <li><Link href="#"><i className="fab fa-youtube"></i></Link></li>
+                        <li><Link href="#"><FaFacebookF /></Link></li>
+                        <li><Link href="#"><FaTwitter /></Link></li>
+                        <li><Link href="#"><FaWhatsapp /></Link></li>
+                        <li><Link href="#"><FaLinkedinIn /></Link></li>
+                        <li><Link href="#"><FaYoutube /></Link></li>
                      </ul>
                   </div>
                </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import Wrapper from "@/layouts/Wrapper";
 
 const CourseDetailsBySlug = () => {
@@ -71,11 +72,13 @@ const CourseDetailsBySlug = () => {
           <div className="col-lg-8">
             <h1>{course.title}</h1>
             {course.thumb && (
-              <img 
+              <Image 
                 src={course.thumb} 
                 alt={course.title} 
+                width={800}
+                height={400}
                 className="img-fluid rounded mb-4"
-                style={{ maxHeight: "400px", objectFit: "cover" }}
+                style={{ objectFit: "cover" }}
               />
             )}
             

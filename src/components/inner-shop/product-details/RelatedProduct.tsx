@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Rating } from "react-simple-star-rating";
 import { addToCart } from "@/redux/features/cartSlice";
 import { useDispatch } from "react-redux";
+import { FaRegEye, FaRegHeart, FaShoppingCart } from "@/lib/fontAwesomeIconsComplete";
 
 const setting = {
    slidesPerView: 4,
@@ -71,9 +72,9 @@ const RelatedProduct = () => {
                         {item.tag && <span className="flash-sale">{item.tag}</span>}
                         {item.hot_product && <span className="flash-sale hot">{item.hot_product}</span>}
                         <ul className="list-wrap shop-action">
-                           <li><a onClick={() => handleAddToCart(item)} style={{ cursor: "pointer" }}><i className="fas fa-shopping-cart"></i></a></li>
-                           <li><a style={{ cursor: "pointer" }}><i className="far fa-heart"></i></a></li>
-                           <li><Link href={`/shop-details/${item.id}`}><i className="far fa-eye"></i></Link></li>
+                           <li><a onClick={() => handleAddToCart(item)} style={{ cursor: "pointer" }}><FaShoppingCart aria-hidden /></a></li>
+                           <li><a style={{ cursor: "pointer" }}><FaRegHeart aria-hidden /></a></li>
+                           <li><Link href={`/shop-details/${item.id}`}><FaRegEye aria-hidden /></Link></li>
                         </ul>
                      </div>
                      <div className="shop-content">

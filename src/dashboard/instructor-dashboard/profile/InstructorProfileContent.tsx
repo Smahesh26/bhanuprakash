@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const InstructorProfileContent = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -43,7 +44,7 @@ const InstructorProfileContent = () => {
                 <li><span>Display Name</span> {profile.displayName || "-"}</li>
                 <li><span>Bio</span> {profile.bio || "-"}</li>
                 <li><span>Avatar</span> {profile.avatar 
-                  ? <img src={profile.avatar} alt="Avatar" style={{width: 50, height: 50, borderRadius: "50%"}} /> 
+                  ? <Image src={profile.avatar} alt="Avatar" width={50} height={50} style={{borderRadius: "50%"}} /> 
                   : "-"}</li>
                 <li><span>Email</span> {profile.email}</li>
                 {/* Do NOT display password for security reasons */}

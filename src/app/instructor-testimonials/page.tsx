@@ -1,7 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Button, Form, Modal, Card } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 
 
 interface TestimonialType {
@@ -267,10 +269,12 @@ const InstructorTestimonials = () => {
                       {formData.image && (
                         <div className="mt-2">
                           <small className="text-muted">Current image:</small><br />
-                          <img
+                          <Image
                             src={formData.image}
                             alt="Current"
-                            style={{ width: '100px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+                            width={100}
+                            height={80}
+                            style={{ objectFit: 'cover', borderRadius: '8px' }}
                           />
                         </div>
                       )}
@@ -311,7 +315,7 @@ const InstructorTestimonials = () => {
                       <Card.Title>
                         {t.studentName}
                         <span className="ms-2 text-warning">
-                          {t.rating}/5 <i className="fas fa-star"></i>
+                          {t.rating}/5 <FaStar aria-hidden />
                         </span>
                       </Card.Title>
                       <Card.Text>{t.text}</Card.Text>
@@ -411,10 +415,12 @@ const InstructorTestimonials = () => {
               {formData.image && (
                 <div className="mt-2">
                   <small className="text-muted">Current image:</small><br />
-                  <img
+                  <Image
                     src={formData.image}
                     alt="Current"
-                    style={{ width: '100px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+                    width={100}
+                    height={80}
+                    style={{ objectFit: 'cover', borderRadius: '8px' }}
                   />
                 </div>
               )}

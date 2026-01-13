@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { FaCamera } from "@/lib/fontAwesomeIconsComplete";
 
 import thumb from "@/assets/img/courses/details_instructors01.jpg";
 import thumb_2 from "@/assets/img/courses/details_instructors02.jpg";
@@ -50,7 +51,7 @@ const InstructorSettingProfile = ({ style, goToNextTab }: any) => {
                 <Image src={thumb_2} alt="img" />
               </div>
               <button title="Upload Photo">
-                <i className="fas fa-camera"></i>
+                <FaCamera aria-hidden />
               </button>
             </div>
             {/* <div className="instructor__cover-info-right">

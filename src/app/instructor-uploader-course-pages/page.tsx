@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import * as XLSX from "xlsx";
@@ -100,7 +100,7 @@ const UploadContent = () => {
       }
     };
     fetchCourses();
-  }, [session]);
+  }, [session, courseId]);
   const [curriculum, setCurriculum] = useState<Curriculum[]>([
     {
       subject: "",
@@ -133,13 +133,7 @@ const UploadContent = () => {
   // ========================================================================
   // EFFECTS & API CALLS
   // ========================================================================
-  useEffect(() => {
-    if (courseId && session?.user?.id) {
-      fetchCurriculums();
-    }
-  }, [courseId, session]);
-
-  const fetchCurriculums = async () => {
+  const fetchCurriculums = useCallback(async () => {
     setLoadingCurriculums(true);
     try {
       if (!courseId) return;
@@ -151,7 +145,14 @@ const UploadContent = () => {
     } finally {
       setLoadingCurriculums(false);
     }
-  };
+  }, [courseId]);
+
+  useEffect(() => {
+    if (courseId && session?.user?.id) {
+      fetchCurriculums();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courseId, session?.user?.id]);
 
   // ========================================================================
   // FILE UPLOAD UTILITIES

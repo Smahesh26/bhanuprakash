@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { Button, Form } from "react-bootstrap";
 import DashboardSidebar from "@/dashboard/dashboard-common/DashboardSidebar";
 import Image from "next/image";
+import { FaMagic, FaDownload, FaStethoscope } from "@/lib/fontAwesomeIconsComplete";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg";
 import * as XLSX from 'xlsx';
 
@@ -548,8 +549,16 @@ const UploadContent = () => {
   // ========================================================================
   // MCQ EXCEL PROCESSING
   // ========================================================================
+  const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5MB guardrail for XLSX uploads
+
+  const assertFileSize = (file: File) => {
+    if (file.size > MAX_UPLOAD_BYTES) {
+      throw new Error("Upload file is too large. Please keep it under 5MB.");
+    }
+  };
 
   const processMCQExcel = async (file: File): Promise<MCQ[]> => {
+    assertFileSize(file);
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -602,6 +611,7 @@ const UploadContent = () => {
   };
 
   const processEnhancedMCQExcel = async (file: File) => {
+    assertFileSize(file);
     return new Promise<void>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -1069,7 +1079,7 @@ const UploadContent = () => {
               {/* Smart MCQ Upload Section */}
               <div className="mb-4 p-3 bg-success bg-opacity-10 rounded border-start border-5 border-success">
                 <h6 className="mb-2" style={{ color: '#0d447a' }}>
-                  <i className="fas fa-magic me-2"></i>
+                  <FaMagic className="me-2" />
                   🚀 Smart MCQ Upload (Auto-Structure Creation)
                 </h6>
                 <p className="small text-muted mb-3">
@@ -1084,7 +1094,7 @@ const UploadContent = () => {
                       onClick={downloadEnhancedMCQTemplate}
                       className="w-100"
                     >
-                      <i className="fas fa-download me-1"></i>
+                      <FaDownload className="me-1" />
                       Download Smart Template
                     </Button>
                   </div>
@@ -1107,7 +1117,7 @@ const UploadContent = () => {
               {/* Case Study MCQ Section */}
               <div className="mb-4 p-3 bg-info bg-opacity-10 rounded border-start border-5 border-info">
                 <h6 className="mb-2" style={{ color: '#0d447a' }}>
-                  <i className="fas fa-stethoscope me-2"></i>
+                  <FaStethoscope className="me-2" />
                   📊 Case Study Upload
                 </h6>
                 <p className="small text-muted mb-3">
@@ -1119,7 +1129,7 @@ const UploadContent = () => {
                   size="sm"
                   onClick={downloadCaseStudyMCQTemplate}
                 >
-                  <i className="fas fa-download me-1"></i>
+                  <FaDownload className="me-1" />
                   Download Case Study MCQ Template
                 </Button>
               </div>

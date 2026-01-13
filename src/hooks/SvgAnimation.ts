@@ -22,7 +22,7 @@ const SvgAnimation = (svgIconFile: string) => {
           vivusInstance = new Vivus(svgId, {
             duration: 80,
             file: svgIcon,
-            onReady: (myVivus) => {
+            onReady: (myVivus: any) => {
               const duplicateSvg = myVivus.el.parentElement?.querySelectorAll('svg');
               if (duplicateSvg && duplicateSvg.length > 1) {
                 duplicateSvg[0].remove();
@@ -34,10 +34,11 @@ const SvgAnimation = (svgIconFile: string) => {
             vivusInstance?.reset().play();
           };
 
-          svgIconRef.current.addEventListener('mouseenter', handleMouseEnter);
+          const currentRef = svgIconRef.current;
+          currentRef.addEventListener('mouseenter', handleMouseEnter);
 
           return () => {
-            svgIconRef.current?.removeEventListener('mouseenter', handleMouseEnter);
+            currentRef?.removeEventListener('mouseenter', handleMouseEnter);
             vivusInstance?.stop().destroy();
           };
         }

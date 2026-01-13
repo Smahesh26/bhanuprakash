@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaAngleRight } from "@/lib/fontAwesomeIconsComplete";
 
 const categories_data: string[] = ["Anatomy", "Physiology", "Oncology", "Pathology", "Medicine", "Nursing", "Pharmacology"];
 
@@ -10,7 +11,7 @@ const Categories = () => {
             <ul className="list-wrap">
                {categories_data.map((cat, i) => (
                   <li key={i}>
-                     <Link href="#"><i className="flaticon-angle-right"></i>{cat}</Link>
+                     <Link href="#"><FaAngleRight />{cat}</Link>
                   </li>
                ))}
             </ul>

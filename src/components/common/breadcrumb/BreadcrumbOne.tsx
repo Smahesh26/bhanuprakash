@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link";
+import { FaAngleRight } from "@/lib/fontAwesomeIconsComplete";
 
 import shape_1 from "@/assets/img/others/breadcrumb_shape01.svg";
 import shape_2 from "@/assets/img/others/breadcrumb_shape02.svg";
@@ -22,11 +23,11 @@ const BreadcrumbOne = ({ title, sub_title, sub_title_2, style }: any) => {
                                  <span property="itemListElement" itemType="https://schema.org/ListItem">
                                     <Link href="/">Home</Link>
                                  </span>
-                                 <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
+                                 <span className="breadcrumb-separator"><FaAngleRight style={{fontSize: '0.75rem'}} /></span>
                                  <span property="itemListElement" itemType="https://schema.org/ListItem">
                                     <Link href="/events">{sub_title}</Link>
                                  </span>
-                                 <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
+                                 <span className="breadcrumb-separator"><FaAngleRight style={{fontSize: '0.75rem'}} /></span>
                                  <span property="itemListElement" itemType="https://schema.org/ListItem">{sub_title_2}</span>
                               </>
                            ) : (
@@ -34,7 +35,7 @@ const BreadcrumbOne = ({ title, sub_title, sub_title_2, style }: any) => {
                                  <span property="itemListElement" itemType="https://schema.org/ListItem">
                                     <Link href="/">Home</Link>
                                  </span>
-                                 <span className="breadcrumb-separator"><i className="fas fa-angle-right"></i></span>
+                                 <span className="breadcrumb-separator"><FaAngleRight style={{fontSize: '0.75rem'}} /></span>
                                  <span property="itemListElement" itemType="https://schema.org/ListItem">{sub_title}</span>
                               </>
                            )

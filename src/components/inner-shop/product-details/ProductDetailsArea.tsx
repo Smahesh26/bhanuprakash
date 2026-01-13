@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rating } from "react-simple-star-rating";
 import Reviews from "./Reviews";
 import RelatedProduct from "./RelatedProduct";
+import { FaRegHeart } from "@/lib/fontAwesomeIconsComplete";
 
 import nav_img1 from "@/assets/img/shop/shop_img01.jpg"
 import nav_img2 from "@/assets/img/shop/shop_img02.jpg"
@@ -77,7 +78,7 @@ const ProductDetailsArea = ({ single_product }: any) => {
                            <div onClick={() => single_product ? dispatch(addToCart(single_product)) : ""} className="inc qtybutton">+</div>
                         </div>
                         <a style={{ cursor: "pointer" }} onClick={() => single_product ? handleAddToCart(single_product) : ""} className="cart-btn btn">Add To Cart</a>
-                        <Link href="/shop-details" className="wishlist-btn"><i className="far fa-heart"></i></Link>
+                        <Link href="/shop-details" className="wishlist-btn"><FaRegHeart aria-hidden /></Link>
                      </div>
                      <div className="shop-details-bottom">
                         <ul className="list-wrap">

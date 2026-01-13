@@ -2,6 +2,7 @@
 import Categories from "./Categories"
 import LatestPost from "./LatestPost"
 import Tags from "./Tags"
+import { FaSearch } from "@/lib/fontAwesomeIconsComplete"
 
 const BlogSidebar = ({ style_1 }: any) => {
    return (
@@ -11,7 +12,7 @@ const BlogSidebar = ({ style_1 }: any) => {
                <div className="sidebar-search-form">
                   <form onSubmit={(e) => e.preventDefault()}>
                      <input type="text" placeholder="Search here" />
-                     <button><i className="flaticon-search"></i></button>
+                     <button><FaSearch /></button>
                   </form>
                </div>
             </div>

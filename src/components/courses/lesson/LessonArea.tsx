@@ -7,9 +7,10 @@ import dynamic from "next/dynamic";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import { FaTimes, FaArrowRight } from "@/lib/fontAwesomeIconsComplete";
 
 // Set up the worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 // Dynamically import LessonVideo
 const LessonVideo = dynamic(() => import("./LessonVideo"), { ssr: false });
@@ -61,13 +62,13 @@ const LessonArea = ({ lectures }: any) => {
               <div className="lesson__video-wrap-top">
                 <div className="lesson__video-wrap-top-left">
                   <Link href="#">
-                    <i className="flaticon-arrow-right"></i>
+                    <FaArrowRight />
                   </Link>
                   <span>The Complete Design Course: From Zero to Expert!</span>
                 </div>
                 <div className="lesson__video-wrap-top-right">
                   <Link href="#">
-                    <i className="fas fa-times"></i>
+                    <FaTimes aria-hidden />
                   </Link>
                 </div>
               </div>
@@ -81,13 +82,13 @@ const LessonArea = ({ lectures }: any) => {
                   className="prev-button"
                   title="Create a Simple React App"
                 >
-                  <i className="flaticon-arrow-right"></i>
+                  <FaArrowRight />
                 </button>
                 <button
                   className="next-button"
                   title="React for the Rest of us"
                 >
-                  <i className="flaticon-arrow-right"></i>
+                  <FaArrowRight />
                 </button>
               </div>
             </div>

@@ -2,6 +2,7 @@ import DashboardBannerTwo from "@/dashboard/dashboard-common/DashboardBannerTwo"
 import DashboardSidebarTwo from "@/dashboard/dashboard-common/DashboardSidebarTwo"
 import Link from "next/link";
 import Image from "next/image"
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 // import bg_img from "@/assets/img/bg/dashboard_bg.jpg"
 
 const student_review_data: string[] = ["The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners", "The Complete Graphic Design for Beginners",];
@@ -42,11 +43,11 @@ const StudentReviewArea = () => {
                                              <td>
                                                 <div className="review__wrap">
                                                    <div className="rating">
-                                                      <i className="fas fa-star"></i>
-                                                      <i className="fas fa-star"></i>
-                                                      <i className="fas fa-star"></i>
-                                                      <i className="fas fa-star"></i>
-                                                      <i className="fas fa-star"></i>
+                                                      <FaStar />
+                                                      <FaStar />
+                                                      <FaStar />
+                                                      <FaStar />
+                                                      <FaStar />
                                                    </div>
                                                    <span>(3 Reviews)</span>
                                                 </div>

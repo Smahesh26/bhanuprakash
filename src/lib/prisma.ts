@@ -5,7 +5,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Optimized Prisma Client with connection pooling
+// Optimized Prisma Client with connection pooling for Render
 export const prisma =
   globalForPrisma.prisma ?? 
   new PrismaClient({
@@ -18,6 +18,16 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 if (process.env.NODE_ENV === 'production') {
   process.on('beforeExit', async () => {
     await prisma.$disconnect();
+  });
+  
+  process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+  
+  process.on('SIGTERM', async () => {
+    await prisma.$disconnect();
+    process.exit(0);
   });
 }
 

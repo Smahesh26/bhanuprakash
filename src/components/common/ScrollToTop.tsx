@@ -1,6 +1,7 @@
 "use client"
 import UseSticky from "@/hooks/UseSticky";
 import { useState, useEffect } from "react";
+import { FaArrowUp } from "@/lib/fontAwesomeIconsComplete";
 
 const ScrollToTop = () => {
    const { sticky }: { sticky: boolean } = UseSticky();
@@ -30,12 +31,17 @@ const ScrollToTop = () => {
 
       window.addEventListener("scroll", checkScrollTop);
       return () => window.removeEventListener("scroll", checkScrollTop);
-   }, [checkScrollTop]);
+   }, [showScroll]);
 
    return (
       <>
-         <button onClick={scrollTop} className={`scroll__top scroll-to-target ${sticky ? "open" : ""}`} data-target="html">
-            <i className="tg-flaticon-arrowhead-up"></i>
+         <button
+            aria-label="Back to top"
+            onClick={scrollTop}
+            className={`scroll__top scroll-to-target ${sticky ? "open" : ""}`}
+            data-target="html"
+         >
+            <FaArrowUp />
          </button>
       </>
    )

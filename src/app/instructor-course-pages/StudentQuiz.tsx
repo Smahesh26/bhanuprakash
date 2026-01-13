@@ -1,7 +1,7 @@
 // StudentQuiz.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
 
 interface MCQ {
@@ -32,6 +32,15 @@ const StudentQuiz: React.FC<QuizProps> = ({ allMcqs, duration = 300 }) => {
     setAnswers(Array(10).fill(-1));
   }, [allMcqs]);
 
+  const handleSubmit = useCallback(() => {
+    let sc = 0;
+    questions.forEach((q, i) => {
+      if (answers[i] === q.correctAnswerIndex) sc++;
+    });
+    setScore(sc);
+    setSubmitted(true);
+  }, [questions, answers]);
+
   useEffect(() => {
     if (!submitted && timeLeft > 0) {
       const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
@@ -40,21 +49,12 @@ const StudentQuiz: React.FC<QuizProps> = ({ allMcqs, duration = 300 }) => {
     if (timeLeft === 0 && !submitted) {
       handleSubmit();
     }
-  }, [timeLeft, submitted]);
+  }, [timeLeft, submitted, handleSubmit]);
 
   const handleOptionChange = (index: number, optionIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[index] = optionIndex;
     setAnswers(newAnswers);
-  };
-
-  const handleSubmit = () => {
-    let sc = 0;
-    questions.forEach((q, i) => {
-      if (answers[i] === q.correctAnswerIndex) sc++;
-    });
-    setScore(sc);
-    setSubmitted(true);
   };
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface YoutubeVideo {
@@ -126,9 +127,11 @@ export default function LatestVideosHome() {
                       aspectRatio: "16/9",
                     }}
                   >
-                    <img
+                    <Image
                       src={video.thumbnail}
                       alt={video.title}
+                      width={400}
+                      height={225}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -297,81 +300,54 @@ export default function LatestVideosHome() {
         <div className="text-center mt-5">
           <Link
             href="/latest-videos"
+            className="btn courses-cta"
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "12px",
-              background: "linear-gradient(135deg, #5dba47 0%, #4a9c38 100%)",
-              color: "#fff",
-              textDecoration: "none",
-              borderRadius: "12px",
-              padding: "14px 28px",
-              fontWeight: 600,
-              fontSize: "1rem",
-              transition: "all 0.3s ease",
-              border: "none",
-              boxShadow: "0 6px 20px rgba(93,186,71,0.3)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background =
-                "linear-gradient(135deg, #4a9c38 0%, #388e3c 100%)";
-              (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
-              (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                "0 10px 30px rgba(93,186,71,0.4)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background =
-                "linear-gradient(135deg, #5dba47 0%, #4a9c38 100%)";
-              (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
-              (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                "0 6px 20px rgba(93,186,71,0.3)";
+              fontWeight: "bold",
+              fontFamily: "'Poppins', sans-serif",
+              color: "#fff !important",
             }}
           >
-            <span
-              className="btn-shine"
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "-100%",
-                width: "100%",
-                height: "100%",
-                background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-                transition: "left 0.5s ease",
-                zIndex: 1,
-              }}
-            />
-            <span 
-              className="btn-text"
-              style={{
-                position: "relative",
-                zIndex: 2,
-              }}
-            >
-              View All Videos
-            </span>
-            <span 
-              className="btn-arrow"
-              style={{
-                position: "relative",
-                zIndex: 2,
-                fontSize: "14px",
-                transition: "transform 0.3s ease",
-                background: "rgba(255,255,255,0.2)",
-                width: "24px",
-                height: "24px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              &#8594;
-            </span>
+            <span className="btn-text">View All Videos</span>
+            <span className="btn-arrow">→</span>
           </Link>
         </div>
       </div>
+
+      <style jsx>{`
+        .courses-cta {
+          background: #5dba47 !important;
+          border-radius: 10px;
+          padding: 7px 14px !important;
+          box-shadow: 0 8px 24px rgba(93, 186, 71, 0.4);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .courses-cta .btn-text {
+          position: relative;
+          z-index: 2;
+          color: #fff !important;
+        }
+
+        .courses-cta .btn-arrow {
+          position: relative;
+          z-index: 2;
+          font-size: 14px;
+          background: rgba(255, 255, 255, 0.7);
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff !important;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+      `}</style>
     </section>
   );
 }

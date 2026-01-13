@@ -52,7 +52,7 @@
 	Typography css start
 ===============================*/
 body {
-	font-family: var(--tg-body-font-family);
+	font-family: 'Inter', sans-serif;
 	font-size: var(--tg-body-font-size);
 	font-weight: var(--tg-fw-regular);
 	color: var(--tg-body-color);
@@ -96,10 +96,10 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: var(--tg-heading-font-family);
+	font-family: 'Poppins', sans-serif;
 	color: var(--tg-heading-color);
 	margin-top: 0px;
-	font-weight: var(--tg-fw-semi-bold);
+	font-weight: 700;
 	line-height: var(--tg-heading-line-height);
 	text-transform: unset;
 }
@@ -137,7 +137,7 @@ h6 {
 	}
 }
 p {
-	font-family: var(--tg-body-font-family);
+	font-family: 'Inter', sans-serif;
 	font-size: var(--tg-body-font-size);
 	line-height: var(--tg-body-line-height);
 	font-weight: var(--tg-fw-regular);

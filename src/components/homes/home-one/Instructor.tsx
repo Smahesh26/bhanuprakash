@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 import BtnArrow from "@/svg/BtnArrow";
+import { FaFacebookF, FaInstagram, FaStar, FaTwitter, FaWhatsapp } from "@/lib/fontAwesomeIconsComplete";
 
 import instructor_thumb1 from "@/assets/img/instructor/instructor01.png"
 import instructor_thumb2 from "@/assets/img/instructor/instructor02.png"
@@ -77,14 +78,14 @@ const Instructor = () => {
                                     <h2 className="title"><Link href="/instructor-datails">{item.title}</Link></h2>
                                     <span className="designation">{item.designation}</span>
                                     <p className="avg-rating">
-                                       <i className="fas fa-star"></i>{item.rating}
+                                       <FaStar aria-hidden />{item.rating}
                                     </p>
                                     <div className="instructor__social">
                                        <ul className="list-wrap">
-                                          <li><Link href="#"><i className="fab fa-facebook-f"></i></Link></li>
-                                          <li><Link href="#"><i className="fab fa-twitter"></i></Link></li>
-                                          <li><Link href="#"><i className="fab fa-whatsapp"></i></Link></li>
-                                          <li><Link href="#"><i className="fab fa-instagram"></i></Link></li>
+                                          <li><Link href="#"><FaFacebookF aria-hidden /></Link></li>
+                                          <li><Link href="#"><FaTwitter aria-hidden /></Link></li>
+                                          <li><Link href="#"><FaWhatsapp aria-hidden /></Link></li>
+                                          <li><Link href="#"><FaInstagram aria-hidden /></Link></li>
                                        </ul>
                                     </div>
                                  </div>

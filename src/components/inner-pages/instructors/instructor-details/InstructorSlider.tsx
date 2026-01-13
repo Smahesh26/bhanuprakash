@@ -5,6 +5,7 @@ import { Navigation } from 'swiper/modules';
 import inner_page_course_data from "@/data/inner-data/InnerPageCourseData";
 import Link from "next/link";
 import Image from "next/image";
+import { FaStar, FaArrowRight } from "@/lib/fontAwesomeIconsComplete";
 
 const setting = {
    // Optional parameters
@@ -67,7 +68,7 @@ const InstructorSlider = () => {
                         <li className="courses__item-tag">
                            <Link href="/course">{item.tag}</Link>
                         </li>
-                        <li className="avg-rating"><i className="fas fa-star"></i>{item.review}</li>
+                        <li className="avg-rating"><FaStar aria-hidden />{item.review}</li>
                      </ul>
                      <h5 className="title"><Link href="/course-details">{item.title}</Link></h5>
                      <p className="author">By <Link href="#">{item.author}</Link></p>
@@ -75,7 +76,7 @@ const InstructorSlider = () => {
                         <div className="button">
                            <Link href="/course-details">
                               <span className="text">Enroll Now</span>
-                              <i className="flaticon-arrow-right"></i>
+                              <FaArrowRight />
                            </Link>
                         </div>
                         <h5 className="price">${item.price}.00</h5>

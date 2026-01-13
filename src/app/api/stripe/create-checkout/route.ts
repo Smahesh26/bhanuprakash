@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import Stripe from "stripe";
+import { decrypt } from "@/lib/crypto";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,16 +19,17 @@ export async function POST(req: NextRequest) {
       where: { isActive: true }
     });
 
-    if (!config?.secretKey) {
+    const secretKey = process.env.STRIPE_SECRET_KEY
+      || (config?.secretKey ? decrypt(config.secretKey) : undefined);
+
+    if (!secretKey) {
       return NextResponse.json(
         { error: "Stripe not configured. Please contact admin." },
         { status: 500 }
       );
     }
 
-    const stripe = new Stripe(config.secretKey, {
-      apiVersion: "2025-12-15.clover",
-    });
+    const stripe = new Stripe(secretKey);
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email }
@@ -47,8 +49,8 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXTAUTH_URL}/student-dashboard?session_id={CHECKOUT_SESSION_ID}&success=true`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/pricing?canceled=true`,
+      success_url: `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/student-dashboard?session_id={CHECKOUT_SESSION_ID}&success=true`,
+      cancel_url: `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/pricing?canceled=true`,
       metadata: {
         userId: user.id,
         plan: plan,

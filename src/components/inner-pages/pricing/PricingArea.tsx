@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { FaCheckCircle } from "@/lib/fontAwesomeIconsComplete";
 
 const PricingArea = () => {
   const router = useRouter();
@@ -177,10 +178,10 @@ const PricingArea = () => {
                         alignItems: 'center'
                       }}
                     >
-                      <i 
-                        className="fas fa-check-circle" 
-                        style={{ 
-                          color: '#5dba47', 
+                      <FaCheckCircle
+                        aria-hidden
+                        style={{
+                          color: '#5dba47',
                           marginRight: '10px',
                           fontSize: '16px'
                         }}

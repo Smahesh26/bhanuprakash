@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { FaYoutube, FaFilePdf, FaQuestionCircle, FaStethoscope } from "@/lib/fontAwesomeIconsComplete";
 
 const UnlockedContent = () => {
   const { data: session } = useSession();
@@ -142,7 +143,7 @@ const UnlockedContent = () => {
                                   marginTop: 4
                                 }}
                               >
-                                <i className="fab fa-youtube" style={{ marginRight: 6 }}></i>
+                                <FaYoutube style={{ marginRight: 6 }} />
                                 Watch Video
                               </a>
                             )}
@@ -166,7 +167,7 @@ const UnlockedContent = () => {
                                   gap: 6
                                 }}
                               >
-                                <i className="fas fa-file-pdf"></i> PDF
+                                <FaFilePdf /> PDF
                               </button>
                             )}
 
@@ -187,7 +188,7 @@ const UnlockedContent = () => {
                                   gap: 6
                                 }}
                               >
-                                <i className="fas fa-question-circle"></i> MCQ
+                                <FaQuestionCircle /> MCQ
                               </button>
                             )}
 
@@ -208,7 +209,7 @@ const UnlockedContent = () => {
                                   gap: 6
                                 }}
                               >
-                                <i className="fas fa-stethoscope"></i> Case Study
+                                <FaStethoscope /> Case Study
                               </button>
                             )}
                           </div>

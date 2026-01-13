@@ -1,6 +1,7 @@
 import inner_instructor_data from "@/data/inner-data/InstructorData"
 import Image from "next/image"
 import Link from "next/link"
+import { FaFacebookF, FaInstagram, FaStar, FaTwitter, FaWhatsapp } from "@/lib/fontAwesomeIconsComplete"
 
 const InstructorArea = () => {
    return (
@@ -17,15 +18,15 @@ const InstructorArea = () => {
                            <h2 className="title"><Link href="/instructor-details">{item.name}</Link></h2>
                            <span className="designation">{item.degisnation}</span>
                            <p className="avg-rating">
-                              <i className="fas fa-star"></i>
+                              <FaStar aria-hidden />
                               (4.8 Ratings)
                            </p>
                            <div className="instructor__social">
                               <ul className="list-wrap">
-                                 <li><Link href="#"><i className="fab fa-facebook-f"></i></Link></li>
-                                 <li><Link href="#"><i className="fab fa-twitter"></i></Link></li>
-                                 <li><Link href="#"><i className="fab fa-whatsapp"></i></Link></li>
-                                 <li><Link href="#"><i className="fab fa-instagram"></i></Link></li>
+                                 <li><Link href="#"><FaFacebookF aria-hidden /></Link></li>
+                                 <li><Link href="#"><FaTwitter aria-hidden /></Link></li>
+                                 <li><Link href="#"><FaWhatsapp aria-hidden /></Link></li>
+                                 <li><Link href="#"><FaInstagram aria-hidden /></Link></li>
                               </ul>
                            </div>
                         </div>

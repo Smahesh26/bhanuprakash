@@ -1,5 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { FaCalendarAlt } from "@/lib/fontAwesomeIconsComplete";
 
 import blog_img1 from "@/assets/img/blog/latest_post04.jpg"
 import blog_img2 from "@/assets/img/blog/latest_post02.jpg"
@@ -52,7 +53,7 @@ const LatestPost = () => {
                   </Link>
                </div>
                <div className="rc-post-content">
-                  <span className="date"><i className="flaticon-calendar"></i> {item.date}</span>
+                  <span className="date"><FaCalendarAlt /> {item.date}</span>
                   <h4 className="title"><Link href="/blog-details">{item.title}</Link></h4>
                </div>
             </div>

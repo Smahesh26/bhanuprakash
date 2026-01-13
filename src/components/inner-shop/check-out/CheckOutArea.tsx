@@ -4,6 +4,7 @@ import CheckOutForm from "./CheckOutForm"
 import { useSelector } from "react-redux";
 import UseCartInfo from "@/hooks/UseCartInfo";
 import { toast } from "react-toastify";
+import { FaRegBookmark } from "@/lib/fontAwesomeIconsComplete";
 
 const CheckOutArea = () => {
 
@@ -18,7 +19,7 @@ const CheckOutArea = () => {
           <div className="col-12">
             <div className="coupon__code-wrap">
               <div className="coupon__code-info">
-                <span><i className="far fa-bookmark"></i> Have a coupon?</span>
+                <span><FaRegBookmark aria-hidden /> Have a coupon?</span>
                 <Link href="#" id="coupon-element">Click here to enter your code</Link>
               </div>
               <form onSubmit={(e) => e.preventDefault()} className="coupon__code-form">

@@ -1,6 +1,7 @@
 import student_dashboard_data from "@/data/dashboard-data/StudentDashboardData"
 import Image from "next/image"
 import Link from "next/link"
+import { FaStar, FaBook, FaClock, FaGraduationCap } from "@/lib/fontAwesomeIconsComplete"
 
 const DashboardCourse = () => {
    return (
@@ -29,7 +30,7 @@ const DashboardCourse = () => {
                               <Link href="/instructor-details"><Image src={item.avatar_thumb} alt="img" />{item.avatar_name}</Link>
                            </div>
                            <div className="avg-rating">
-                              <i className="fas fa-star"></i> {item.review}
+                              <FaStar /> {item.review}
                            </div>
                         </div>
                         <div className="progress-item progress-item-two">
@@ -41,9 +42,9 @@ const DashboardCourse = () => {
                      </div>
                      <div className="courses__item-bottom-two">
                         <ul className="list-wrap">
-                           <li><i className="flaticon-book"></i>{item.book}</li>
-                           <li><i className="flaticon-clock"></i>{item.time}</li>
-                           <li><i className="flaticon-mortarboard"></i>{item.mortarboard}</li>
+                           <li><FaBook />{item.book}</li>
+                           <li><FaClock />{item.time}</li>
+                           <li><FaGraduationCap />{item.mortarboard}</li>
                         </ul>
                      </div>
                   </div>

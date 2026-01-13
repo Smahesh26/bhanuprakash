@@ -1,6 +1,7 @@
 "use client"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 
 interface DataType {
    id: number;
@@ -71,11 +72,11 @@ const CommonTestimonial = () => {
             <SwiperSlide key={item.id} className="swiper-slide">
                <div className="testimonial__item-four">
                   <div className="rating">
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
-                     <i className="fas fa-star"></i>
+                     <FaStar aria-hidden />
+                     <FaStar aria-hidden />
+                     <FaStar aria-hidden />
+                     <FaStar aria-hidden />
+                     <FaStar aria-hidden />
                   </div>
                   <p>{item.desc}</p>
                   <div className="testimonial__bottom-two">

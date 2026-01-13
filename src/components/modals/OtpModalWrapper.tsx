@@ -235,7 +235,7 @@ export default function OtpModalWrapper({
           <div className="otp-modal-header">
             <h3 className="otp-modal-title">Verify Your Email</h3>
             <p className="otp-modal-subtitle">
-              We've sent a verification code to your email address
+              We&apos;ve sent a verification code to your email address
             </p>
           </div>
 

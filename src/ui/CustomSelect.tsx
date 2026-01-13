@@ -2,6 +2,7 @@
 import React from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { FaSearch } from '@/lib/fontAwesomeIconsComplete';
 
 const animatedComponents = makeAnimated();
 
@@ -35,7 +36,7 @@ const CustomSelect = ({ value, onChange }: any) => {
          </div>
          <div className="input-grp">
             <input type="text" placeholder="Search For Course . . ." />
-            <button type="submit"><i className="flaticon-search"></i></button>
+            <button type="submit"><FaSearch /></button>
          </div>
       </form>
    );

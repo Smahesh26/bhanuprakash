@@ -3,6 +3,30 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import {
+  FaLock,
+  FaUnlock,
+  FaExclamationTriangle,
+  FaSearch,
+  FaUserCircle,
+  FaClock,
+  FaLanguage,
+  FaGraduationCap,
+  FaBrain,
+  FaListUl,
+  FaBookmark,
+  FaFilePdf,
+  FaStethoscope,
+  FaSitemap,
+  FaCircle,
+  FaRocket,
+  FaStar,
+  FaPlayCircle,
+  FaInfinity,
+  FaCreditCard,
+  FaCrown,
+  FaYoutube
+} from '@/lib/fontAwesomeIconsComplete';
 
 interface CourseDetailsProps {
   courseTitle: string;
@@ -115,7 +139,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
         onClick={() => handleRestrictedContent(type, title)}
       >
         <div className="text-center text-white p-3">
-          <i className="fas fa-lock fa-2x mb-3" style={{ color: brandColors.accent }}></i>
+          <FaLock className="mb-3" style={{ fontSize: '2rem', color: brandColors.accent }} />
           <h6 className="fw-bold mb-2" style={{ color: brandColors.white }}>Premium {type}</h6>
           <p className="mb-3 small opacity-90">Click to unlock access</p>
           <button 
@@ -129,7 +153,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
               fontWeight: '600'
             }}
           >
-            <i className="fas fa-unlock me-1"></i>
+            <FaUnlock className="me-1" />
             Unlock Now
           </button>
         </div>
@@ -159,7 +183,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
     return (
       <div className="container py-5" style={{ backgroundColor: brandColors.light, minHeight: '60vh' }}>
         <div className="text-center">
-          <i className="fas fa-exclamation-triangle fa-3x mb-3" style={{ color: '#dc3545' }}></i>
+          <FaExclamationTriangle className="mb-3" style={{ color: '#dc3545', fontSize: '3rem' }} />
           <h3 style={{ color: '#dc3545' }}>Error Loading Course</h3>
           <p style={{ color: brandColors.gray }}>{error}</p>
           <button 
@@ -185,7 +209,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
     return (
       <div className="container py-5" style={{ backgroundColor: brandColors.light, minHeight: '60vh' }}>
         <div className="text-center">
-          <i className="fas fa-search fa-3x mb-3" style={{ color: brandColors.primary }}></i>
+          <FaSearch className="mb-3" style={{ color: brandColors.primary, fontSize: '3rem' }} />
           <h3 style={{ color: brandColors.primary }}>Course Not Found</h3>
           {/* Escape double quotes */}
           <p style={{ color: brandColors.gray }}>The course &quot;{courseTitle}&quot; could not be found in our database.</p>
@@ -238,15 +262,15 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                     </h1>
                     <div className="d-flex flex-wrap gap-4">
                       <div className="d-flex align-items-center">
-                        <i className="fas fa-user-circle me-2" style={{ color: brandColors.secondary, fontSize: '1.2rem' }}></i>
+                        <FaUserCircle className="me-2" style={{ color: brandColors.secondary, fontSize: '1.2rem' }} />
                         <span style={{ color: brandColors.gray, fontWeight: '500' }}>Dr. Bhanu Prakash</span>
                       </div>
                       <div className="d-flex align-items-center">
-                        <i className="fas fa-clock me-2" style={{ color: brandColors.secondary, fontSize: '1.2rem' }}></i>
+                        <FaClock className="me-2" style={{ color: brandColors.secondary, fontSize: '1.2rem' }} />
                         <span style={{ color: brandColors.gray, fontWeight: '500' }}>Self-paced</span>
                       </div>
                       <div className="d-flex align-items-center">
-                        <i className="fas fa-language me-2" style={{ color: brandColors.secondary, fontSize: '1.2rem' }}></i>
+                        <FaLanguage className="me-2" style={{ color: brandColors.secondary, fontSize: '1.2rem' }} />
                         <span style={{ color: brandColors.gray, fontWeight: '500' }}>English</span>
                       </div>
                     </div>
@@ -272,7 +296,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                 <div className="mb-4">
                   <div className="p-4 rounded-3" style={{ backgroundColor: brandColors.white, border: `2px solid ${brandColors.lightBg}` }}>
                     <h5 className="mb-3 d-flex align-items-center" style={{ color: brandColors.primary, fontWeight: '700' }}>
-                      <i className="fas fa-graduation-cap me-2" style={{ color: brandColors.secondary, fontSize: '1.3rem' }}></i>
+                          <FaGraduationCap className="me-2" style={{ color: brandColors.secondary, fontSize: '1.3rem' }} />
                       Course Introduction
                     </h5>
                     <div className="ratio ratio-16x9">
@@ -299,7 +323,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                       borderRadius: '12px'
                     }}
                   >
-                    <i className="fas fa-brain fa-2x me-3" style={{ color: brandColors.primary }}></i>
+                        <FaBrain className="me-3" style={{ color: brandColors.primary, fontSize: '2rem' }} />
                     <div>
                       <h6 className="mb-1 fw-bold" style={{ color: brandColors.primary }}>Practice MCQs Available!</h6>
                       <p className="mb-0" style={{ color: brandColors.gray }}>
@@ -314,7 +338,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
               {curriculum?.chapters && curriculum.chapters.length > 0 ? (
                 <div>
                   <h4 className="mb-4 d-flex align-items-center" style={{ color: brandColors.primary, fontWeight: '800' }}>
-                    <i className="fas fa-list-ul me-3" style={{ color: brandColors.secondary, fontSize: '1.4rem' }}></i>
+                      <FaListUl className="me-3" style={{ color: brandColors.secondary, fontSize: '1.4rem' }} />
                     Course Curriculum ({curriculum.chapters.length} Chapters)
                   </h4>
                   
@@ -373,7 +397,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                   }}
                                 >
                                   <h6 className="d-flex align-items-center mb-3" style={{ color: brandColors.primary, fontWeight: '700', fontSize: '1.1rem' }}>
-                                    <i className="fas fa-bookmark me-2" style={{ color: brandColors.secondary, fontSize: '1.1rem' }}></i>
+                                    <FaBookmark className="me-2" style={{ color: brandColors.secondary, fontSize: '1.1rem' }} />
                                     {topic.topic}
                                   </h6>
 
@@ -411,7 +435,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                               borderRadius: '12px'
                                             }}
                                           >
-                                            <i className="fas fa-file-pdf me-2"></i>
+                                            <FaFilePdf className="me-2" />
                                             Download PDF
                                           </a>
                                         ) : (
@@ -437,7 +461,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                               borderRadius: '12px'
                                             }}
                                           >
-                                            <i className="fas fa-stethoscope me-2"></i>
+                                            <FaStethoscope className="me-2" />
                                             Case Study
                                           </a>
                                         ) : (
@@ -451,7 +475,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                   {topic.subtopics && topic.subtopics.length > 0 && (
                                     <div>
                                       <h6 className="mb-3 d-flex align-items-center" style={{ color: brandColors.secondary, fontWeight: '700' }}>
-                                        <i className="fas fa-sitemap me-2"></i>
+                                        <FaSitemap className="me-2" />
                                         Subtopics ({topic.subtopics.length})
                                       </h6>
                                       <div className="row g-3">
@@ -466,7 +490,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                               }}
                                             >
                                               <h6 className="mb-2" style={{ color: brandColors.primary, fontSize: '0.95rem', fontWeight: '600' }}>
-                                                <i className="fas fa-circle me-2" style={{ color: brandColors.secondary, fontSize: '0.6rem' }}></i>
+                                                <FaCircle className="me-2" style={{ color: brandColors.secondary, fontSize: '0.6rem' }} />
                                                 {subtopic.title}
                                               </h6>
                                               
@@ -486,7 +510,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                                         borderRadius: '8px'
                                                       }}
                                                     >
-                                                      <i className="fas fa-file-pdf me-1"></i>
+                                                      <FaFilePdf className="me-1" />
                                                       PDF
                                                     </a>
                                                   ) : (
@@ -502,7 +526,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                                       }}
                                                       onClick={() => handleRestrictedContent('PDF', subtopic.title)}
                                                     >
-                                                      <i className="fas fa-lock me-1"></i>
+                                                      <FaLock className="me-1" />
                                                       PDF
                                                     </button>
                                                   )
@@ -522,7 +546,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                                                       borderRadius: '8px'
                                                     }}
                                                   >
-                                                    <i className="fab fa-youtube me-1"></i>
+                                                    <FaYoutube className="me-1" />
                                                     Video
                                                   </a>
                                                 )}
@@ -564,7 +588,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                     color: brandColors.white
                   }}
                 >
-                  <i className="fas fa-graduation-cap fa-4x mb-3" style={{ opacity: 0.9 }}></i>
+                  <FaGraduationCap className="mb-3" style={{ opacity: 0.9, fontSize: '4rem' }} />
                   <h5 className="fw-bold mb-2">Ready to Start Learning?</h5>
                   <p className="mb-4 opacity-90">Join our medical education community</p>
                   <div className="mb-3">
@@ -582,7 +606,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                     }}
                     onClick={() => setShowPaymentModal(true)}
                   >
-                    <i className="fas fa-rocket me-2"></i>
+                    <FaRocket className="me-2" />
                     Enroll Now
                   </button>
                   <div className="d-flex gap-2">
@@ -606,28 +630,28 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                 {/* Features Card */}
                 <div className="p-4 rounded-3 shadow-sm" style={{ backgroundColor: brandColors.white }}>
                   <h6 className="fw-bold mb-3 d-flex align-items-center" style={{ color: brandColors.primary }}>
-                    <i className="fas fa-star me-2" style={{ color: brandColors.accent }}></i>
+                    <FaStar className="me-2" style={{ color: brandColors.accent }} />
                     What is Included
                   </h6>
                   <div className="list-unstyled">
                     <div className="d-flex align-items-center mb-3 pb-2 border-bottom">
-                      <i className="fas fa-play-circle me-3" style={{ color: brandColors.secondary, fontSize: '1.2rem' }}></i>
+                      <FaPlayCircle className="me-3" style={{ color: brandColors.secondary, fontSize: '1.2rem' }} />
                       <span style={{ color: brandColors.gray, fontWeight: '500' }}>HD Video Lectures</span>
                     </div>
                     <div className="d-flex align-items-center mb-3 pb-2 border-bottom">
-                      <i className="fas fa-file-pdf me-3" style={{ color: '#dc3545', fontSize: '1.2rem' }}></i>
+                      <FaFilePdf className="me-3" style={{ color: '#dc3545', fontSize: '1.2rem' }} />
                       <span style={{ color: brandColors.gray, fontWeight: '500' }}>Downloadable Notes</span>
                     </div>
                     <div className="d-flex align-items-center mb-3 pb-2 border-bottom">
-                      <i className="fas fa-brain me-3" style={{ color: '#6f42c1', fontSize: '1.2rem' }}></i>
+                      <FaBrain className="me-3" style={{ color: '#6f42c1', fontSize: '1.2rem' }} />
                       <span style={{ color: brandColors.gray, fontWeight: '500' }}>Practice MCQs</span>
                     </div>
                     <div className="d-flex align-items-center mb-3 pb-2 border-bottom">
-                      <i className="fas fa-stethoscope me-3" style={{ color: '#20c997', fontSize: '1.2rem' }}></i>
+                      <FaStethoscope className="me-3" style={{ color: '#20c997', fontSize: '1.2rem' }} />
                       <span style={{ color: brandColors.gray, fontWeight: '500' }}>Case Studies</span>
                     </div>
                     <div className="d-flex align-items-center">
-                      <i className="fas fa-infinity me-3" style={{ color: '#fd7e14', fontSize: '1.2rem' }}></i>
+                      <FaInfinity className="me-3" style={{ color: '#fd7e14', fontSize: '1.2rem' }} />
                       <span style={{ color: brandColors.gray, fontWeight: '500' }}>Lifetime Access</span>
                     </div>
                   </div>
@@ -656,7 +680,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                 }}
               >
                 <div className="d-flex align-items-center">
-                  <i className="fas fa-graduation-cap fa-2x me-3"></i>
+                  <FaGraduationCap className="me-3" style={{ fontSize: '2rem' }} />
                   <div>
                     <h5 className="modal-title fw-bold mb-0">Unlock Premium Access</h5>
                     <small className="opacity-90">Join our medical community</small>
@@ -670,7 +694,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
               </div>
               
               <div className="modal-body p-4 text-center">
-                <i className="fas fa-crown fa-3x mb-3" style={{ color: brandColors.accent }}></i>
+                <FaCrown className="mb-3" style={{ color: brandColors.accent, fontSize: '3rem' }} />
                 <h6 className="fw-bold" style={{ color: brandColors.primary }}>
                   Access: <span style={{ color: brandColors.secondary }}>{selectedContent?.title}</span>
                 </h6>
@@ -695,7 +719,7 @@ const CourseDetailsArea = ({ courseTitle }: CourseDetailsProps) => {
                   }}
                   onClick={handleStripePayment}
                 >
-                  <i className="fas fa-credit-card me-2"></i>
+                  <FaCreditCard className="me-2" />
                   Continue to Payment
                 </button>
               </div>

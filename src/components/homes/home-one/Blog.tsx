@@ -1,6 +1,7 @@
 import blog_data from "@/data/home-data/BlogData"
 import Image from "next/image"
 import Link from "next/link"
+import { FaCalendarAlt, FaUser } from "@/lib/fontAwesomeIconsComplete"
 
 const Blog = ({ style }: any) => {
    return (
@@ -27,8 +28,8 @@ const Blog = ({ style }: any) => {
                         <div className="blog__post-content">
                            <div className="blog__post-meta">
                               <ul className="list-wrap">
-                                 <li><i className="flaticon-calendar"></i>{item.date}</li>
-                                 <li><i className="flaticon-user-1"></i>by <Link href="/blog-details">Admin</Link></li>
+                                 <li><FaCalendarAlt />{item.date}</li>
+                                 <li><FaUser />by <Link href="/blog-details">Admin</Link></li>
                               </ul>
                            </div>
                            <h4 className="title"><Link href="/blog-details">{item.title}</Link></h4>

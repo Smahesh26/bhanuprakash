@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import testimonial_data from "@/data/home-data/TestimonialData"
 import Image from "next/image"
+import { FaStar } from "@/lib/fontAwesomeIconsComplete";
 
 const CommonTestimonialtwo = ({ class_name }: any) => {
 
@@ -50,11 +51,11 @@ const CommonTestimonialtwo = ({ class_name }: any) => {
                   <div className="testimonial__content-two">
                      <h2 className="title">Great Quality!</h2>
                      <div className="rating">
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
+                        <FaStar aria-hidden />
+                        <FaStar aria-hidden />
+                        <FaStar aria-hidden />
+                        <FaStar aria-hidden />
+                        <FaStar aria-hidden />
                      </div>
                      <p>{item.desc}</p>
                   </div>

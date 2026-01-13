@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import ReactPaginate from "react-paginate"
+import { FaMapMarkerAlt } from "@/lib/fontAwesomeIconsComplete"
 
 const EventArea = () => {
 
@@ -34,7 +35,7 @@ const EventArea = () => {
                            <div className="event__item-content">
                               <span className="date">{item.date}</span>
                               <h2 className="title"><Link href="/events-details">{item.title}</Link></h2>
-                              <Link href="https://maps.google.com/maps" className="location" target="_blank"><i className="flaticon-map"></i>{item.location}</Link>
+                              <Link href="https://maps.google.com/maps" className="location" target="_blank"><FaMapMarkerAlt />{item.location}</Link>
                            </div>
                         </div>
                      </div>

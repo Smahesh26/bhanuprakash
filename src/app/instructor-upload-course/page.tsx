@@ -451,10 +451,11 @@ const InstructorUploadCourse = () => {
                           <td>
                             <input type="file" onChange={handleFileChange} />
                             {editForm.thumb && (
-                              <img
+                              <Image
                                 src={editForm.thumb}
                                 alt="thumb"
                                 width={60}
+                                height={40}
                               />
                             )}
                           </td>
@@ -483,7 +484,7 @@ const InstructorUploadCourse = () => {
                           <td>{course.videoUrl}</td>
                           <td>
                             {course.thumb && (
-                              <img src={course.thumb} alt="thumb" width={60} />
+                              <Image src={course.thumb} alt="thumb" width={60} height={40} />
                             )}
                           </td>
                           <td>
