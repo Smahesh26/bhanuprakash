@@ -1,7 +1,8 @@
 "use client"
 import Link from "next/link";
 import React from "react";
-import { usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation';
+import { signOut } from "next-auth/react";
 
 interface DataType {
    id: number;
@@ -59,7 +60,7 @@ const sidebar_data: DataType[] = [
       sidebar_details: [
          {
             id: 1,
-            link: "/",
+            link: "/logout",
             icon: "skillgro-logout",
             title: "Logout",
          },
@@ -83,10 +84,23 @@ const DashboardSidebarTwo = () => {
                      <ul className="list-wrap">
                         {item.sidebar_details.map((list) => (
                            <li key={list.id} className={pathname === list.link ? 'active' : ''}>
-                              <Link href={list.link}>
-                                 <i className={list.icon}></i>
-                                 {list.title}
-                              </Link>
+                              {list.link === "/logout" ? (
+                                 <a
+                                    href="#"
+                                    onClick={(e) => {
+                                       e.preventDefault();
+                                       signOut({ callbackUrl: "/login" });
+                                    }}
+                                 >
+                                    <i className={list.icon}></i>
+                                    {list.title}
+                                 </a>
+                              ) : (
+                                 <Link href={list.link}>
+                                    <i className={list.icon}></i>
+                                    {list.title}
+                                 </Link>
+                              )}
                            </li>
                         ))}
                      </ul>
